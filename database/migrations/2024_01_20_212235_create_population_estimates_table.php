@@ -23,6 +23,7 @@ return new class extends Migration
             $table->integer('optimal')->nullable();
             $table->foreignId('conducted_by')->nullable();
             $table->boolean('approved')->default(0);
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

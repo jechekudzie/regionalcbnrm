@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$mySelectedSpecies->name}}</h4>
+                        <h4 class="mb-sm-0">{{$selectedSpecies->name}} - Quota Requests</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -36,12 +36,12 @@
                             <div class="d-flex align-items-center flex-wrap gap-2">
                                 <div class="flex-grow-1">
 
-                                    <a class="btn btn-info add-btn" href="{{route('organisation.population-estimates.species',[$organisation->slug])}}"><i
+                                    <a class="btn btn-info add-btn" href="{{route('organisation.quota-settings.species',[$organisation->slug])}}"><i
                                             class="fa fa-arrow-left"></i> Back to species
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i>  Record Population Estimate
+                                            class="fa fa-plus"></i>  Record Quota Settings
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -80,55 +80,45 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h3> {{ $selectedSpecies->name }} Population Estimates Grouped by Counting Methods</h3>
-
-                            <table style="width: 100%;" id="buttons-datatables"
-                                   class="display table table-bordered dataTable no-footer"
-                                   aria-describedby="buttons-datatables_info">
-                                <thead>
-                                <tr>
-                                    <th>Year</th>
-                                    <th>Image</th>
-                                    <th>Species</th>
-                                    <th>Counting Method</th>
-                                    @foreach ($maturities as $maturity)
-                                        @foreach ($genders as $gender)
-                                            <th>{{ $maturity->name }} - {{ $gender->name }}</th>
-                                        @endforeach
-                                    @endforeach
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach ($distinctYears as $year)
-                                    @php
-                                        $methodsUsed = $selectedSpecies->populationEstimates->where('year', $year)->unique('counting_method_id');
-                                    @endphp
-                                    @foreach ($methodsUsed as $estimate)
+                                <h2>Quota Settings for {{ $selectedSpecies->name }}</h2>
+                                <table style="width: 100%;" id="buttons-datatables"
+                                       class="display table table-bordered dataTable no-footer"
+                                       aria-describedby="buttons-datatables_info">
+                                    <thead>
+                                    <tr>
+                                        <th>Year</th>
+                                        <th>Initial Quota</th>
+                                        <th>RDC Quota</th>
+                                        <th>Campfire Quota</th>
+                                        <th>Zimpark Station Quota</th>
+                                        <th>National Park Quota</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($quotaRequests as $quota)
                                         <tr>
-                                            <td>{{ $year }}</td>
+                                            <td>{{ $quota->year }}</td>
+                                            <td>{{ $quota->initial_quota }}</td>
+                                            <td>{{ $quota->rdc_quota }}</td>
+                                            <td>{{ $quota->campfire_quota }}</td>
+                                            <td>{{ $quota->zimpark_station_quota }}</td>
+                                            <td>{{ $quota->national_park_quota }}</td>
+                                            <td>{{ $quota->status }}</td>
                                             <td>
-                                                <div class="avatar-md bg-light rounded p-1"><img src="{{asset($selectedSpecies->avatar)}}" alt="" class="img-fluid d-block"></div>
+                                                <!-- Edit Button -->
+                                                <a href="{{route('organisation.quota-settings.edit',[$organisation->slug,$quota->slug])}}" class="edit-button btn btn-sm btn-primary"
+                                                  id="edit-button" title="Edit">
+                                                    <i class="fa fa-pencil"></i> Edit
+                                                </a>
+                                                <!-- Delete Button -->
                                             </td>
-                                            <td>{{ $selectedSpecies->name }}</td>
-                                            <td>{{ $estimate->countingMethod->name }}</td>
-                                            @foreach ($maturities as $maturity)
-                                                @foreach ($genders as $gender)
-                                                    @php
-                                                        $maturityGenderEstimate = $selectedSpecies->populationEstimates
-                                                            ->where('year', $year)
-                                                            ->where('counting_method_id', $estimate->counting_method_id)
-                                                            ->where('maturity_id', $maturity->id)
-                                                            ->where('species_gender_id', $gender->id)
-                                                            ->sum('estimate');
-                                                    @endphp
-                                                    <td class="text-center">{{ $maturityGenderEstimate ?: 'N/A' }}</td>
-                                                @endforeach
-                                            @endforeach
                                         </tr>
                                     @endforeach
-                                @endforeach
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+
                         </div>
                         <!--end card-->
                     </div>
@@ -146,13 +136,16 @@
                                 <div class="card border">
                                     <div class="card-header">
 
-                                        <h6 class="card-title mb-0">{{$mySelectedSpecies->name}} Population Estimate</h6>
+                                        <h4 class="card-title mb-0">{{$selectedSpecies->name}} Quota Request</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form method="post" action="{{ route('organisation.population-estimates.store-per-species',$organisation->slug) }}">
+                                        <form method="post" action="{{ route('organisation.quota-settings.store',$organisation->slug) }}">
                                             @csrf
                                             <!-- Hidden Species ID -->
-                                            <input type="hidden" name="species_id" value="{{ $mySelectedSpecies->id }}">
+                                            <input type="hidden" name="species_id" value="{{ $selectedSpecies->id }}">
+
+                                            <!-- Hidden Organisation ID -->
+                                            <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
 
                                             <div class="row">
                                                 <!-- Select Year -->
@@ -165,38 +158,52 @@
                                                         @endfor
                                                     </select>
                                                 </div>
+                                            </div>
 
-                                                <!-- Select Counting Method -->
+                                            <div class="row">
+                                                <!-- Initial Quota -->
                                                 <div class="col-md-4 mb-3">
-                                                    <label for="counting_method_id" class="form-label">Counting Method</label>
-                                                    <select class="form-control" id="counting_method_id" name="counting_method_id" required>
-                                                        <option value="">Select Counting Method</option>
-                                                        @foreach ($countingMethods as $method)
-                                                            <option value="{{ $method->id }}">{{ $method->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <label for="initial_quota" class="form-label">Initial Quota</label>
+                                                    <input type="number" class="form-control" id="initial_quota" name="initial_quota" placeholder="Enter initial quota">
+                                                </div>
+
+                                                <!-- RDC Quota -->
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="rdc_quota" class="form-label">RDC Quota</label>
+                                                    <input type="number" class="form-control" id="rdc_quota" name="rdc_quota" placeholder="Enter RDC quota">
+                                                </div>
+
+                                                <!-- Campfire Quota -->
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="campfire_quota" class="form-label">Campfire Quota</label>
+                                                    <input type="number" class="form-control" id="campfire_quota" name="campfire_quota" placeholder="Enter campfire quota">
                                                 </div>
                                             </div>
 
-                                            <!-- Input fields for each maturity and gender combination -->
                                             <div class="row">
-                                                @foreach ($maturities as $maturity)
-                                                    @foreach ($genders as $gender)
-                                                        <div class="col-md-4 mb-3">
-                                                            <label class="form-label">{{ $maturity->name }} - {{ $gender->name }} Estimate</label>
-                                                            <input type="number" class="form-control" name="estimates[{{ $maturity->id }}][{{ $gender->id }}]" placeholder="Enter estimate">
-                                                        </div>
-                                                    @endforeach
-                                                @endforeach
+                                                <!-- Zimpark Station Quota -->
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="zimpark_station_quota" class="form-label">Zimpark Station Quota</label>
+                                                    <input type="number" class="form-control" id="zimpark_station_quota" name="zimpark_station_quota" placeholder="Enter Zimpark station quota">
+                                                </div>
+
+                                                <!-- National Park Quota -->
+                                                <div class="col-md-4 mb-3">
+                                                    <label for="national_park_quota" class="form-label">National Park Quota</label>
+                                                    <input type="number" class="form-control" id="national_park_quota" name="national_park_quota" placeholder="Enter national park quota">
+                                                </div>
                                             </div>
 
+                                            <!-- Status -->
                                             <!-- Submission Button -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit Estimates</button>
+                                                    <button type="submit" class="btn btn-primary">Submit Quota Request</button>
                                                 </div>
                                             </div>
                                         </form>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -234,46 +241,7 @@
                 });
 
                 // Assuming you have jQuery available
-                $(document).ready(function () {
-                    // Define the submit button
-                    var submitButton = $('#submit-button'); // Replace with your actual button ID or class
-                    submitButton.text('Add New');
-                    //on load by default name field to be empty
-                    $('#name').val('');
-                    var organisation_id = $('#organisation_id').val();
 
-                    // Click event for the edit button
-                    $('.edit-button').on('click', function () {
-                        var name = $(this).data('name');
-                        var email = $(this).data('email');
-                        var slug = $(this).data('slug');
-                        var roleId = $(this).data('role-id');
-
-                        // Set form action for update, method to PATCH, and button text to Update
-                        $('#edit-form').attr('action', '/admin/organisation-users/' + slug + '/update');
-                        $('input[name="_method"]').val('PATCH');
-                        submitButton.text('Update');
-                        // Populate the form for editing
-                        $('#name').val(name);
-                        $('#email').val(email);
-
-                        // Set the dropdown value to the role ID and mark it as selected
-                        $('#role_id').val(roleId).trigger('change');
-
-                        $('#card-title').text('Edit - ' + name);
-                        $('#page-title').text('Edit - ' + name);
-                    });
-
-                    // Click event for adding a new item
-                    $('#new-button').on('click', function () {
-                        // Clear the form, set action for creation, method to POST, and button text to Add New
-                        $('input[name="_method"]').val('POST');
-                        submitButton.text('Add New');
-                        $('#name').val('');
-                        $('#card-title').text('Add Organisation user');
-                        $('#page-title').text('Add New Organisation user');
-                    });
-                });
 
 
             </script>

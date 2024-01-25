@@ -7,17 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class CountingMethod extends Model
+class HuntingDetail extends Model
 {
     use HasFactory,HasSlug;
 
     protected $guarded = [];
-    public function populationEstimates()
+
+    public function huntingActivity()
     {
-        return $this->hasMany(PopulationEstimate::class);
+        return $this->belongsTo(HuntingActivity::class);
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function species()
+    {
+        return $this->belongsTo(Species::class);
+    }
+
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
@@ -29,5 +35,5 @@ class CountingMethod extends Model
     {
         return 'slug';
     }
-
 }
+

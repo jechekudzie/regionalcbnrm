@@ -13,6 +13,11 @@ class Maturity extends Model
 
     protected $guarded = [];
 
+    public function populationEstimates()
+    {
+        return $this->hasMany(PopulationEstimate::class);
+    }
+
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()

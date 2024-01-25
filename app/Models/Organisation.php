@@ -68,9 +68,36 @@ class Organisation extends Model
     //has many population estimates
     public function populationEstimates()
     {
-        return $this->hasMany(PopulationEstimate::class);
+        return $this->hasMany(PopulationEstimate::class, 'conducted_by');
     }
 
+    public function quotaRequests()
+    {
+        return $this->hasMany(QuotaRequest::class, 'organisation_id');
+    }
+
+
+
+    //hunting stuff
+    public function hunters()
+    {
+        return $this->belongsToMany(Hunter::class, 'organisation_hunter');
+    }
+
+    public function huntingActivities()
+    {
+        return $this->hasMany(HuntingActivity::class);
+    }
+
+    public function huntingLicenses()
+    {
+        return $this->hasMany(HuntingLicense::class);
+    }
+
+    public function huntingConcessions()
+    {
+        return $this->hasMany(HuntingConcession::class);
+    }
 
     public function getSlugOptions() : SlugOptions
     {
@@ -79,11 +106,7 @@ class Organisation extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * Get the route key for the model.
-     *
-     * @return string
-     */
+
     public function getRouteKeyName()
     {
         return 'slug';

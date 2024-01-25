@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hunter;
 use App\Models\Organisation;
 use App\Models\OrganisationType;
 use App\Models\User;
@@ -134,5 +135,16 @@ class ApiController extends Controller
         return response()->json($organisation);
     }
 
+    public function search(Request $request)
+    {
+        $searchTerm = $request->input('search');
+        $hunters = Hunter::where('name', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('mobile_number', 'LIKE', '%' . $searchTerm . '%')
+            ->orWhere('email', 'LIKE', '%' . $searchTerm . '%')
+            ->with('country')
+            ->get();
+
+        return response()->json($hunters);
+    }
 
 }

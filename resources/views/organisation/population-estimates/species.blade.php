@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0" id="page-title">Species</h4>
+                        <h2 class="mb-sm-0">{{$organisation->name}} - Population Estimate</h2>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -20,23 +20,7 @@
 
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="d-flex align-items-center flex-wrap gap-2">
-                                    <div class="flex-grow-1">
 
-                                        <a href="" class="btn btn-info add-btn">
-                                            <i class="fa fa-refresh"></i> Refresh
-                                        </a>
-                                        {{--<button style="font-size: 12px;color:white;"
-                                                class="btn btn-success fw-medium" data-bs-toggle="modal"
-                                                data-bs-target="#addSpecies">
-                                            <i class="fa fa-plus"></i> Add Species
-                                        </button>--}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!--end col-->
                     <div class="row">
@@ -78,10 +62,11 @@
                                                 <div class="card-body">
 
                                                 </div>
-                                                <div class="card-footer bg-transparent text-center">
-                                                    <a href="javascript:void(0);" class="link-light">Read More <i
-                                                            class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i></a>
-                                                </div>
+                                            </div>
+                                            <div style="background-color: black;" class="card-footer  text-center">
+                                                <a  href="{{route('organisation.population-estimates.index',[$organisation->slug,$specie->slug])}}" class="link-light">
+                                                    Record Census <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div><!-- end col -->

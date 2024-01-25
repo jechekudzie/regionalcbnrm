@@ -113,22 +113,76 @@ Route::post('/admin/counting-methods/store', [\App\Http\Controllers\CountingMeth
 Route::get('/admin/counting-methods/{countingMethod}/edit', [\App\Http\Controllers\CountingMethodController::class, 'edit'])->name('admin.counting-methods.edit');
 Route::patch('/admin/counting-methods/{countingMethod}/update', [\App\Http\Controllers\CountingMethodController::class, 'update'])->name('admin.counting-methods.update');
 
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Organisation Dashboard
 |--------------------------------------------------------------------------
 */
 //organisation dashboard
-Route::get('/organisation/dashboard', [\App\Http\Controllers\OrganisationDashboardController::class, 'index'])->name('organisation.dashboard.index')->middleware('auth');
+Route::get('/organisation/dashboard', [\App\Http\Controllers\OrganisationDashboardController::class, 'dashboard'])->name('organisation.dashboard')->middleware('auth');
+Route::get('/{organisation}/index', [\App\Http\Controllers\OrganisationDashboardController::class, 'index'])->name('organisation.dashboard.index')->middleware('auth');
+
+//wildlife species
+Route::get('/{organisation}/species', [\App\Http\Controllers\OrganisationSpeciesController::class, 'index'])->name('organisation.species.index');
 
 //routes for population estimates for organisation with organisation
-Route::get('/{organisation}/population-estimates', [\App\Http\Controllers\PopulationEstimateController::class, 'index'])->name('admin.population-estimates.index');
-Route::post('/{organisation}/population-estimates/store', [\App\Http\Controllers\PopulationEstimateController::class, 'store'])->name('admin.population-estimates.store');
-Route::get('/{organisation}/population-estimates/{populationEstimate}/edit', [\App\Http\Controllers\PopulationEstimateController::class, 'edit'])->name('admin.population-estimates.edit');
-Route::patch('/{organisation}/population-estimates/{populationEstimate}/update', [\App\Http\Controllers\PopulationEstimateController::class, 'update'])->name('admin.population-estimates.update');
+Route::get('/{organisation}/population-estimates', [\App\Http\Controllers\PopulationEstimateController::class, 'species'])->name('organisation.population-estimates.species');
+Route::get('/{organisation}/population-estimates/{species}/index', [\App\Http\Controllers\PopulationEstimateController::class, 'index'])->name('organisation.population-estimates.index');
+Route::get('/{organisation}/population-estimates/by-counting-methods', [\App\Http\Controllers\PopulationEstimateController::class, 'byCountingMethods'])->name('organisation.population-estimates.by-counting-methods');
+Route::post('/{organisation}/population-estimates/store', [\App\Http\Controllers\PopulationEstimateController::class, 'store'])->name('organisation.population-estimates.store');
+Route::get('/{organisation}/population-estimates/{populationEstimate}/edit', [\App\Http\Controllers\PopulationEstimateController::class, 'edit'])->name('organisation.population-estimates.edit');
+Route::patch('/{organisation}/population-estimates/{populationEstimate}/update', [\App\Http\Controllers\PopulationEstimateController::class, 'update'])->name('organisation.population-estimates.update');
+
+//quota settings routes
+Route::get('/{organisation}/quota-settings/species', [\App\Http\Controllers\QuotaSettingController::class, 'species'])->name('organisation.quota-settings.species');
+Route::get('/{organisation}/quota-settings/{species}/index', [\App\Http\Controllers\QuotaSettingController::class, 'index'])->name('organisation.quota-settings.index');
+Route::post('/{organisation}/quota-settings/store', [\App\Http\Controllers\QuotaSettingController::class, 'store'])->name('organisation.quota-settings.store');
+Route::get('/{organisation}/quota-settings/{quotaRequest}/edit', [\App\Http\Controllers\QuotaSettingController::class, 'edit'])->name('organisation.quota-settings.edit');
+Route::patch('/{organisation}/quota-settings/{quotaRequest}/update', [\App\Http\Controllers\QuotaSettingController::class, 'update'])->name('organisation.quota-settings.update');
+
+
+//hunting concession routes
+Route::get('/{organisation}/hunting-concessions', [\App\Http\Controllers\HuntingConcessionController::class, 'index'])->name('organisation.hunting-concessions.index');
+
+
+//hunter controller
+Route::get('/{organisation}/hunters', [\App\Http\Controllers\HunterController::class, 'index'])->name('organisation.hunters.index');
+//create, store, edit, update, destroy
+Route::get('/{organisation}/hunters/create', [\App\Http\Controllers\HunterController::class, 'create'])->name('organisation.hunters.create');
+Route::post('/{organisation}/hunters/store', [\App\Http\Controllers\HunterController::class, 'store'])->name('organisation.hunters.store');
+Route::get('/{organisation}/hunters/{hunter}/edit', [\App\Http\Controllers\HunterController::class, 'edit'])->name('organisation.hunters.edit');
+Route::patch('/{organisation}/hunters/{hunter}/update', [\App\Http\Controllers\HunterController::class, 'update'])->name('organisation.hunters.update');
+Route::delete('/{organisation}/hunters/{hunter}', [\App\Http\Controllers\HunterController::class, 'destroy'])->name('organisation.hunters.destroy');
+
+
+//need routes for organisation.safari-license
+Route::get('/{organisation}/safari-licenses', [\App\Http\Controllers\HuntingLicenseController::class, 'index'])->name('organisation.safari-licenses.index');
+//give create, store, edit, update and delete routes
+Route::get('/{organisation}/safari-licenses/create', [\App\Http\Controllers\HuntingLicenseController::class, 'create'])->name('organisation.safari-licenses.create');
+Route::post('/{organisation}/safari-licenses/store', [\App\Http\Controllers\HuntingLicenseController::class, 'store'])->name('organisation.safari-licenses.store');
+Route::get('/{organisation}/safari-licenses/{huntingLicense}/edit', [\App\Http\Controllers\HuntingLicenseController::class, 'edit'])->name('organisation.safari-licenses.edit');
+Route::patch('/{organisation}/safari-licenses/{huntingLicense}/update', [\App\Http\Controllers\HuntingLicenseController::class, 'update'])->name('organisation.safari-licenses.update');
+Route::delete('/{organisation}/safari-licenses/{huntingLicense}', [\App\Http\Controllers\HuntingLicenseController::class, 'destroy'])->name('organisation.safari-licenses.destroy');
+
+
+//need routes for organisation.hunting-activity
+Route::get('/{organisation}/hunting-activities', [\App\Http\Controllers\HuntingActivityController::class, 'index'])->name('organisation.hunting-activities.index');
+Route::get('/{organisation}/hunting-activities/create', [\App\Http\Controllers\HuntingActivityController::class, 'create'])->name('organisation.hunting-activities.create');
+Route::post('/{organisation}/hunting-activities/store', [\App\Http\Controllers\HuntingActivityController::class, 'store'])->name('organisation.hunting-activities.store');
+Route::get('/{organisation}/hunting-activities/{huntingActivity}/edit', [\App\Http\Controllers\HuntingActivityController::class, 'edit'])->name('organisation.hunting-activities.edit');
+Route::patch('/{organisation}/hunting-activities/{huntingActivity}/update', [\App\Http\Controllers\HuntingActivityController::class, 'update'])->name('organisation.hunting-activities.update');
+Route::delete('/{organisation}/hunting-activities/{huntingActivity}', [\App\Http\Controllers\HuntingActivityController::class, 'destroy'])->name('organisation.hunting-activities.destroy');
+Route::get('/{organisation}/hunting-activities/{huntingActivity}', [\App\Http\Controllers\HuntingActivityController::class, 'show'])->name('organisation.hunting-activities.show');
+//add hunter client
+Route::get('/{organisation}/hunting-activities/{huntingActivity}/add-hunter-client', [\App\Http\Controllers\HuntingActivityController::class, 'addHunterClient'])->name('organisation.hunting-activities.add-hunter-client');
+Route::post('/{organisation}/hunting-activities/{huntingActivity}/save-hunter-client', [\App\Http\Controllers\HuntingActivityController::class, 'saveHunterClient'])->name('organisation.hunting-activities.save-hunter-client');
+Route::post('/{organisation}/hunting-activities/{huntingActivity}/save-new-hunter-client', [\App\Http\Controllers\HuntingActivityController::class, 'saveNewHunterClient'])->name('organisation.hunting-activities.save-new-hunter-client');
+//hunting vehicles
+Route::get('/{organisation}/hunting-activities/{huntingActivity}/add-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'addHuntingVehicles'])->name('organisation.hunting-activities.add-hunting-vehicles');
+Route::post('/{organisation}/hunting-activities/{huntingActivity}/save-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'saveHuntingVehicles'])->name('organisation.hunting-activities.save-hunting-vehicles');
+Route::patch('/{organisation}/hunting-activities/{huntingActivityVehicle}/update-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'updateHuntingVehicles'])->name('organisation.hunting-activities.update-hunting-vehicles');
+Route::delete('/{organisation}/hunting-activities/{huntingActivityVehicle}/delete-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'deleteHuntingVehicles'])->name('organisation.hunting-activities.delete-hunting-vehicles');
+
 
 
 Route::get('/dashboard', function () {

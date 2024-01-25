@@ -4,39 +4,46 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class Species extends Model
+class HuntingActivity extends Model
 {
     use HasFactory, HasSlug;
 
     protected $guarded = [];
 
-    public function populationEstimates()
+    public function organisation()
     {
-        return $this->hasMany(PopulationEstimate::class);
+        return $this->belongsTo(Organisation::class);
     }
 
-    public function getEstimateCount($maturityId, $genderId, $year)
+    public function huntingConcession()
     {
-        return $this->populationEstimates()
-            ->where('maturity_id', $maturityId)
-            ->where('species_gender_id', $genderId)
-            ->where('year', $year)
-            ->sum('estimate');
+        return $this->belongsTo(HuntingConcession::class);
     }
 
-
-    public function quotaRequests()
+    public function hunters()
     {
-        return $this->hasMany(QuotaRequest::class);
+        return $this->belongsToMany(Hunter::class, 'hunting_activity_hunter');
+    }
+
+    public function huntingLicense()
+    {
+        return $this->belongsTo(HuntingLicense::class);
     }
 
     public function huntingDetails()
     {
         return $this->hasMany(HuntingDetail::class);
     }
+
+    public function vehicles()
+    {
+        return $this->hasMany(HuntingActivityVehicle::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -44,10 +51,9 @@ class Species extends Model
             ->saveSlugsTo('slug');
     }
 
+
     public function getRouteKeyName()
     {
         return 'slug';
     }
-
-
 }

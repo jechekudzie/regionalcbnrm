@@ -7,27 +7,35 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class CountingMethod extends Model
+class HuntingConcession extends Model
 {
-    use HasFactory,HasSlug;
+    use HasFactory, HasSlug;
 
     protected $guarded = [];
-    public function populationEstimates()
+
+
+    public function organisation()
     {
-        return $this->hasMany(PopulationEstimate::class);
+        return $this->belongsTo(Organisation::class);
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function huntingActivities()
+    {
+        return $this->hasMany(HuntingActivity::class);
+    }
+
+
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
 
-
     public function getRouteKeyName()
     {
         return 'slug';
     }
+
 
 }

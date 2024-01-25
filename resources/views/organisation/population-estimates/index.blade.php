@@ -149,7 +149,7 @@
                                         <h6 class="card-title mb-0">{{$mySelectedSpecies->name}} Population Estimate</h6>
                                     </div>
                                     <div class="card-body">
-                                        <form method="post" action="{{ route('organisation.population-estimates.store-per-species',$organisation->slug) }}">
+                                        <form method="post" action="{{ route('organisation.population-estimates.store',$organisation->slug) }}">
                                             @csrf
                                             <!-- Hidden Species ID -->
                                             <input type="hidden" name="species_id" value="{{ $mySelectedSpecies->id }}">

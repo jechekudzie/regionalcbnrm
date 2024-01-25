@@ -18,9 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/admin/organisation-types', [ApiController::class, 'fetchTemplate'])->name('admin.organisation-types.index');
 //organisations
 Route::get('/admin/organisations', [ApiController::class, 'fetchOrganisationInstances'])->name('admin.organisations.index');
-
 //organisation
 Route::get('/admin/organisations/{organisation}/edit', [ApiController::class, 'fetchOrganisation'])->name('admin.organisations.edit');
+
+//route to search hunters
+Route::get('/hunters/search', [ApiController::class, 'search'])->name('admin.hunters.index');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
