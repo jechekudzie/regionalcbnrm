@@ -14,16 +14,25 @@ class HuntingConcession extends Model
     protected $guarded = [];
 
 
-    public function organisation()
+    public function organisation() // The RDC managing this concession
     {
         return $this->belongsTo(Organisation::class);
     }
 
-    public function huntingActivities()
+    public function wards() // Wards covered by the concession
+    {
+        return $this->belongsToMany(Organisation::class, 'hunting_concession_ward', 'hunting_concession_id', 'ward_id');
+    }
+
+    public function quotaRequests() // Quota requests initiated by this concession
+    {
+        return $this->hasMany(QuotaRequest::class);
+    }
+
+    public function huntingActivities() // Activities taking place in this concession
     {
         return $this->hasMany(HuntingActivity::class);
     }
-
 
     public function getSlugOptions(): SlugOptions
     {

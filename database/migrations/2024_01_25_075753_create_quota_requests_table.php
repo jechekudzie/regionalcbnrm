@@ -13,19 +13,20 @@ return new class extends Migration
     {
         Schema::create('quota_requests', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('hunting_concession_id');
             $table->unsignedBigInteger('species_id');
-            $table->unsignedBigInteger('organisation_id'); // Refers to the ward
             $table->integer('year');
-            $table->integer('initial_quota')->nullable();
-            $table->integer('rdc_quota')->nullable();
-            $table->integer('campfire_quota')->nullable();
-            $table->integer('zimpark_station_quota')->nullable();
-            $table->integer('national_park_quota')->nullable();
-            $table->string('status')->nullable();
-            $table->string('slug')->nullable();
-            $table->boolean('is_approved')->nullable();
+            $table->integer('initial_quota')->nullable(); // Requested by the hunting concession
+            $table->integer('rdc_quota')->nullable(); // Adjusted/approved by the RDC
+            $table->integer('campfire_quota')->nullable(); // Adjusted/approved by the Campfire Committee
+            $table->integer('zimpark_station_quota')->nullable(); // Adjusted/approved by the Zimpark Station
+            $table->integer('national_park_quota')->nullable(); // Final quota set by the National Park
+            $table->integer('available_quota')->nullable(); // available quota
+            $table->string('status')->nullable(); // Tracks the current status of the quota request
+            $table->string('slug'); //slug
             $table->timestamps();
         });
+
     }
 
     /**

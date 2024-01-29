@@ -18,6 +18,12 @@ class Species extends Model
         return $this->hasMany(PopulationEstimate::class);
     }
 
+    public function incidents()
+    {
+        return $this->belongsToMany(Incident::class, 'incident_species', 'species_id', 'incident_id');
+    }
+
+
     public function getEstimateCount($maturityId, $genderId, $year)
     {
         return $this->populationEstimates()

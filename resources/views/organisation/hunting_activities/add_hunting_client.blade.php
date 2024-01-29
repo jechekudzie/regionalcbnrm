@@ -162,8 +162,7 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post"
-                                              action="{{ route('organisation.hunting-activities.save-new-hunter-client',[$organisation->slug,$huntingActivity->slug]) }}">
+                                        <form method="post" action="{{ route('organisation.hunting-activities.save-new-hunter-client',[$organisation->slug,$huntingActivity->slug]) }}">
                                             @csrf
                                             <div class="row">
                                                 <!-- Name -->
@@ -235,7 +234,6 @@
                                               action="{{route('organisation.hunting-activities.save-hunter-client',[$organisation->slug,$huntingActivity->slug])}}">
                                             @csrf
 
-
                                             <div class="modal-body">
                                                 <h5 style="color: black;font-weight: bold;" id="hunterName"></h5>
                                                 <input type="hidden" name="hunting_activity_id" value="{{ $huntingActivity->id }}">
@@ -259,6 +257,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <!--end row-->
 

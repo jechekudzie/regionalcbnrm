@@ -15,73 +15,6 @@
                             </ol>
                         </div>
                     </div>
-
-                    <!-- Add Roles Modal -->
-                    <div class="modal fade" id="addRoles" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel">Add Organisational Roles</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <form id="manageOrganisationForm" method="post" action=""
-                                          enctype="multipart/form-data">
-                                        @csrf
-
-                                        <!-- Name Input -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Role Name</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                   placeholder="Enter role name" required>
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-
-
-                                </div>
-                            </div>
-                            <!--end modal-content-->
-                        </div>
-                        <!--end modal-dialog-->
-                    </div>
-                    <!-- Add Users Modal -->
-                    <div class="modal fade" id="addUsers" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="myModalLabel">Add Organisation Users</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <form id="userForm" method="post" action="{{ route('admin.species.store') }}"
-                                          enctype="multipart/form-data">
-                                        @csrf
-
-                                        <!-- Name Input -->
-                                        <div class="mb-3">
-                                            <label for="name" class="form-label">Role Name</label>
-                                            <input type="text" class="form-control" id="name" name="name"
-                                                   placeholder="Enter role name" required>
-                                        </div>
-
-                                        <!-- Submit Button -->
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
-
-
-                                </div>
-                            </div>
-                            <!--end modal-content-->
-                        </div>
-                        <!--end modal-dialog-->
-                    </div>
                 </div>
                 <!-- end page title -->
 
@@ -118,10 +51,7 @@
                         <!-- Place this where you want to display messages -->
                         <div id="messageContainer"></div>
                         <div id="errorContainer"></div>
-
-
                         <!-- Rest of your HTML -->
-
                         <div class="card">
                             <div class="card-body">
                                 <div class="card border card-border-light">

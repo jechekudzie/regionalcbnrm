@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
         $user = \App\Models\User::create([
             'name' => 'Nigel Jeche',
             'email' => 'jechekudzie@gmail.com',
-            'password' => Hash::make('Incorrect'),
+            'password' => Hash::make('password@1'),
         ]);
 
     }

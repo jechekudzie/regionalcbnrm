@@ -14,13 +14,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UsersTableSeeder::class,
-            //OrganisationTypesSeeder::class,
-            //OrganisationTypeRelationshipSeeder::class,
-            //OrganisationsSeeder::class,
+            OrganisationTypesSeeder::class,
+            OrganisationTypeRelationshipSeeder::class,
+            OrganisationsSeeder::class,
             SpeciesSeeder::class,
             SpeciesGenderSeeder::class,
             MaturitySeeder::class,
             CountingMethodSeeder::class,
+            CountriesSeeder::class,
+            ConflictTypeSeeder::class,
+            ConflictOutComeSeeder::class,
+            ControlMeasureSeeder::class,
 
         ]);
     }

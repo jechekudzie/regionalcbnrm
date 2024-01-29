@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$selectedSpecies->name}} - Quota Requests</h4>
+                        <h4 class="mb-sm-0">{{ $organisation->name }} - {{$selectedSpecies->name}} - Quota Requests</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -36,12 +36,13 @@
                             <div class="d-flex align-items-center flex-wrap gap-2">
                                 <div class="flex-grow-1">
 
-                                    <a class="btn btn-info add-btn" href="{{route('organisation.quota-settings.species',[$organisation->slug])}}"><i
+                                    <a class="btn btn-info add-btn"
+                                       href="{{route('organisation.quota-settings.species',[$organisation->slug])}}"><i
                                             class="fa fa-arrow-left"></i> Back to species
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i>  Record Quota Settings
+                                            class="fa fa-plus"></i> Record Quota Settings
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -80,44 +81,52 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                                <h2>Quota Settings for {{ $selectedSpecies->name }}</h2>
-                                <table style="width: 100%;" id="buttons-datatables"
-                                       class="display table table-bordered dataTable no-footer"
-                                       aria-describedby="buttons-datatables_info">
-                                    <thead>
+                            <h2>{{ $organisation->name }} - Quota Settings for {{ $selectedSpecies->name }}</h2>
+                            <br/>
+                            <table style="width: 100%;" id="buttons-datatables"
+                                   class="display table table-bordered dataTable no-footer"
+                                   aria-describedby="buttons-datatables_info">
+                                <thead>
+                                <tr>
+                                    <th>Hunting Concession</th>
+                                    <th>Image</th>
+                                    <th>Species</th>
+                                    <th>Year</th>
+                                    <th>Initial Quota</th>
+                                    <th>RDC Quota</th>
+                                    <th>Zimpark Station Quota</th>
+                                    <th>National Park Quota</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($quotaRequests as $quota)
                                     <tr>
-                                        <th>Year</th>
-                                        <th>Initial Quota</th>
-                                        <th>RDC Quota</th>
-                                        <th>Campfire Quota</th>
-                                        <th>Zimpark Station Quota</th>
-                                        <th>National Park Quota</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <td>{{ $quota->huntingConcession->name }}</td>
+                                        <td>
+                                            <div class="avatar-md bg-light rounded p-1"><img src="{{asset($quota->species->avatar)}}" alt="" class="img-fluid d-block"></div>
+                                        </td>
+                                        <td>{{ $quota->species->name }}</td>
+                                        <td>{{ $quota->year }}</td>
+                                        <td>{{ $quota->initial_quota }}</td>
+                                        <td>{{ $quota->rdc_quota }}</td>
+                                        <td>{{ $quota->zimpark_station_quota }}</td>
+                                        <td>{{ $quota->national_park_quota }}</td>
+                                        <td>{{ $quota->status }}</td>
+                                        <td>
+                                            <!-- Edit Button -->
+                                            <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"
+                                               class="btn btn-sm btn-primary" title="Edit">
+                                                <i class="fa fa-pencil"></i>
+                                            </a>
+                                            <!-- You can add a Delete button here if needed, similar to the Edit button with a form to submit the delete request -->
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($quotaRequests as $quota)
-                                        <tr>
-                                            <td>{{ $quota->year }}</td>
-                                            <td>{{ $quota->initial_quota }}</td>
-                                            <td>{{ $quota->rdc_quota }}</td>
-                                            <td>{{ $quota->campfire_quota }}</td>
-                                            <td>{{ $quota->zimpark_station_quota }}</td>
-                                            <td>{{ $quota->national_park_quota }}</td>
-                                            <td>{{ $quota->status }}</td>
-                                            <td>
-                                                <!-- Edit Button -->
-                                                <a href="{{route('organisation.quota-settings.edit',[$organisation->slug,$quota->slug])}}" class="edit-button btn btn-sm btn-primary"
-                                                  id="edit-button" title="Edit">
-                                                    <i class="fa fa-pencil"></i> Edit
-                                                </a>
-                                                <!-- Delete Button -->
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                @endforeach
+                                </tbody>
+                            </table>
+
 
                         </div>
                         <!--end card-->
@@ -139,17 +148,35 @@
                                         <h4 class="card-title mb-0">{{$selectedSpecies->name}} Quota Request</h4>
                                     </div>
                                     <div class="card-body">
-                                        <form method="post" action="{{ route('organisation.quota-settings.store',$organisation->slug) }}">
+
+                                        <form method="post"
+                                              action="{{ route('organisation.quota-settings.store', $organisation->slug) }}">
                                             @csrf
+
+                                            <!-- Hidden Fields -->
                                             <!-- Hidden Species ID -->
                                             <input type="hidden" name="species_id" value="{{ $selectedSpecies->id }}">
 
                                             <!-- Hidden Organisation ID -->
                                             <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
 
-                                            <div class="row">
-                                                <!-- Select Year -->
-                                                <div class="col-md-4 mb-3">
+                                            <!-- Hunting Concession Dropdown -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="hunting_concession_id" class="form-label">Hunting
+                                                        Concession</label>
+                                                    <select class="form-control" id="hunting_concession_id"
+                                                            name="hunting_concession_id" required>
+                                                        <option value="">Select Hunting Concession</option>
+                                                        @foreach($organisation->huntingConcessions as $concession)
+                                                            <option
+                                                                value="{{ $concession->id }}">{{ $concession->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <!-- Year Selection -->
+                                                <div class="col-md-4">
                                                     <label for="year" class="form-label">Year</label>
                                                     <select class="form-control" id="year" name="year" required>
                                                         <option value="">Select Year</option>
@@ -160,45 +187,50 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row">
-                                                <!-- Initial Quota -->
-                                                <div class="col-md-4 mb-3">
+                                            <!-- Quota Fields -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
                                                     <label for="initial_quota" class="form-label">Initial Quota</label>
-                                                    <input type="number" class="form-control" id="initial_quota" name="initial_quota" placeholder="Enter initial quota">
+                                                    <input type="number" class="form-control" id="initial_quota"
+                                                           name="initial_quota" placeholder="Enter initial quota"
+                                                           min="0">
                                                 </div>
-
-                                                <!-- RDC Quota -->
-                                                <div class="col-md-4 mb-3">
+                                                <div class="col-md-4">
                                                     <label for="rdc_quota" class="form-label">RDC Quota</label>
-                                                    <input type="number" class="form-control" id="rdc_quota" name="rdc_quota" placeholder="Enter RDC quota">
+                                                    <input type="number" class="form-control" id="rdc_quota"
+                                                           name="rdc_quota" placeholder="Enter RDC quota" min="0">
                                                 </div>
-
-                                                <!-- Campfire Quota -->
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="campfire_quota" class="form-label">Campfire Quota</label>
-                                                    <input type="number" class="form-control" id="campfire_quota" name="campfire_quota" placeholder="Enter campfire quota">
-                                                </div>
-                                            </div>
-
-                                            <div class="row">
-                                                <!-- Zimpark Station Quota -->
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="zimpark_station_quota" class="form-label">Zimpark Station Quota</label>
-                                                    <input type="number" class="form-control" id="zimpark_station_quota" name="zimpark_station_quota" placeholder="Enter Zimpark station quota">
-                                                </div>
-
-                                                <!-- National Park Quota -->
-                                                <div class="col-md-4 mb-3">
-                                                    <label for="national_park_quota" class="form-label">National Park Quota</label>
-                                                    <input type="number" class="form-control" id="national_park_quota" name="national_park_quota" placeholder="Enter national park quota">
+                                                <div class="col-md-4">
+                                                    <label for="campfire_quota" class="form-label">Campfire
+                                                        Quota</label>
+                                                    <input type="number" class="form-control" id="campfire_quota"
+                                                           name="campfire_quota" placeholder="Enter campfire quota"
+                                                           min="0">
                                                 </div>
                                             </div>
 
-                                            <!-- Status -->
-                                            <!-- Submission Button -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="zimpark_station_quota" class="form-label">Zimpark
+                                                        Station Quota</label>
+                                                    <input type="number" class="form-control" id="zimpark_station_quota"
+                                                           name="zimpark_station_quota"
+                                                           placeholder="Enter Zimpark station quota" min="0">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="national_park_quota" class="form-label">National Park
+                                                        Quota</label>
+                                                    <input type="number" class="form-control" id="national_park_quota"
+                                                           name="national_park_quota"
+                                                           placeholder="Enter national park quota" min="0">
+                                                </div>
+                                            </div>
+
+                                            <!-- Submit Button -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit Quota Request</button>
+                                                    <button type="submit" class="btn btn-primary">Submit Quota Request
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -241,7 +273,6 @@
                 });
 
                 // Assuming you have jQuery available
-
 
 
             </script>

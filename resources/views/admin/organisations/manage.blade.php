@@ -72,14 +72,16 @@
                                             aria-controls="buttons-datatables" rowspan="1" colspan="1"
                                             aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending"
-                                            style="width: 224.4px;">Parent Organisation
+                                            style="width: 224.4px;">Name
                                         </th>
+
                                         <th class="sorting sorting_asc" tabindex="0"
                                             aria-controls="buttons-datatables" rowspan="1" colspan="1"
                                             aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending"
-                                            style="width: 224.4px;">Name
+                                            style="width: 224.4px;">Parent Organisation
                                         </th>
+
                                         <th class="sorting sorting_asc" tabindex="0"
                                             aria-controls="buttons-datatables" rowspan="1" colspan="1"
                                             aria-sort="ascending"
@@ -113,8 +115,8 @@
                                     @foreach($organisations as $organisation)
                                         <tr class="even">
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$organisation->parentOrganisation->name ?? ''}}</td>
                                             <td>{{$organisation->name}}</td>
+                                            <td>{{$organisation->parentOrganisation->name ?? ''}}</td>
                                             <td class="sorting_1">{{$organisation->organisationType->name}}</td>
                                             <td><a href="{{route('admin.organisation-roles.index',$organisation->slug)}}">Manage ({{$organisation->organisationRoles->count()}})</a></td>
                                             <td><a href="{{route('admin.organisation-users.index',$organisation->slug)}}">Manage ({{$organisation->users->count()}})</a></td>

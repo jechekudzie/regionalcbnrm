@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\Organisation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
+
 
 class OrganisationsSeeder extends Seeder
 {
@@ -14,83 +16,16 @@ class OrganisationsSeeder extends Seeder
     public function run(): void
     {
         //
-        // Define an array of 10 dummy organizations with their details
-        $organizations = [
-            [
-                'organisation_type_id' => 1,
-                'organisation_id' => null,
-                'name' => 'Organization 1',
-                'logo' => 'logo1.jpg',
-                'description' => 'Description of Organization 1.',
-            ],
-            [
-                'organisation_type_id' => 2,
-                'organisation_id' => null,
-                'name' => 'Organization 2',
-                'logo' => 'logo2.jpg',
-                'description' => 'Description of Organization 2.',
-            ],
-            [
-                'organisation_type_id' => 2,
-                'organisation_id' => 1,
-                'name' => 'Suborganization 1',
-                'logo' => 'sublogo1.jpg',
-                'description' => 'Description of Suborganization 1.',
-            ],
-            [
-                'organisation_type_id' => 3,
-                'organisation_id' => null,
-                'name' => 'Organization 3',
-                'logo' => 'logo3.jpg',
-                'description' => 'Description of Organization 3.',
-            ],
-            [
-                'organisation_type_id' => 4,
-                'organisation_id' => null,
-                'name' => 'Organization 4',
-                'logo' => 'logo4.jpg',
-                'description' => 'Description of Organization 4.',
-            ],
-            [
-                'organisation_type_id' => 5,
-                'organisation_id' => null,
-                'name' => 'Organization 5',
-                'logo' => 'logo5.jpg',
-                'description' => 'Description of Organization 5.',
-            ],
-            [
-                'organisation_type_id' => 3,
-                'organisation_id' => 2,
-                'name' => 'Suborganization 2',
-                'logo' => 'sublogo2.jpg',
-                'description' => 'Description of Suborganization 2.',
-            ],
-            [
-                'organisation_type_id' => 6,
-                'organisation_id' => null,
-                'name' => 'Organization 6',
-                'logo' => 'logo6.jpg',
-                'description' => 'Description of Organization 6.',
-            ],
-            [
-                'organisation_type_id' => 7,
-                'organisation_id' => null,
-                'name' => 'Organization 7',
-                'logo' => 'logo7.jpg',
-                'description' => 'Description of Organization 7.',
-            ],
-            [
-                'organisation_type_id' => 8,
-                'organisation_id' => null,
-                'name' => 'Organization 8',
-                'logo' => 'logo8.jpg',
-                'description' => 'Description of Organization 8.',
-            ],
+        $organisations = [
+            ['name' => 'Regional CBNRM', 'organisation_type_id' => 1, 'organisation_id' => null, 'slug' => 'regional-cbnrm', 'created_at' => Carbon::parse('2024-01-28 08:03:49'), 'updated_at' => Carbon::parse('2024-01-28 08:03:49')],
+            ['name' => 'Resource Africa', 'organisation_type_id' => 2, 'organisation_id' => 1, 'slug' => 'resource-africa', 'created_at' => Carbon::parse('2024-01-28 08:04:18'), 'updated_at' => Carbon::parse('2024-01-28 08:04:18')],
+            ['name' => 'Jamma International', 'organisation_type_id' => 2, 'organisation_id' => 1, 'slug' => 'jamma-international', 'created_at' => Carbon::parse('2024-01-28 08:04:32'), 'updated_at' => Carbon::parse('2024-01-28 08:04:32')],
+            ['name' => 'Leading Digital', 'organisation_type_id' => 3, 'organisation_id' => 1, 'slug' => 'leading-digital', 'created_at' => Carbon::parse('2024-01-28 08:04:40'), 'updated_at' => Carbon::parse('2024-01-28 08:04:40')],
+            ['name' => 'Zimbabwe', 'organisation_type_id' => 4, 'organisation_id' => 1, 'slug' => 'zimbabwe', 'created_at' => Carbon::parse('2024-01-28 08:04:51'), 'updated_at' => Carbon::parse('2024-01-28 08:04:51')],
         ];
 
-        // Loop through the organizations array and insert them into the 'organisations' table
-        foreach ($organizations as $organizationData) {
-            Organisation::create($organizationData);
+        foreach ($organisations as $organisation) {
+            Organisation::create($organisation);
         }
     }
 }

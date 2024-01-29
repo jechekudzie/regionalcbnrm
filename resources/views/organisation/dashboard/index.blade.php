@@ -25,14 +25,10 @@
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
 
-                                        <a href="" class="btn btn-info add-btn">
-                                            <i class="fa fa-refresh"></i> Refresh
+                                        <a href="{{route('organisation.dashboard')}}" class="btn btn-info add-btn">
+                                            <i class="fa fa-refresh"></i> Back To Dashboard
                                         </a>
-                                        {{--<button style="font-size: 12px;color:white;"
-                                                class="btn btn-success fw-medium" data-bs-toggle="modal"
-                                                data-bs-target="#addSpecies">
-                                            <i class="fa fa-plus"></i> Add Species
-                                        </button>--}}
+
                                     </div>
                                 </div>
                             </div>

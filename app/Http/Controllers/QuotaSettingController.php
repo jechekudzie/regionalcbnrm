@@ -28,23 +28,22 @@ class QuotaSettingController extends Controller
         return view('organisation.quota_settings.index', compact('selectedSpecies', 'quotaRequests', 'organisation'));
 
     }
+
     public function store(Request $request, Organisation $organisation)
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-
             'species_id' => 'required|exists:species,id',
-            'organisation_id' => 'required|exists:organisations,id',
+            'hunting_concession_id' => 'required|exists:hunting_concessions,id',
             'year' => [
-                'required',
-                'integer',
-                'min:2015',
-                'max:' . (now()->year + 1),
+                'required', 'integer', 'min:2015', 'max:' . (now()->year + 1),
                 function ($attribute, $value, $fail) use ($request) {
-                    if (QuotaRequest::where('species_id', $request->species_id)
+                    // Including hunting_concession_id in the uniqueness check
+                    if (QuotaRequest::where('hunting_concession_id', $request->hunting_concession_id)
+                        ->where('species_id', $request->species_id)
                         ->where('year', $value)
                         ->exists()) {
-                        $fail('A quota request for this species and year already exists.');
+                        $fail('A quota request for this concession, species, and year already exists.');
                     }
                 },
             ],
@@ -53,7 +52,6 @@ class QuotaSettingController extends Controller
             'campfire_quota' => 'nullable|integer',
             'zimpark_station_quota' => 'nullable|integer',
             'national_park_quota' => 'nullable|integer',
-
         ]);
 
         if ($validator->fails()) {
@@ -65,11 +63,13 @@ class QuotaSettingController extends Controller
         $quotaRequest = new QuotaRequest($validator->validated());
         $quotaRequest->save();
 
-
         $species = Species::findOrFail($request->species_id);
-        // Redirect back with a success message
-        return redirect()->route('organisation.quota-settings.index', [$organisation->slug, $species->slug])->with('success', 'Quota request submitted successfully.');
+
+        // Assuming you want to redirect to a general quota settings index page, not specific to a species
+        return redirect()->route('organisation.quota-settings.index',[ $organisation->slug,$species->slug])
+            ->with('success', 'Quota request submitted successfully.');
     }
+
 
     public function edit(Organisation $organisation,QuotaRequest $quotaRequest)
     {

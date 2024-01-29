@@ -14,7 +14,7 @@ class HuntingActivity extends Model
 
     protected $guarded = [];
 
-    public function organisation()
+    public function organisation() // The Safari Operator organizing this activity
     {
         return $this->belongsTo(Organisation::class);
     }
@@ -39,7 +39,7 @@ class HuntingActivity extends Model
         return $this->hasMany(HuntingDetail::class);
     }
 
-    public function vehicles()
+    public function huntingVehicles()
     {
         return $this->hasMany(HuntingActivityVehicle::class);
     }

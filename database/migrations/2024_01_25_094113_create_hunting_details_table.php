@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('hunting_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('hunting_activity_id');
-            $table->unsignedBigInteger('species_id');
+            $table->unsignedBigInteger('hunting_concession_id')->nullable();
+            $table->unsignedBigInteger('quota_request_id')->nullable();
+            $table->unsignedBigInteger('species_id')->nullable();
+            $table->integer('offtake')->nullable();
             $table->string('rbz_trastool_number')->nullable();
             $table->boolean('is_special')->default(0);
             $table->unsignedBigInteger('gender_id')->nullable();
@@ -24,6 +27,7 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('longitude')->nullable();
             $table->string('latitude')->nullable();
+            $table->string('slug')->nullable();
             $table->timestamps();
         });
     }

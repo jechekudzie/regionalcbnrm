@@ -24,6 +24,13 @@ Route::get('/admin/organisations/{organisation}/edit', [ApiController::class, 'f
 //route to search hunters
 Route::get('/hunters/search', [ApiController::class, 'search'])->name('admin.hunters.index');
 
+//get-concessions-by-rdc
+Route::get('/get-concessions-by-rdc/{ruralDistrictCouncilId}', [ApiController::class, 'fetchHuntingConcessionsByRuralDistrictCouncil'])->name('admin.rural-district-councils.hunting-concessions.index');
+
+
+//fetch-species
+Route::get('/fetch-quota-requests', [ApiController::class, 'fetchQuotaRequests'])->name('fetch-species.index');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

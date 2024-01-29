@@ -19,16 +19,15 @@ class QuotaRequest extends Model
         return $this->belongsTo(Species::class);
     }
 
-    public function organisation()
+    public function huntingConcession() // The concession requesting the quota
     {
-        return $this->belongsTo(Organisation::class, 'organisation_id');
+        return $this->belongsTo(HuntingConcession::class);
     }
-
 
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom(['organisation_id', 'year','species_id']) // Fields as an array
+            ->generateSlugsFrom(['hunting_concession_id', 'year','species_id']) // Fields as an array
             ->saveSlugsTo('slug');
     }
 

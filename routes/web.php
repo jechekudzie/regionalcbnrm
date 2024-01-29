@@ -20,6 +20,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
 
+    $plain  = \Illuminate\Support\Facades\Hash::check('password','$2y$12$XG6a5.gxjXj4y6ybu/gike6hfJTtKeVVFDhl7UdxVPvr7EdZrFc2G');
+
+    dd($plain);
+
+    $organisation = \App\Models\Organisation::find(3);
+
     foreach (\App\Models\Species::all() as $specie){
         echo $specie->name.' '.'<img src="'.$specie->avatar.'" width="100px" height="100px">'.'<br>';
     }
@@ -113,6 +119,24 @@ Route::post('/admin/counting-methods/store', [\App\Http\Controllers\CountingMeth
 Route::get('/admin/counting-methods/{countingMethod}/edit', [\App\Http\Controllers\CountingMethodController::class, 'edit'])->name('admin.counting-methods.edit');
 Route::patch('/admin/counting-methods/{countingMethod}/update', [\App\Http\Controllers\CountingMethodController::class, 'update'])->name('admin.counting-methods.update');
 
+
+//routes for conflict outcomes fields
+Route::get('/admin/conflict-outcomes', [\App\Http\Controllers\ConflictOutcomeController::class, 'index'])->name('admin.conflict-outcomes.index');
+Route::post('/admin/conflict-outcomes/store', [\App\Http\Controllers\ConflictOutcomeController::class, 'store'])->name('admin.conflict-outcomes.store');
+Route::get('/admin/conflict-outcomes/{conflictOutCome}/edit', [\App\Http\Controllers\ConflictOutcomeController::class, 'edit'])->name('admin.conflict-outcomes.edit');
+Route::patch('/admin/conflict-outcomes/{conflictOutCome}/update', [\App\Http\Controllers\ConflictOutcomeController::class, 'update'])->name('admin.conflict-outcomes.update');
+Route::delete('/admin/conflict-outcomes/{conflictOutCome}', [\App\Http\Controllers\ConflictOutcomeController::class, 'destroy'])->name('admin.conflict-outcomes.destroy');
+
+
+//routes conflict outcomes  dynamic fields
+Route::get('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields', [\App\Http\Controllers\DynamicFieldController::class, 'index'])->name('admin.conflict-outcomes.dynamic-fields.index');
+Route::post('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/store', [\App\Http\Controllers\DynamicFieldController::class, 'store'])->name('admin.conflict-outcomes.dynamic-fields.store');
+Route::get('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/{dynamicField}/edit', [\App\Http\Controllers\DynamicFieldController::class, 'edit'])->name('admin.conflict-outcomes.dynamic-fields.edit');
+Route::patch('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/update', [\App\Http\Controllers\DynamicFieldController::class, 'update'])->name('admin.conflict-outcomes.dynamic-fields.update');
+Route::delete('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/{dynamicField}', [\App\Http\Controllers\DynamicFieldController::class, 'destroy'])->name('admin.conflict-outcomes.dynamic-fields.destroy');
+
+
+
 /*
 |--------------------------------------------------------------------------
 | Organisation Dashboard
@@ -143,6 +167,11 @@ Route::patch('/{organisation}/quota-settings/{quotaRequest}/update', [\App\Http\
 
 //hunting concession routes
 Route::get('/{organisation}/hunting-concessions', [\App\Http\Controllers\HuntingConcessionController::class, 'index'])->name('organisation.hunting-concessions.index');
+Route::get('/{organisation}/hunting-concessions/create', [\App\Http\Controllers\HuntingConcessionController::class, 'create'])->name('organisation.hunting-concessions.create');
+Route::post('/{organisation}/hunting-concessions/store', [\App\Http\Controllers\HuntingConcessionController::class, 'store'])->name('organisation.hunting-concessions.store');
+Route::get('/{organisation}/hunting-concessions/{huntingConcession}/edit', [\App\Http\Controllers\HuntingConcessionController::class, 'edit'])->name('organisation.hunting-concessions.edit');
+Route::patch('/{organisation}/hunting-concessions/{huntingConcession}/update', [\App\Http\Controllers\HuntingConcessionController::class, 'update'])->name('organisation.hunting-concessions.update');
+Route::delete('/{organisation}/hunting-concessions/{huntingConcession}', [\App\Http\Controllers\HuntingConcessionController::class, 'destroy'])->name('organisation.hunting-concessions.destroy');
 
 
 //hunter controller
@@ -182,6 +211,44 @@ Route::get('/{organisation}/hunting-activities/{huntingActivity}/add-hunting-veh
 Route::post('/{organisation}/hunting-activities/{huntingActivity}/save-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'saveHuntingVehicles'])->name('organisation.hunting-activities.save-hunting-vehicles');
 Route::patch('/{organisation}/hunting-activities/{huntingActivityVehicle}/update-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'updateHuntingVehicles'])->name('organisation.hunting-activities.update-hunting-vehicles');
 Route::delete('/{organisation}/hunting-activities/{huntingActivityVehicle}/delete-hunting-vehicles', [\App\Http\Controllers\HuntingActivityController::class, 'deleteHuntingVehicles'])->name('organisation.hunting-activities.delete-hunting-vehicles');
+
+//species details
+Route::get('/{organisation}/hunting-activities/{huntingActivity}/species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'index'])->name('organisation.hunting-activities.species-details');
+Route::post('/{organisation}/hunting-activities/{huntingActivity}/save-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'store'])->name('organisation.hunting-activities.save-species-details');
+Route::get('/{organisation}/hunting-activities/{huntingDetail}/edit-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'editSpeciesDetails'])->name('organisation.hunting-activities.edit-species-details');
+Route::patch('/{organisation}/hunting-activities/{huntingDetail}/update-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'updateSpeciesDetails'])->name('organisation.hunting-activities.update-species-details');
+Route::delete('/{organisation}/hunting-activities/{huntingDetail}/delete-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'deleteSpeciesDetails'])->name('organisation.hunting-activities.delete-species-details');
+
+//incident routes
+Route::get('/{organisation}/incidents', [\App\Http\Controllers\IncidentController::class, 'index'])->name('organisation.incidents.index');
+Route::get('/{organisation}/incidents/create', [\App\Http\Controllers\IncidentController::class, 'create'])->name('organisation.incidents.create');
+Route::post('/{organisation}/incidents/store', [\App\Http\Controllers\IncidentController::class, 'store'])->name('organisation.incidents.store');
+Route::get('/{organisation}/incidents/{incident}/edit', [\App\Http\Controllers\IncidentController::class, 'edit'])->name('organisation.incidents.edit');
+Route::patch('/{organisation}/incidents/{incident}/update', [\App\Http\Controllers\IncidentController::class, 'update'])->name('organisation.incidents.update');
+Route::delete('/{organisation}/incidents/{incident}', [\App\Http\Controllers\IncidentController::class, 'destroy'])->name('organisation.incidents.destroy');
+
+
+//incident species routes
+Route::get('/{organisation}/incidents/{incident}/species', [\App\Http\Controllers\IncidentSpeciesController::class, 'index'])->name('organisation.incident-species.index');
+Route::post('/{organisation}/incidents/{incident}/species/store', [\App\Http\Controllers\IncidentSpeciesController::class, 'store'])->name('organisation.incident-species.store');
+Route::get('/{organisation}/incidents/{incident}/species/{incidentSpecies}/edit', [\App\Http\Controllers\IncidentSpeciesController::class, 'edit'])->name('organisation.incident-species.edit');
+Route::patch('/{organisation}/incidents/{incident}/species/{incidentSpecies}/update', [\App\Http\Controllers\IncidentSpeciesController::class, 'update'])->name('organisation.incident-species.update');
+Route::delete('/{organisation}/incidents/{incident}/species/{incidentSpecies}', [\App\Http\Controllers\IncidentSpeciesController::class, 'destroy'])->name('organisation.incident-species.destroy');
+
+
+//incident conflict types routes
+Route::get('/{organisation}/incidents/{incident}/conflict-types', [\App\Http\Controllers\IncidentConflictTypeController::class, 'index'])->name('organisation.incident-conflict-types.index');
+Route::post('/{organisation}/incidents/{incident}/conflict-types/store', [\App\Http\Controllers\IncidentConflictTypeController::class, 'store'])->name('organisation.incident-conflict-types.store');
+Route::get('/{organisation}/incidents/{incident}/conflict-types/{incidentConflictType}/edit', [\App\Http\Controllers\IncidentConflictTypeController::class, 'edit'])->name('organisation.incident-conflict-types.edit');
+Route::patch('/{organisation}/incidents/{incident}/conflict-types/{incidentConflictType}/update', [\App\Http\Controllers\IncidentConflictTypeController::class, 'update'])->name('organisation.incident-conflict-types.update');
+Route::delete('/{organisation}/incidents/{incident}/conflict-types/{incidentConflictType}', [\App\Http\Controllers\IncidentConflictTypeController::class, 'destroy'])->name('organisation.incident-conflict-types.destroy');
+
+//incident outcomes
+Route::get('/{organisation}/incidents/{incident}/outcomes', [\App\Http\Controllers\IncidentOutcomeController::class, 'index'])->name('organisation.incident-outcomes.index');
+Route::post('/{organisation}/incidents/{incident}/outcomes/store', [\App\Http\Controllers\IncidentOutcomeController::class, 'store'])->name('organisation.incident-outcomes.store');
+Route::get('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}/edit', [\App\Http\Controllers\IncidentOutcomeController::class, 'edit'])->name('organisation.incident-outcomes.edit');
+Route::patch('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}/update', [\App\Http\Controllers\IncidentOutcomeController::class, 'update'])->name('organisation.incident-outcomes.update');
+Route::delete('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}', [\App\Http\Controllers\IncidentOutcomeController::class, 'destroy'])->name('organisation.incident-outcomes.destroy');
 
 
 

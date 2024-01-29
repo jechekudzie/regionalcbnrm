@@ -11,7 +11,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Organisation extends Model
 {
-    use HasFactory,HasSlug;
+    use HasFactory, HasSlug;
 
     protected $guarded = [];
 
@@ -38,6 +38,7 @@ class Organisation extends Model
     {
         return $this->belongsTo(Organisation::class, 'organisation_id');
     }
+
     public function childOrganisations()
     {
         return $this->hasMany(Organisation::class, 'organisation_id');
@@ -55,11 +56,13 @@ class Organisation extends Model
         return $children;
     }
 
+
     //has many organisations
     public function organisations()
     {
         return $this->hasMany(Organisation::class);
     }
+
     public function organisationType()
     {
         return $this->belongsTo(OrganisationType::class);
@@ -77,29 +80,41 @@ class Organisation extends Model
     }
 
 
-
-    //hunting stuff
+    //hunting clients
     public function hunters()
     {
-        return $this->belongsToMany(Hunter::class, 'organisation_hunter');
+        return $this->belongsToMany(Hunter::class, 'organisation_hunter');//safari hunters
     }
 
-    public function huntingActivities()
+    public function huntingActivitiesAsSafariOperator() // When the organisation is a Safari Operator
     {
         return $this->hasMany(HuntingActivity::class);
     }
 
-    public function huntingLicenses()
-    {
-        return $this->hasMany(HuntingLicense::class);
-    }
-
-    public function huntingConcessions()
+    public function huntingConcessions() // When the organisation is an RDC
     {
         return $this->hasMany(HuntingConcession::class);
     }
 
-    public function getSlugOptions() : SlugOptions
+    public function huntingLicenses() // Licenses held or issued by the organisation
+    {
+        return $this->hasMany(HuntingLicense::class);
+    }
+
+    //wards coveredWards by the hunting concession
+    public function coveredWards()
+    {
+        return $this->belongsToMany(Organisation::class, 'hunting_concession_ward', 'hunting_concession_id', 'ward_id');
+    }
+
+    //has many incidents
+    public function incidents()
+    {
+        return $this->hasMany(Incident::class);
+    }
+
+
+    public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')

@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('hunting_activities', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('organisation_id');
-            $table->unsignedBigInteger('hunting_license_id')->nullable();
-            $table->unsignedBigInteger('hunting_concession_id')->nullable();
-            $table->string('year')->nullable();
+            $table->unsignedBigInteger('hunting_concession_id');// Hunting concession in which the activity takes place
+            $table->unsignedBigInteger('organisation_id'); // Safari operator
+            $table->unsignedBigInteger('hunting_license_id')->nullable(); // Safari operator license
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });
+
     }
 
     /**

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Hunter;
 use App\Models\Organisation;
 use App\Models\OrganisationType;
+use App\Models\QuotaRequest;
+use App\Models\Species;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -146,5 +148,49 @@ class ApiController extends Controller
 
         return response()->json($hunters);
     }
+
+    //fetchHuntingConcessionsByRuralDistrictCouncil
+    public function fetchHuntingConcessionsByRuralDistrictCouncil(Request $request, $ruralDistrictCouncilId)
+    {
+        $ruralDistrictCouncil = Organisation::find($ruralDistrictCouncilId);
+        $huntingConcessions = DB::table('hunting_concessions')
+            ->where('organisation_id', $ruralDistrictCouncil->id)
+            ->get();
+        return response()->json($huntingConcessions);
+    }
+
+    //fetchSpecies
+    public function fetchSpecies(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'year' => 'required|integer',
+            'huntingConcessionId' => 'required|integer',
+        ]);
+
+        // Retrieve species data for the specified year and hunting concession
+        $speciesData = Species::whereHas('quotaRequests', function ($query) use ($request) {
+            $query->where('year', $request->input('year'))
+                ->where('hunting_concession_id', $request->input('huntingConcessionId'));
+        })->get();
+
+        // Return the species data as a JSON response
+        return response()->json($speciesData);
+    }
+
+    public function fetchQuotaRequests(Request $request)
+    {
+        $year = $request->input('year');
+        $huntingConcessionId = $request->input('huntingConcessionId');
+
+        // Retrieve QuotaRequest objects with Species relationship
+        $quotaRequests = QuotaRequest::with('species')
+            ->where('year', $year)
+            ->where('hunting_concession_id', $huntingConcessionId)
+            ->get();
+
+        return response()->json($quotaRequests);
+    }
+
 
 }

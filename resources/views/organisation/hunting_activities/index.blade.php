@@ -77,51 +77,59 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>{{$organisation->namae}} Hunting Activities</h2>
-                                <table style="width: 100%;" id="buttons-datatables"
-                                       class="display table table-bordered dataTable no-footer"
-                                       aria-describedby="buttons-datatables_info">
-                                    <thead>
+                            <h2>{{$organisation->name}} - Hunting Activities</h2>
+                            <br/>
+                            <table style="width: 100%;" id="buttons-datatables"
+                                   class="display table table-bordered dataTable no-footer"
+                                   aria-describedby="buttons-datatables_info">
+                                <thead>
+                                <tr>
+                                    <th>Hunting Concession</th>
+                                    <th>Safari Operator</th>
+                                    <th>Safari License</th>
+                                    <th>Start Date</th>
+                                    <th>End Date</th>
+                                    <th>Hunting Clients</th>
+                                    <th>Hunting Vehicles</th>
+                                    <th>Species Details</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach ($huntingActivities as $activity)
                                     <tr>
-                                        <th>Safari Operator</th>
-                                        <th>Safari License</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Hunting Clients</th>
-                                        <th>Hunting Vehicles</th>
-                                        <th>Species Details</th>
-                                        <th>Action</th>
-                                        <!-- Add other columns as necessary -->
+                                        <td>{{ $activity->huntingConcession->name }}</td>
+                                        <td>{{ $activity->organisation->name }}</td>
+                                        <td>{{ optional($activity->huntingLicense)->license_number ?? 'N/A' }}</td>
+                                        <td>{{ $activity->start_date }}</td>
+                                        <td>{{ $activity->end_date }}</td>
+                                        <td>
+                                            <a href="{{ route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $activity->slug]) }}">
+                                                Hunting Clients ({{ $activity->hunters->count() ?? '0' }})
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('organisation.hunting-activities.add-hunting-vehicles', [$organisation->slug, $activity->slug]) }}">
+                                                Hunting Vehicles ({{ $activity->huntingVehicles->count() ?? '0' }})
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('organisation.hunting-activities.species-details', [$organisation->slug, $activity->slug]) }}">
+                                                Species Details ({{ $activity->huntingDetails->count() ?? '0' }})
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('organisation.hunting-activities.show', [$organisation->slug, $activity->slug]) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye"></i> View
+                                            </a>
+                                            <!-- Consider adding Edit/Delete buttons here -->
+                                        </td>
                                     </tr>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($huntingActivities as $activity)
-                                        <tr>
-                                            <td>{{ $activity->organisation->name }}</td>
-                                            <td>{{ $activity->huntingLicense->license_number }}</td>
-                                            <td>{{ $activity->start_date }}</td>
-                                            <td>{{ $activity->end_date }}</td>
-                                            <td> <a href="{{route('organisation.hunting-activities.add-hunter-client',[$organisation->slug,$activity->slug])}}">Hunting Clients ({{ $activity->hunters()->count() }})</a> </td>
-                                            <td>
-                                                <a href="{{route('organisation.hunting-activities.add-hunting-vehicles',[$organisation->slug,$activity->slug])}}">
-                                                    Hunting Vehicles ({{ $activity->vehicles()->count() }})
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a>
-                                                    Species Details ({{ $activity->huntingDetails->count() }})
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <a href="{{route('organisation.hunting-activities.show',[$organisation->slug,$activity->slug])}}">
-                                                    <i class="fa fa-eye"></i> View Activity
-                                                </a>
-                                            </td>
-                                            <!-- Add other data fields as necessary -->
-                                        </tr>
-                                    @endforeach
-                                    </tbody>
-                                </table>
+                                @endforeach
+                                </tbody>
+                            </table>
+
                         </div>
                         <!--end card-->
                     </div>
@@ -145,10 +153,30 @@
 
                                         <form method="post" action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
                                             @csrf
-                                            <!-- Hidden Organisation ID -->
+                                            <!-- Hidden Organisation ID (Safari Operator) -->
                                             <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
 
                                             <div class="row">
+                                                <!-- RDC Dropdown -->
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="rdc_id" class="form-label">RDC</label>
+                                                    <select class="form-control" id="rdc_id" name="rdc_id" required onchange="updateConcessionsDropdown()">
+                                                        <option value="">Select RDC</option>
+                                                        @foreach ($ruralDistrictCouncils as $rdc)
+                                                            <option value="{{ $rdc->id }}">{{ $rdc->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+                                                <!-- Hunting Concession Dropdown -->
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="hunting_concession_id" class="form-label">Hunting Concession</label>
+                                                    <select class="form-control" id="hunting_concession_id" name="hunting_concession_id" required>
+                                                        <option value="">Select Hunting Concession</option>
+                                                        {{-- Options will be dynamically populated based on RDC selection --}}
+                                                    </select>
+                                                </div>
+
                                                 <!-- Hunting License Dropdown -->
                                                 <div class="col-md-6 mb-3">
                                                     <label for="hunting_license_id" class="form-label">Safari Hunting License</label>
@@ -176,6 +204,8 @@
                                             <!-- Submit Button -->
                                             <button type="submit" class="btn btn-primary">Add Hunting Activity</button>
                                         </form>
+
+
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +243,24 @@
                 });
 
                 // Assuming you have jQuery available
+                function updateConcessionsDropdown() {
+                    const ruralDistrictCouncilId = document.getElementById('rdc_id').value;
+                    const concessionsDropdown = document.getElementById('hunting_concession_id');
 
+                    // Clear existing options
+                    concessionsDropdown.innerHTML = '<option value="">Select Hunting Concession</option>';
+
+                    // Fetch concessions based on selected RDC (you might need to adjust the URL structure)
+                    fetch(`/api/get-concessions-by-rdc/${ruralDistrictCouncilId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(concession => {
+                                const option = new Option(concession.name, concession.id);
+                                concessionsDropdown.add(option);
+                            });
+                        })
+                        .catch(error => console.error('Error fetching concessions:', error));
+                }
 
 
             </script>

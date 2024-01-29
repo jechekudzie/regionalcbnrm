@@ -26,7 +26,7 @@ class HuntingDetail extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('name')
+            ->generateSlugsFrom(['hunting_activity_id','species_id','hunting_concession_id','quota_request_id'])
             ->saveSlugsTo('slug');
     }
 

@@ -27,8 +27,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center flex-wrap gap-2">
                                 <div class="flex-grow-1">
-                                    <button class="btn btn-info add-btn" data-bs-toggle="modal"
-                                            data-bs-target="#showModal"><i
+                                    <button class="btn btn-info add-btn"><i
                                             class="ri-add-fill me-1 align-bottom"></i> Return to dashboard
                                     </button>
                                 </div>
@@ -90,7 +89,8 @@
                                     <div class="card-footer">
                                         <!-- Buttons Grid -->
                                         <div class="d-grid gap-2">
-                                            <a style="margin: 3px;" href="{{route('organisation.dashboard.index', $organisation->slug)}}"
+                                            <a style="margin: 3px;"
+                                               href="{{route('organisation.dashboard.index', $organisation->slug)}}"
                                                class="btn btn-primary  btn-sm  float-start">Enter organisation <i
                                                     class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
                                             </a>
@@ -117,22 +117,55 @@
                 <div class="col-xxl-3 col-xl-6">
                     <div class="card">
                         <div class="card-header card-primary align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1"><i class="fa fa-sitemap"></i> Child Organisations</h4>
+                            <h4 class="card-title mb-0 flex-grow-1"><i class="fa fa-sitemap"></i> Child Organisations
+                            </h4>
 
                         </div><!-- end card header -->
                         <div class="card-body">
                             <div class="">
-                                <div class="list-group list-group-fill-success">
-                                    <a href="#" class="list-group-item list-group-item-action active"><i
-                                            class="ri-download-2-fill align-middle me-2"></i>Category Download</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><i
-                                            class="ri-shield-check-line align-middle me-2"></i>Security Access</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><i
-                                            class="ri-database-2-line align-middle me-2"></i>Storage folder</a>
-                                    <a href="#" class="list-group-item list-group-item-action"><i
-                                            class="ri-notification-3-line align-middle me-2"></i>Push Notification</a>
-                                    <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1"><i
-                                            class="ri-moon-fill align-middle me-2"></i>Dark Mode</a>
+                                <div class="list-group">
+                                    <ul style="list-style-type: none">
+                                        <li>
+                                            @if($organisation && method_exists($organisation, 'childOrganisations'))
+                                                @foreach($organisation->childOrganisations as $childOrganisation)
+                                                    <a style="font-size: 15px;"
+                                                       href="{{route('organisation.dashboard.index',$childOrganisation->slug)}}"
+                                                       class="list-group-item active">
+                                                        <i class="fa fa-users align-middle me-2"></i>{{ $childOrganisation->name }}
+                                                    </a>
+                                                    @foreach($childOrganisation->childOrganisations as $child)
+                                                        <ul style="list-style-type: none">
+                                                            <li>
+                                                                <a style="font-size: 15px;"
+                                                                   href="{{route('organisation.dashboard.index',$child->slug)}}"
+                                                                   class="list-group-item list-group-item-action">
+                                                                    <i class="fa fa-child align-middle me-2"></i>{{ $child->name }}
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    @endforeach
+                                        </li>
+                                        @endforeach
+                                        @endif
+                                    </ul>
+                                 {{--   @if($organisation && method_exists($organisation, 'childOrganisations'))
+                                        @foreach($organisation->childOrganisations as $childOrganisation)
+                                            <a style="font-size: 15px;"
+                                               href="{{route('organisation.dashboard.index',$childOrganisation->slug)}}"
+                                               class="list-group-item list-group-item-action">
+                                                <i class="fa fa-users align-middle me-2"></i>{{ $childOrganisation->name }}
+                                            </a>
+                                            @foreach($childOrganisation->childOrganisations as $child)
+                                                <a style="font-size: 15px;"
+                                                   href="{{route('organisation.dashboard.index',$child->slug)}}"
+                                                   class="list-group-item list-group-item-action">
+                                                    <i class="fa fa-child align-middle me-2"></i>{{ $child->name }}
+                                                </a>
+                                            @endforeach
+                                        @endforeach
+                                    @endif--}}
+
+
                                 </div>
                             </div>
 

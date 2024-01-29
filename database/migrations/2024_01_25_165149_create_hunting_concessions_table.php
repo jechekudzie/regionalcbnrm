@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,6 +12,10 @@ return new class extends Migration
     {
         Schema::create('hunting_concessions', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->unsignedBigInteger('organisation_id'); // Foreign key for organisation
+            $table->string('hectarage')->nullable(); //size of hunting concession
+            $table->string('slug'); // URL friendly version of name
             $table->timestamps();
         });
     }

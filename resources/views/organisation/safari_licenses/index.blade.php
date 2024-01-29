@@ -77,7 +77,8 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>Safari Licenses</h2>
+                            <h2>{{ $organisation->name  }} - Safari Licenses</h2>
+                                <br/>
                                 <table style="width: 100%;" id="buttons-datatables"
                                        class="display table table-bordered dataTable no-footer"
                                        aria-describedby="buttons-datatables_info">

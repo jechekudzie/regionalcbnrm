@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\OrganisationType;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -15,20 +16,19 @@ class OrganisationTypesSeeder extends Seeder
     {
 
         $organisationTypes = [
-            ["name" => "Media & Broadcasting", "description" => "Providers of media coverage and broadcasting services for events."],
-            ["name" => "Sound & Audio Equipment", "description" => "Suppliers of sound and audio equipment for events."],
-            ["name" => "Event Venues", "description" => "Locations available for hosting various types of events."],
-            ["name" => "Decoration & Design Services", "description" => "Providers of decor and design services for events."],
-            ["name" => "Catering Services", "description" => "Providers of food and beverage services for events."],
-            ["name" => "Photography & Videography", "description" => "Professional photography and videography services for events."],
-            ["name" => "Event Planning & Coordination", "description" => "Services for planning and coordinating all aspects of events."],
-            ["name" => "Lighting & Special Effects", "description" => "Providers of lighting and special effects for events."],
-            ["name" => "Entertainment & Performers", "description" => "Entertainers and performers suitable for various event types."],
-            ["name" => "Security & Crowd Management", "description" => "Services for event security and crowd management."],
-            ["name" => "Transportation Services", "description" => "Providers of transportation for events and attendees."],
-            ["name" => "Event Technology Solutions", "description" => "Providers of technology solutions like audio-visual equipment."],
-            ["name" => "Hospitality & Accommodation", "description" => "Hotels and other accommodations for event attendees."],
-            ["name" => "Marketing & Promotion", "description" => "Services for marketing and promoting events."]
+
+            ['name' => 'System users', 'slug' => 'system-users', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Funders', 'slug' => 'funders', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Developers', 'slug' => 'developers', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Zimbabwe template', 'slug' => 'zimbabwe-template', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Rural District Council', 'slug' => 'rural-district-council', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Wildlife Management Authority', 'slug' => 'zimbabwe-parks-wildlife-management-authority', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'NGOs', 'slug' => 'ngos', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Wards', 'slug' => 'wards', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Campfire Committee', 'slug' => 'campfire-committee', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Villages', 'slug' => 'villages', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Zimparks Stations', 'slug' => 'zimparks-stations', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+
         ];
 
         foreach ($organisationTypes as $type) {

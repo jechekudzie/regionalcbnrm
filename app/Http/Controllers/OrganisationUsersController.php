@@ -32,7 +32,6 @@ class OrganisationUsersController extends Controller
 
         $password = 'password@1';
 
-        //dd($request->all());
         //check if user exists by email
         $user = User::where('email', $request['email'])->first();
         $role = Role::find($request['role_id']);

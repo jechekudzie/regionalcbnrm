@@ -200,9 +200,15 @@
                             <a class="dropdown-item" href="auth-lockscreen-basic.html"><i
                                     class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span
                                     class="align-middle">Lock screen</span></a>
-                            <a class="dropdown-item" href="auth-logout-basic.html"><i
-                                    class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
-                                    class="align-middle" data-key="t-logout">Logout</span></a>
+
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <a class="dropdown-item" href="route('logout')"
+                                   onclick="event.preventDefault();
+                                                this.closest('form').submit();"><i
+                                        class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
+                                        class="align-middle" data-key="t-logout">Logout</span></a>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -240,13 +246,14 @@
 
         <!-- SIDEBARD -->
         <div id="scrollbar">
-            <div  class="container-fluid">
+            <div class="container-fluid">
                 <div id="two-column-menu"></div>
                 <ul class="navbar-nav" id="navbar-nav">
                     <li class="menu-title"><span data-key="t-menu">Admin Menu</span></li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#sidebarDashboards" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#sidebarDashboards"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                             <span data-key="t-dashboards">Manage Organisations</span>
                         </a>
@@ -268,7 +275,7 @@
 
                                 <li class="nav-item">
                                     <a href="{{route('admin.organisations.manage')}}"
-                                       class="nav-link {{ Request::routeIs('admin.organisations*') ? 'active' : '' }}">
+                                       class="nav-link {{ Request::routeIs('admin.organisations.manage*') ? 'active' : '' }}">
                                         Manage Organisations
                                     </a>
                                 </li>
@@ -277,7 +284,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#species" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#species"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="species">
                             <span data-key="t-dashboards">Species Management</span>
                         </a>
@@ -309,7 +317,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#populationEstimates" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#populationEstimates"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="populationEstimates">
                             <span data-key="t-dashboards">Population Estimates</span>
                         </a>
@@ -319,6 +328,30 @@
                                     <a href="{{route('admin.counting-methods.index')}}"
                                        class="nav-link {{ Request::routeIs('admin.counting-methods*') ? 'active' : '' }}">
                                         Counting Methods
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hwc"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="hwc">
+                            <span data-key="t-dashboards">Human Wildlife Conflict </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="hwc">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href=""
+                                       class="nav-link ">
+                                        Counting Types
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('admin.conflict-outcomes.index')}}"
+                                       class="nav-link {{ Request::routeIs('admin.conflict-outcomes*') ? 'active' : '' }}">
+                                        Counting Outcomes
                                     </a>
                                 </li>
                             </ul>
