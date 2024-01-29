@@ -12,17 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         //
-        Schema::create('incident_species', function (Blueprint $table) {
+        Schema::create('conflict_outcome_dynamic_field_values', function (Blueprint $table) {
+            $table->id();
             $table->unsignedBigInteger('incident_id');
-            $table->unsignedBigInteger('species_id');
-
-            // Setting the composite primary key
-            $table->primary(['incident_id', 'species_id']);
-
-
+            $table->unsignedBigInteger('conflict_outcome_id');
+            $table->unsignedBigInteger('dynamic_field_id');
+            $table->string('value'); // This could be the option_value from dynamic_field_options
+            $table->timestamps();
         });
-
-
     }
 
     /**

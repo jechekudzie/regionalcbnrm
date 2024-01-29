@@ -11,11 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
         Schema::create('incident_control_measure', function (Blueprint $table) {
             $table->unsignedBigInteger('incident_id');
             $table->unsignedBigInteger('control_measure_id');
+
+            // Setting the composite primary key
+            $table->primary(['incident_id', 'control_measure_id']);
+
         });
+
+
 
     }
 

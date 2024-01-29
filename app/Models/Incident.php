@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -35,6 +36,16 @@ class Incident extends Model
     public function controlMeasures()
     {
         return $this->belongsToMany(ControlMeasure::class);
+    }
+
+
+    public function getDynamicFieldValuesAttribute()
+    {
+        return DB::table('conflict_outcome_dynamic_field_values as pivot')
+            ->join('dynamic_fields as fields', 'pivot.dynamic_field_id', '=', 'fields.id')
+            ->where('pivot.incident_id', $this->id)
+            ->select('fields.*', 'pivot.value as fieldValue')
+            ->get();
     }
 
     public function getSlugOptions(): SlugOptions

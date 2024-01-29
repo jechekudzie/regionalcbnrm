@@ -27,7 +27,8 @@ class IncidentOutcomeController extends Controller
             'conflict_outcomes.*' => 'exists:conflict_out_comes,id', // Ensure each conflict_outcomes ID exists in the database
         ]);
 
-        $incident->conflictOutcomes()->sync($validated['conflict_outcomes']); // Where $validated['conflict_outcomes'] is an array of conflict_outcomes IDs.
+        $incident->conflictOutcomes()->syncWithoutDetaching($validated['conflict_outcomes']);
+        // Where $validated['conflict_outcomes'] is an array of conflict_outcomes IDs.
 
         // Redirect back with a success message
         return redirect()->route('organisation.incident-outcomes.index', [$organisation->slug,$incident->slug])->with('success', 'Conflict Outcome added to incident successfully.');

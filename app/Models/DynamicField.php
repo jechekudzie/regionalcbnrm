@@ -19,13 +19,18 @@ class DynamicField extends Model
         return $this->belongsTo(ConflictOutCome::class);
     }
 
+    //dynamicFieldOptions
+    public function options()
+    {
+        return $this->hasMany(DynamicFieldOption::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
-
 
     public function getRouteKeyName()
     {

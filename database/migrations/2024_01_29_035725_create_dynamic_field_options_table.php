@@ -11,18 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
-        Schema::create('incident_species', function (Blueprint $table) {
-            $table->unsignedBigInteger('incident_id');
-            $table->unsignedBigInteger('species_id');
-
-            // Setting the composite primary key
-            $table->primary(['incident_id', 'species_id']);
-
-
+        Schema::create('dynamic_field_options', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('dynamic_field_id');
+            $table->string('option_value');
+            $table->string('option_label');
+            $table->timestamps();
         });
-
-
     }
 
     /**
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('dynamic_field_options');
     }
 };

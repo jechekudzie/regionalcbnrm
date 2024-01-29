@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -32,6 +33,17 @@ class ConflictOutCome extends Model
         return $this->hasMany(DynamicField::class, 'conflict_outcome_id');
     }
 
+    // In ConflictOutcome model
+
+    public function getDynamicFieldValuesForIncident($incidentId)
+    {
+        return DB::table('conflict_outcome_dynamic_field_values as pivot')
+            ->join('dynamic_fields as fields', 'pivot.dynamic_field_id', '=', 'fields.id')
+            ->where('pivot.conflict_outcome_id', $this->id)
+            ->where('pivot.incident_id', $incidentId)
+            ->select('fields.label as fieldName', 'pivot.value as fieldValue', 'fields.id as fieldId')
+            ->get();
+    }
 
     public function getSlugOptions(): SlugOptions
     {

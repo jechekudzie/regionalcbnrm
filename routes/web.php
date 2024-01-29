@@ -129,11 +129,18 @@ Route::delete('/admin/conflict-outcomes/{conflictOutCome}', [\App\Http\Controlle
 
 
 //routes conflict outcomes  dynamic fields
-Route::get('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields', [\App\Http\Controllers\DynamicFieldController::class, 'index'])->name('admin.conflict-outcomes.dynamic-fields.index');
-Route::post('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/store', [\App\Http\Controllers\DynamicFieldController::class, 'store'])->name('admin.conflict-outcomes.dynamic-fields.store');
-Route::get('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/{dynamicField}/edit', [\App\Http\Controllers\DynamicFieldController::class, 'edit'])->name('admin.conflict-outcomes.dynamic-fields.edit');
-Route::patch('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/update', [\App\Http\Controllers\DynamicFieldController::class, 'update'])->name('admin.conflict-outcomes.dynamic-fields.update');
-Route::delete('/admin/conflict-outcomes/{conflictOutcome}/dynamic-fields/{dynamicField}', [\App\Http\Controllers\DynamicFieldController::class, 'destroy'])->name('admin.conflict-outcomes.dynamic-fields.destroy');
+Route::get('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields', [\App\Http\Controllers\DynamicFieldController::class, 'index'])->name('admin.dynamic-fields.index');
+Route::post('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/store', [\App\Http\Controllers\DynamicFieldController::class, 'store'])->name('admin.dynamic-fields.store');
+Route::get('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/edit', [\App\Http\Controllers\DynamicFieldController::class, 'edit'])->name('admin.dynamic-fields.edit');
+Route::patch('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/update', [\App\Http\Controllers\DynamicFieldController::class, 'update'])->name('admin.dynamic-fields.update');
+Route::delete('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}', [\App\Http\Controllers\DynamicFieldController::class, 'destroy'])->name('admin.dynamic-fields.destroy');
+
+//routes conflict outcomes  dynamic fields options
+Route::get('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options', [\App\Http\Controllers\DynamicFieldOptionController::class, 'index'])->name('admin.dynamic-fields-options.index');
+Route::post('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/store', [\App\Http\Controllers\DynamicFieldOptionController::class, 'store'])->name('admin.dynamic-fields-options.store');
+Route::get('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}/edit', [\App\Http\Controllers\DynamicFieldOptionController::class, 'edit'])->name('admin.dynamic-fields-options.edit');
+Route::patch('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}/update', [\App\Http\Controllers\DynamicFieldOptionController::class, 'update'])->name('admin.dynamic-fields-options.update');
+Route::delete('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}', [\App\Http\Controllers\DynamicFieldOptionController::class, 'destroy'])->name('admin.dynamic-fields-options.destroy');
 
 
 
@@ -249,6 +256,14 @@ Route::post('/{organisation}/incidents/{incident}/outcomes/store', [\App\Http\Co
 Route::get('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}/edit', [\App\Http\Controllers\IncidentOutcomeController::class, 'edit'])->name('organisation.incident-outcomes.edit');
 Route::patch('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}/update', [\App\Http\Controllers\IncidentOutcomeController::class, 'update'])->name('organisation.incident-outcomes.update');
 Route::delete('/{organisation}/incidents/{incident}/outcomes/{incidentOutcome}', [\App\Http\Controllers\IncidentOutcomeController::class, 'destroy'])->name('organisation.incident-outcomes.destroy');
+
+//incident conflict outcome dynamic fields
+Route::get('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'index'])->name('organisation.incident-outcomes-dynamic-fields.index');
+Route::post('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/store', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'store'])->name('organisation.incident-outcomes-dynamic-fields.store');
+Route::get('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}/edit', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'edit'])->name('organisation.incident-outcomes-dynamic-fields.edit');
+Route::patch('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}/update', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'update'])->name('organisation.incident-outcomes-dynamic-fields.update');
+Route::delete('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'destroy'])->name('organisation.incident-outcomes-dynamic-fields.destroy');
+
 
 
 

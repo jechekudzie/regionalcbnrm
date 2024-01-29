@@ -343,15 +343,14 @@
                         <div class="collapse menu-dropdown" id="hwc">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href=""
-                                       class="nav-link ">
-                                        Counting Types
+                                    <a href="#" class="nav-link ">
+                                        Incident Types
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route('admin.conflict-outcomes.index')}}"
                                        class="nav-link {{ Request::routeIs('admin.conflict-outcomes*') ? 'active' : '' }}">
-                                        Counting Outcomes
+                                        Conflict Outcomes
                                     </a>
                                 </li>
                             </ul>

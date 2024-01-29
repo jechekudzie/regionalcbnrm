@@ -33,10 +33,10 @@
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
                                         <a href="{{route('admin.species-gender.index')}}"
-                                           class="btn btn-info btn-sm add-btn">
+                                           class="btn btn-info add-btn">
                                             <i class="fa fa-refresh"></i> Refresh
                                         </a>
-                                        <button id="new-button" class="btn btn-success btn-sm add-btn">
+                                        <button id="new-button" class="btn btn-success add-btn">
                                             <i class="fa fa-plus"></i> Add new outcome
                                         </button>
                                     </div>
@@ -109,7 +109,7 @@
                                             <td>{{$conflictOutcome->name}}</td>
                                             <td>{{$conflictOutcome->conflictType->name}}</td>
                                             <td>
-                                                <a href="{{route('admin.conflict-outcomes.dynamic-fields.index',$conflictOutcome->slug)}}">
+                                                <a href="{{route('admin.dynamic-fields.index',$conflictOutcome->slug)}}">
                                                     Data Fields ({{$conflictOutcome->dynamicFields->count()}})
                                                 </a>
                                             </td>
@@ -160,7 +160,6 @@
                                                     <option value="{{ $type->id }}">{{ $type->name }}</option>
                                                 @endforeach
                                             </select>
-
                                     </div>
                                     <div class="text-end">
                                         <button id="submit-button" type="submit" class="btn btn-primary">Add New</button>

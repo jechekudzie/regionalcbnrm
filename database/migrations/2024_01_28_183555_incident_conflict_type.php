@@ -15,7 +15,13 @@ return new class extends Migration
         Schema::create('incident_conflict_type', function (Blueprint $table) {
             $table->unsignedBigInteger('incident_id');
             $table->unsignedBigInteger('conflict_type_id');
+
+            // Setting the composite primary key
+            $table->primary(['incident_id', 'conflict_type_id']);
+
+
         });
+
     }
 
     /**
