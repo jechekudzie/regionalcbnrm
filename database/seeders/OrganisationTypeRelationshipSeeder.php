@@ -24,9 +24,10 @@ class OrganisationTypeRelationshipSeeder extends Seeder
             ['organisation_type_id' => 4, 'child_id' => 6, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:01:59'), 'updated_at' => Carbon::parse('2024-01-28 08:01:59')],
             ['organisation_type_id' => 4, 'child_id' => 7, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:02:21'), 'updated_at' => Carbon::parse('2024-01-28 08:02:21')],
             ['organisation_type_id' => 5, 'child_id' => 8, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:02:29'), 'updated_at' => Carbon::parse('2024-01-28 08:02:29')],
-            ['organisation_type_id' => 5, 'child_id' => 9, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:02:42'), 'updated_at' => Carbon::parse('2024-01-28 08:02:42')],
             ['organisation_type_id' => 8, 'child_id' => 10, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:02:54'), 'updated_at' => Carbon::parse('2024-01-28 08:02:54')],
+            ['organisation_type_id' => 8, 'child_id' => 9, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:02:42'), 'updated_at' => Carbon::parse('2024-01-28 08:02:42')],
             ['organisation_type_id' => 6, 'child_id' => 11, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:03:10'), 'updated_at' => Carbon::parse('2024-01-28 08:03:10')],
+            ['organisation_type_id' => 4, 'child_id' => 12, 'notes' => null, 'created_at' => Carbon::parse('2024-01-28 08:03:10'), 'updated_at' => Carbon::parse('2024-01-28 08:03:10')],
         ];
 
         DB::table('organisation_type_organisation_type')->insert($relationships);

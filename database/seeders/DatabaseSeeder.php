@@ -25,6 +25,10 @@ class DatabaseSeeder extends Seeder
             ConflictTypeSeeder::class,
             ConflictOutComeSeeder::class,
             ControlMeasureSeeder::class,
+            OffenceTypeSeeder::class,
+            PoacherTypeSeeder::class,
+            PoachingMethodSeeder::class,
+            PoachingReasonSeeder::class,
 
         ]);
     }

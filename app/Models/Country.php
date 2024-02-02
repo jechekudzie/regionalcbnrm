@@ -13,6 +13,12 @@ class Country extends Model
 
     protected $guarded = [];
 
+    //has many poachers
+    public function poachers()
+    {
+        return $this->hasMany(Poacher::class);
+    }
+
     //has many hunters
     public function hunters()
     {

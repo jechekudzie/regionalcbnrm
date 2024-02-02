@@ -43,6 +43,14 @@ class Species extends Model
     {
         return $this->hasMany(HuntingDetail::class);
     }
+
+
+    public function poachingIncidents()
+    {
+        return $this->belongsToMany(PoachingIncident::class, 'poaching_incident_species');
+    }
+
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

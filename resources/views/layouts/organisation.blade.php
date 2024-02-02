@@ -53,7 +53,7 @@
                 <div class="d-flex">
                     <!-- LOGO -->
                     <div class="navbar-brand-box horizontal-logo">
-                        <a href="{{url('/')}}" class="logo logo-dark"
+                        <a href="{{url('/')}}" class="logo logo-dark">
                         </a>
 
                         <a href="{{url('/')}}" class="logo logo-light">
@@ -176,18 +176,17 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-end">
                             <!-- item-->
-                            <h6 class="dropdown-header">Welcome Anna!</h6>
-                            <a class="dropdown-item" href="pages-profile.html"><i
+                            <a class="dropdown-item" href="#"><i
                                     class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span
                                     class="align-middle">Profile</span></a>
 
-                            <a class="dropdown-item" href="apps-tasks-kanban.html"><i
+                            <a class="dropdown-item" href="#"><i
                                     class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span
                                     class="align-middle">Taskboard</span></a>
 
                             <div class="dropdown-divider"></div>
 
-                            <a class="dropdown-item" href="pages-profile-settings.html"><i
+                            <a class="dropdown-item" href="#"><i
                                     class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span
                                     class="align-middle">Settings</span></a>
 
@@ -270,7 +269,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.population-estimates.species',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.population-estimates*') ? 'active' : '' }}">
-                                        Population Estimates
+                                        Manage Population Estimates
                                     </a>
                                 </li>
                             </ul>
@@ -289,7 +288,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.quota-settings.species',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.quota-settings.species*') ? 'active' : '' }}">
-                                        Quota Settings
+                                        Quota Requests
                                     </a>
                                 </li>
 
@@ -315,16 +314,16 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.hunters.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.hunters*') ? 'active' : '' }}">
-                                        Hunter Clients
+                                         Clients
                                     </a>
                                 </li>
 
-                                <li class="nav-item">
+                                {{--<li class="nav-item">
                                     <a href="{{route('organisation.safari-licenses.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.safari-licenses*') ? 'active' : '' }}">
                                         Safari Licenses
                                     </a>
-                                </li>
+                                </li>--}}
 
                                 <li class="nav-item">
                                     <a href="{{route('organisation.hunting-activities.index',$organisation->slug)}}"
@@ -350,6 +349,25 @@
                                        Human Wildlife Conflict
                                     </a>
                                 </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#poaching" data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="poaching">
+                            <span data-key="t-dashboards">Poaching Incidents </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="poaching">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.poaching-incidents.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.poaching-incident*') ? 'active' : '' }}">
+                                        Poaching Incidents
+                                    </a>
+                                </li>
+
                             </ul>
                         </div>
                     </li>

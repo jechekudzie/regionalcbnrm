@@ -67,7 +67,6 @@
                                     <th>Year</th>
                                     <th>Date</th>
                                     <th>Time</th>
-                                    <th>Location</th>
                                     <th>Species Involved</th>
                                     <th>Incident Types</th>
                                     <th>Incident Outcomes</th>
@@ -82,7 +81,6 @@
                                         <td> {{ $incident->year }} </td>
                                         <td> {{ $incident->date }} </td>
                                         <td> {{ $incident->time }} </td>
-                                        <td> {{ $incident->locatiom }} </td>
                                         <td>
                                             <a href="{{route('organisation.incident-species.index',[$organisation->slug,$incident->slug])}}">Species
                                                 ({{ $incident->species->count() }})

@@ -20,13 +20,6 @@ return new class extends Migration
             $table->integer('offtake')->nullable();
             $table->string('rbz_trastool_number')->nullable();
             $table->boolean('is_special')->default(0);
-            $table->unsignedBigInteger('gender_id')->nullable();
-            $table->unsignedBigInteger('maturity_id')->nullable();
-            $table->string('trophy_size')->nullable();
-            $table->string('trophy_quality')->nullable();
-            $table->string('location')->nullable();
-            $table->string('longitude')->nullable();
-            $table->string('latitude')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });

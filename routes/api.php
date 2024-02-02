@@ -31,6 +31,8 @@ Route::get('/get-concessions-by-rdc/{ruralDistrictCouncilId}', [ApiController::c
 //fetch-species
 Route::get('/fetch-quota-requests', [ApiController::class, 'fetchQuotaRequests'])->name('fetch-species.index');
 
+Route::get('/fetch-ward-quota-distributions', [ApiController::class, 'fetchWardQuotaDistributions'])->name('fetch-ward-quota-distributions.index');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

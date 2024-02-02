@@ -15,10 +15,10 @@ return new class extends Migration
         Schema::create('incident_species', function (Blueprint $table) {
             $table->unsignedBigInteger('incident_id');
             $table->unsignedBigInteger('species_id');
-
+            $table->integer('male_count')->nullable();
+            $table->integer('female_count')->nullable();
             // Setting the composite primary key
             $table->primary(['incident_id', 'species_id']);
-
 
         });
 

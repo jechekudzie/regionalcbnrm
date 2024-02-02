@@ -112,13 +112,15 @@ Route::get('/admin/maturity', [\App\Http\Controllers\MaturityController::class, 
 Route::post('/admin/maturity/store', [\App\Http\Controllers\MaturityController::class, 'store'])->name('admin.maturity.store');
 Route::get('/admin/maturity/{maturity}/edit', [\App\Http\Controllers\MaturityController::class, 'edit'])->name('admin.maturity.edit');
 Route::patch('/admin/maturity/{maturity}/update', [\App\Http\Controllers\MaturityController::class, 'update'])->name('admin.maturity.update');
+Route::delete('/admin/maturity/{maturity}', [\App\Http\Controllers\MaturityController::class, 'destroy'])->name('admin.maturity.destroy');
+
 
 //routes for counting methods
 Route::get('/admin/counting-methods', [\App\Http\Controllers\CountingMethodController::class, 'index'])->name('admin.counting-methods.index');
 Route::post('/admin/counting-methods/store', [\App\Http\Controllers\CountingMethodController::class, 'store'])->name('admin.counting-methods.store');
 Route::get('/admin/counting-methods/{countingMethod}/edit', [\App\Http\Controllers\CountingMethodController::class, 'edit'])->name('admin.counting-methods.edit');
 Route::patch('/admin/counting-methods/{countingMethod}/update', [\App\Http\Controllers\CountingMethodController::class, 'update'])->name('admin.counting-methods.update');
-
+Route::delete('/admin/counting-methods/{countingMethod}', [\App\Http\Controllers\CountingMethodController::class, 'destroy'])->name('admin.counting-methods.destroy');
 
 //routes for conflict outcomes fields
 Route::get('/admin/conflict-outcomes', [\App\Http\Controllers\ConflictOutcomeController::class, 'index'])->name('admin.conflict-outcomes.index');
@@ -141,6 +143,13 @@ Route::post('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicF
 Route::get('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}/edit', [\App\Http\Controllers\DynamicFieldOptionController::class, 'edit'])->name('admin.dynamic-fields-options.edit');
 Route::patch('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}/update', [\App\Http\Controllers\DynamicFieldOptionController::class, 'update'])->name('admin.dynamic-fields-options.update');
 Route::delete('/admin/conflict-outcomes/{conflictOutCome}/dynamic-fields/{dynamicField}/options/{dynamicFieldOption}', [\App\Http\Controllers\DynamicFieldOptionController::class, 'destroy'])->name('admin.dynamic-fields-options.destroy');
+
+//conflict types routes
+Route::get('/admin/conflict-types', [\App\Http\Controllers\ConflictTypeController::class, 'index'])->name('admin.conflict-types.index');
+Route::post('/admin/conflict-types/store', [\App\Http\Controllers\ConflictTypeController::class, 'store'])->name('admin.conflict-types.store');
+Route::get('/admin/conflict-types/{conflictType}/edit', [\App\Http\Controllers\ConflictTypeController::class, 'edit'])->name('admin.conflict-types.edit');
+Route::patch('/admin/conflict-types/{conflictType}/update', [\App\Http\Controllers\ConflictTypeController::class, 'update'])->name('admin.conflict-types.update');
+Route::delete('/admin/conflict-types/{conflictType}', [\App\Http\Controllers\ConflictTypeController::class, 'destroy'])->name('admin.conflict-types.destroy');
 
 
 
@@ -170,6 +179,15 @@ Route::get('/{organisation}/quota-settings/{species}/index', [\App\Http\Controll
 Route::post('/{organisation}/quota-settings/store', [\App\Http\Controllers\QuotaSettingController::class, 'store'])->name('organisation.quota-settings.store');
 Route::get('/{organisation}/quota-settings/{quotaRequest}/edit', [\App\Http\Controllers\QuotaSettingController::class, 'edit'])->name('organisation.quota-settings.edit');
 Route::patch('/{organisation}/quota-settings/{quotaRequest}/update', [\App\Http\Controllers\QuotaSettingController::class, 'update'])->name('organisation.quota-settings.update');
+
+//routes for WardQuotaDistributionC for a quota request
+Route::get('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution', [\App\Http\Controllers\WardQuotaDistributionController::class, 'index'])->name('organisation.ward-quota-distribution.index');
+Route::post('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/store', [\App\Http\Controllers\WardQuotaDistributionController::class, 'store'])->name('organisation.ward-quota-distribution.store');
+Route::get('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/{wardQuotaDistribution}/edit', [\App\Http\Controllers\WardQuotaDistributionController::class, 'edit'])->name('organisation.ward-quota-distribution.edit');
+Route::patch('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/{wardQuotaDistribution}/update', [\App\Http\Controllers\WardQuotaDistributionController::class, 'update'])->name('organisation.ward-quota-distribution.update');
+Route::delete('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/{wardQuotaDistribution}', [\App\Http\Controllers\WardQuotaDistributionController::class, 'destroy'])->name('organisation.ward-quota-distribution.destroy');
+
+
 
 
 //hunting concession routes
@@ -264,6 +282,20 @@ Route::get('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dyna
 Route::patch('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}/update', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'update'])->name('organisation.incident-outcomes-dynamic-fields.update');
 Route::delete('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'destroy'])->name('organisation.incident-outcomes-dynamic-fields.destroy');
 
+//routes for poaching incidents
+Route::get('/{organisation}/poaching-incidents', [\App\Http\Controllers\PoachingIncidentController::class, 'index'])->name('organisation.poaching-incidents.index');
+Route::get('/{organisation}/poaching-incidents/create', [\App\Http\Controllers\PoachingIncidentController::class, 'create'])->name('organisation.poaching-incidents.create');
+Route::post('/{organisation}/poaching-incidents/store', [\App\Http\Controllers\PoachingIncidentController::class, 'store'])->name('organisation.poaching-incidents.store');
+Route::get('/{organisation}/poaching-incidents/{poachingIncident}/edit', [\App\Http\Controllers\PoachingIncidentController::class, 'edit'])->name('organisation.poaching-incidents.edit');
+Route::patch('/{organisation}/poaching-incidents/{poachingIncident}/update', [\App\Http\Controllers\PoachingIncidentController::class, 'update'])->name('organisation.poaching-incidents.update');
+Route::delete('/{organisation}/poaching-incidents/{poachingIncident}', [\App\Http\Controllers\PoachingIncidentController::class, 'destroy'])->name('organisation.poaching-incidents.destroy');
+
+//poaching incident species
+Route::get('/{organisation}/poaching-incidents/{poachingIncident}/species', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'index'])->name('organisation.poaching-incident-species.index');
+Route::post('/{organisation}/poaching-incidents/{poachingIncident}/species/store', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'store'])->name('organisation.poaching-incident-species.store');
+Route::get('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}/edit', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'edit'])->name('organisation.poaching-incident-species.edit');
+Route::patch('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}/update', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'update'])->name('organisation.poaching-incident-species.update');
+Route::delete('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'destroy'])->name('organisation.poaching-incident-species.destroy');
 
 
 

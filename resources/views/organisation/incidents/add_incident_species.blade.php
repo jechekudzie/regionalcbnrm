@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$organisation->name}} {{$incident->title}} - Species </h4>
+                        <h4 class="mb-sm-0">{{$organisation->name}} {{$incident->title}} - HWC Species </h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -42,7 +42,7 @@
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i> Add Incident Species
+                                            class="fa fa-plus"></i> Add HWC Incident Species
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -81,7 +81,7 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>{{$incident->title}} - Involved Species</h2>
+                            <h2>{{$incident->title}} - HWC Species</h2>
                             <table style="width: 100%;" id="buttons-datatables"
                                    class="display table table-bordered dataTable no-footer"
                                    aria-describedby="buttons-datatables_info">
@@ -89,6 +89,8 @@
                                 <tr>
                                     <th>Image</th>
                                     <th>Species</th>
+                                    <th>Males</th>
+                                    <th>Females</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -101,10 +103,12 @@
                                                     class="img-fluid d-block"></div>
                                         </td>
                                         <td>{{ $incidentSpecie->name }}</td>
+                                        <td>{{ $incidentSpecie->pivot->male_count }}</td>
+                                        <td>{{ $incidentSpecie->pivot->female_count }}</td>
                                         <td>
                                             <!-- Actions like Edit or Delete -->
-
-                                            <form action="{{ route('organisation.incident-species.destroy', [$organisation->slug,$incident->slug,$incidentSpecie->id]) }}"
+                                            <form
+                                                action="{{ route('organisation.incident-species.destroy', [$organisation->slug,$incident->slug,$incidentSpecie->id]) }}"
                                                 method="POST" style="display: inline-block;">
                                                 @csrf
                                                 @method('DELETE')
@@ -127,108 +131,59 @@
 
                     <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                          aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content border-0">
                                 <div class="modal-header bg-soft-info p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">{{$incident->title}} - HWC Species
+                                        Involved</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close" id="close-modal"></button>
                                 </div>
-
                                 <div class="card border">
-                                    <div class="card-header">
-
-                                        <h4 class="card-title mb-0"> {{$incident->title}} Species</h4>
-                                    </div>
                                     <div class="card-body">
-
-                                        <form action="{{ route('organisation.incident-species.store',[$organisation->slug, $incident->slug])}}"
-                                            method="POST">
+                                        <form action="{{ route('organisation.incident-species.store',[$organisation->slug, $incident->slug])}}" method="POST">
                                             @csrf
-
-                                            <!-- Hidden Input for Incident ID (if not included in the route) -->
-                                            {{-- <input type="hidden" name="incident_id" value="{{ $incident->id }}"> --}}
-
-                                            <!-- Species Selection Field -->
                                             <!-- Species Selection Field -->
                                             <div class="mb-3">
-                                                <label class="form-label">Species Involved</label>
-                                                <div class="row">
-                                                    @foreach ($speciesList as $species)
-                                                        <div class="col-md-3 col-lg-3 mb-3">
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox"
-                                                                       value="{{ $species->id }}"
-                                                                       id="species{{ $species->id }}" name="species[]">
-                                                                <label class="form-check-label"
-                                                                       for="species{{ $species->id }}">
-                                                                    {{ $species->name }}
-                                                                </label>
+                                                <div class="mb-3">
+                                                    <div class="row">
+                                                        @foreach ($speciesList as $species)
+                                                            <div class="col-md-4 col-lg-4 mb-3">
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           value="{{ $species->id }}"
+                                                                           id="species{{ $species->id }}"
+                                                                           name="species[]">
+                                                                    <label style="font-size: 20px;"
+                                                                           class="form-check-label"
+                                                                           for="species{{ $species->id }}">
+                                                                        {{ $species->name }}
+                                                                    </label>
+                                                                </div>
+                                                                <div class="input-group mb-2">
+                                                                    <span class="input-group-text">Male Count</span>
+                                                                    <input type="number" class="form-control"
+                                                                           name="male_count[{{ $species->id }}]"
+                                                                           placeholder="0" min="0" value="0">
+                                                                </div>
+                                                                <div class="input-group">
+                                                                    <span class="input-group-text">Female Count</span>
+                                                                    <input type="number" class="form-control"
+                                                                           name="female_count[{{ $species->id }}]"
+                                                                           placeholder="0" min="0" value="0">
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    @endforeach
+                                                        @endforeach
+                                                    </div>
                                                 </div>
+
+
                                             </div>
 
 
                                             <!-- Submit Button -->
                                             <button type="submit" class="btn btn-primary">Add Species to Incident
                                             </button>
-                                        </form>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content border-0">
-                                <div class="modal-header bg-soft-info p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close" id="close-modal"></button>
-                                </div>
-
-                                <div class="card border">
-                                    <div class="card-header">
-
-                                        <h4 class="card-title mb-0"> Update Hunter Vehicles</h4>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <form id="mainForm" method="post" action="">
-                                            @method('PATCH')
-                                            @csrf
-                                            <!-- Hidden Hunting Activity ID -->
-
-                                            <!-- Vehicle Type -->
-                                            <div class="mb-3">
-                                                <label for="vehicle_type" class="form-label">Vehicle Type</label>
-                                                <input type="text" class="form-control" id="vehicle_type"
-                                                       name="vehicle_type" placeholder="Enter vehicle type">
-                                            </div>
-
-                                            <!-- Registration Number -->
-                                            <div class="mb-3">
-                                                <label for="registration_number" class="form-label">Registration
-                                                    Number</label>
-                                                <input type="text" class="form-control" id="registration_number"
-                                                       name="registration_number"
-                                                       placeholder="Enter registration number">
-                                            </div>
-
-                                            <!-- Driver -->
-                                            <div class="mb-3">
-                                                <label for="driver" class="form-label">Driver</label>
-                                                <input type="text" class="form-control" id="driver" name="driver"
-                                                       placeholder="Enter driver's name">
-                                            </div>
-
-                                            <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary">Update Vehicle</button>
                                         </form>
 
                                     </div>

@@ -80,7 +80,7 @@
                                 </div>
                             @endif
                             <h2>{{ $organisation->name  }} - Hunting Concessions</h2>
-                                <br/>
+                            <br/>
                             <table style="width: 100%;" id="buttons-datatables"
                                    class="display table table-bordered dataTable no-footer"
                                    aria-describedby="buttons-datatables_info">
@@ -97,7 +97,15 @@
                                     <tr>
                                         <td>{{ $huntingConcession->name }}</td>
                                         <td>{{ $huntingConcession->hectarage }}</td>
-                                        <td>{{ $huntingConcession->wards->count() }}</td>
+                                        <td>
+                                            @if($huntingConcession->wards->count() > 0)
+                                                @foreach($huntingConcession->wards as $ward)
+                                                    {{ $ward->name }},
+                                                @endforeach
+                                            @else
+                                                {{'No wards covered'}}
+                                            @endif
+                                        </td>
                                         <td>
                                             <!-- Edit Button -->
                                             <a href="{{ route('organisation.hunting-concessions.edit', [$organisation->slug,$huntingConcession->slug]) }}"
@@ -161,9 +169,8 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Covered Wards</label>
                                                 <div class="row">
-                                                    @if($organisation && method_exists($organisation, 'childOrganisations'))
-                                                        @foreach($organisation->childOrganisations as $ward)
-
+                                                    @if($organisation->firstGroupOfChildOrganisations())
+                                                        @foreach($organisation->firstGroupOfChildOrganisations() as $ward)
                                                             <div class="col-md-4 col-lg-4">
                                                                 <div class="form-check">
                                                                     <input class="form-check-input" type="checkbox"
@@ -178,6 +185,8 @@
                                                             </div>
                                                         @endforeach
                                                     @endif
+
+
                                                 </div>
                                             </div>
 

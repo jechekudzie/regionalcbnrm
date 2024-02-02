@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$organisation->name}} - Hunting Activities</h4>
+                        <h4 class="mb-sm-0">{{$organisation->name}} - Hunting vehicles -> Activity ({{str_pad($huntingActivity->id, 6, '0', STR_PAD_LEFT)}})</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">

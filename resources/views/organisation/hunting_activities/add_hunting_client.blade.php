@@ -16,7 +16,7 @@
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                         <h4 class="mb-sm-0">{{$huntingActivity->organisation->name}}
-                            ({{$huntingActivity->huntingLicense->license_number}}) - add Hunting Clients</h4>
+                             - add Clients -> Activity ({{str_pad($huntingActivity->id, 6, '0', STR_PAD_LEFT)}})</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -43,7 +43,7 @@
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i> Add New Hunter
+                                            class="fa fa-plus"></i> Add New Client
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -105,7 +105,7 @@
                             </table>
 
 
-                            <h2 style="margin: 10px;">Current Hunting Clients</h2>
+                            <h2 style="margin: 10px;">Current Clients</h2>
                             <table style="width: 100%;" id="buttons-datatables"
                                    class="display table table-bordered dataTable no-footer"
                                    aria-describedby="buttons-datatables_info">
@@ -158,7 +158,7 @@
                                 <div class="card border">
                                     <div class="card-header">
 
-                                        <h4 class="card-title mb-0"> Hunter Details</h4>
+                                        <h4 class="card-title mb-0"> Client Details</h4>
                                     </div>
                                     <div class="card-body">
 
@@ -205,7 +205,7 @@
                                             </div>
 
                                             <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary">Add Hunter</button>
+                                            <button type="submit" class="btn btn-primary">Add Client</button>
                                         </form>
                                     </div>
                                 </div>
@@ -226,7 +226,7 @@
                                 <div class="card border">
                                     <div class="card-header">
 
-                                        <h4 class="card-title mb-0"> Hunter Details</h4>
+                                        <h4 class="card-title mb-0"> Client Details</h4>
                                     </div>
                                     <div class="card-body">
 
@@ -240,7 +240,7 @@
                                                 <input type="hidden" id="hunter_id" name="hunter_id">
                                                 <div class="alert alert-success alert-dismissible fade show"
                                                      role="alert">
-                                                    <strong>Message!</strong> Confirm you want to add this hunting
+                                                    <strong>Message!</strong> Confirm you want to add this
                                                     client to the activity?
                                                     <button type="button" class="btn-close" data-bs-dismiss="alert"
                                                             aria-label="Close"></button>

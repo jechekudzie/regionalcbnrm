@@ -34,24 +34,25 @@ class QuotaSettingController extends Controller
         // Validate the request data
         $validator = Validator::make($request->all(), [
             'species_id' => 'required|exists:species,id',
-            'hunting_concession_id' => 'required|exists:hunting_concessions,id',
+            'organisation_id' => 'required|exists:organisations,id',
             'year' => [
                 'required', 'integer', 'min:2015', 'max:' . (now()->year + 1),
                 function ($attribute, $value, $fail) use ($request) {
                     // Including hunting_concession_id in the uniqueness check
-                    if (QuotaRequest::where('hunting_concession_id', $request->hunting_concession_id)
+                    if (QuotaRequest::where('organisation_id', $request->hunting_concession_id)
                         ->where('species_id', $request->species_id)
                         ->where('year', $value)
                         ->exists()) {
-                        $fail('A quota request for this concession, species, and year already exists.');
+                        $fail('A quota request for this RDC, species, and year already exists.');
                     }
                 },
             ],
-            'initial_quota' => 'required|integer',
-            'rdc_quota' => 'nullable|integer',
-            'campfire_quota' => 'nullable|integer',
-            'zimpark_station_quota' => 'nullable|integer',
-            'national_park_quota' => 'nullable|integer',
+            'hunting_quota' => 'required|integer',
+            'pac_quota' => 'nullable|integer',
+            'rational_quota' => 'nullable|integer',
+            'zimpark_hunting_quota' => 'nullable|integer',
+            'zimpark_pac_quota' => 'nullable|integer',
+            'zimpark_rational_quota' => 'nullable|integer',
         ]);
 
         if ($validator->fails()) {
@@ -87,11 +88,12 @@ class QuotaSettingController extends Controller
             'species_id' => 'required|exists:species,id',
             'organisation_id' => 'required|exists:organisations,id',
             'year' => 'required|integer|min:2015|max:' . (now()->year + 1),
-            'initial_quota' => 'nullable|integer',
-            'rdc_quota' => 'nullable|integer',
-            'campfire_quota' => 'nullable|integer',
-            'zimpark_station_quota' => 'nullable|integer',
-            'national_park_quota' => 'nullable|integer',
+            'hunting_quota' => 'required|integer',
+            'pac_quota' => 'nullable|integer',
+            'rational_quota' => 'nullable|integer',
+            'zimpark_hunting_quota' => 'nullable|integer',
+            'zimpark_pac_quota' => 'nullable|integer',
+            'zimpark_rational_quota' => 'nullable|integer',
         ]);
 
 

@@ -29,7 +29,8 @@ class Incident extends Model
 
     public function species()
     {
-        return $this->belongsToMany(Species::class, 'incident_species', 'incident_id', 'species_id');
+        return $this->belongsToMany(Species::class, 'incident_species', 'incident_id', 'species_id')
+            ->withPivot('male_count', 'female_count');
     }
 
 

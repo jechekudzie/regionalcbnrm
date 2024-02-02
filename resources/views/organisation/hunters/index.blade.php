@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Hunters</h4>
+                        <h4 class="mb-sm-0">Clients</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -41,7 +41,7 @@
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i> Add Hunter
+                                            class="fa fa-plus"></i> Add Client
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -134,7 +134,7 @@
                                 <div class="card border">
                                     <div class="card-header">
 
-                                        <h4 class="card-title mb-0"> Hunter Details</h4>
+                                        <h4 class="card-title mb-0"> Client Details</h4>
                                     </div>
                                     <div class="card-body">
 

@@ -88,37 +88,49 @@
                                    aria-describedby="buttons-datatables_info">
                                 <thead>
                                 <tr>
-                                    <th>Hunting Concession</th>
                                     <th>Image</th>
                                     <th>Species</th>
                                     <th>Year</th>
-                                    <th>Initial Quota</th>
-                                    <th>RDC Quota</th>
-                                    <th>Zimpark Station Quota</th>
-                                    <th>National Park Quota</th>
+                                    <th>Hunting Quota</th>
+                                    <th>PAC Quota</th>
+                                    <th>Rational Quota</th>
+                                    {{--<th>Zimpark Hunting</th>
+                                    <th>Zimpark PAC</th>
+                                    <th>Zimpark Rational</th>--}}
                                     <th>Status</th>
+                                    <th>Distribution</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach ($quotaRequests as $quota)
                                     <tr>
-                                        <td>{{ $quota->huntingConcession->name }}</td>
                                         <td>
                                             <div class="avatar-md bg-light rounded p-1"><img src="{{asset($quota->species->avatar)}}" alt="" class="img-fluid d-block"></div>
                                         </td>
                                         <td>{{ $quota->species->name }}</td>
                                         <td>{{ $quota->year }}</td>
-                                        <td>{{ $quota->initial_quota }}</td>
-                                        <td>{{ $quota->rdc_quota }}</td>
-                                        <td>{{ $quota->zimpark_station_quota }}</td>
-                                        <td>{{ $quota->national_park_quota }}</td>
+                                        <td>{{ $quota->hunting_quota }}</td>
+                                        <td>{{ $quota->pac_quota }}</td>
+                                        <td>{{ $quota->rational_quota }}</td>
+                                        {{--<td>{{ $quota->zimpark_hunting_quota }}</td>
+                                        <td>{{ $quota->zimpark_pac_quota }}</td>
+                                        <td>{{ $quota->national_rational_quota }}</td>--}}
                                         <td>{{ $quota->status }}</td>
+                                        <td>
+                                            <a href="{{ route('organisation.ward-quota-distribution.index', [$organisation->slug, $quota->slug]) }}"
+                                               class="btn btn-sm btn-primary" title="View Distribution">
+                                                <i class="fa fa-eye"></i> View Distribution
+                                            </a>
+                                        </td>
                                         <td>
                                             <!-- Edit Button -->
                                             <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"
                                                class="btn btn-sm btn-primary" title="Edit">
-                                                <i class="fa fa-pencil"></i>
+                                                <i class="fa fa-pencil"></i> Edit
+                                            </a> || <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"
+                                                      class="btn btn-sm btn-primary" title="Edit">
+                                                <i class="fa fa-check"></i> Approve
                                             </a>
                                             <!-- You can add a Delete button here if needed, similar to the Edit button with a form to submit the delete request -->
                                         </td>
@@ -162,18 +174,6 @@
 
                                             <!-- Hunting Concession Dropdown -->
                                             <div class="row mb-3">
-                                                <div class="col-md-4">
-                                                    <label for="hunting_concession_id" class="form-label">Hunting
-                                                        Concession</label>
-                                                    <select class="form-control" id="hunting_concession_id"
-                                                            name="hunting_concession_id" required>
-                                                        <option value="">Select Hunting Concession</option>
-                                                        @foreach($organisation->huntingConcessions as $concession)
-                                                            <option
-                                                                value="{{ $concession->id }}">{{ $concession->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
 
                                                 <!-- Year Selection -->
                                                 <div class="col-md-4">
@@ -190,39 +190,53 @@
                                             <!-- Quota Fields -->
                                             <div class="row mb-3">
                                                 <div class="col-md-4">
-                                                    <label for="initial_quota" class="form-label">Initial Quota</label>
-                                                    <input type="number" class="form-control" id="initial_quota"
-                                                           name="initial_quota" placeholder="Enter initial quota"
+                                                    <label for="hunting_quota" class="form-label">Hunting Quota</label>
+                                                    <input type="number" class="form-control" id="hunting_quota"
+                                                           name="hunting_quota" placeholder="Enter hunting quota"
                                                            min="0">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label for="rdc_quota" class="form-label">RDC Quota</label>
-                                                    <input type="number" class="form-control" id="rdc_quota"
-                                                           name="rdc_quota" placeholder="Enter RDC quota" min="0">
+                                                    <label for="pac_quota" class="form-label">PAC Quota</label>
+                                                    <input type="number" class="form-control" id="pac_quota"
+                                                           name="pac_quota" placeholder="Enter pac quota" min="0">
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label for="campfire_quota" class="form-label">Campfire
+                                                    <label for="rational_quota" class="form-label">Rational
                                                         Quota</label>
-                                                    <input type="number" class="form-control" id="campfire_quota"
-                                                           name="campfire_quota" placeholder="Enter campfire quota"
+                                                    <input type="number" class="form-control" id="rational_quota"
+                                                           name="rational_quota" placeholder="Enter rational quota"
                                                            min="0">
                                                 </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <h4 class="text-center text-black text-decoration-underline">Zimpark Allocated Quotas</h4>
                                             </div>
 
                                             <div class="row mb-3">
                                                 <div class="col-md-4">
-                                                    <label for="zimpark_station_quota" class="form-label">Zimpark
-                                                        Station Quota</label>
-                                                    <input type="number" class="form-control" id="zimpark_station_quota"
-                                                           name="zimpark_station_quota"
-                                                           placeholder="Enter Zimpark station quota" min="0">
+                                                    <label for="zimpark_hunting_quota" class="form-label">Zimpark
+                                                        PAC Quota</label>
+                                                    <input type="hidden" name="zimpark_hunting_quota" value="">
+                                                    <input type="number" class="form-control" id="zimpark_hunting_quota"
+                                                           name="zimpark_hunting_quota"
+                                                           placeholder="Zimparks hunting quota" min="0" disabled>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <label for="national_park_quota" class="form-label">National Park
+                                                    <label for="zimpark_pac_quota" class="form-label">Zimpark PAC
                                                         Quota</label>
-                                                    <input type="number" class="form-control" id="national_park_quota"
-                                                           name="national_park_quota"
-                                                           placeholder="Enter national park quota" min="0">
+                                                    <input type="hidden" name="zimpark_pac_quota" value="">
+                                                    <input type="number" class="form-control" id="zimpark_pac_quota"
+                                                           name="zimpark_pac_quota"
+                                                           placeholder="Zimparks problem animal control quota" min="0" disabled>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <label for="zimpark_rational_quota" class="form-label">Zimpark PAC
+                                                        Rational Quota</label>
+                                                    <input type="hidden" name="zimpark_rational_quota" value="">
+                                                    <input type="number" class="form-control" id="zimpark_rational_quota"
+                                                           name="zimpark_rational_quota"
+                                                           placeholder="Zimparks rational killing quota" min="0" disabled>
                                                 </div>
                                             </div>
 

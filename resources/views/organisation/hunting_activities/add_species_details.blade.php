@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$huntingActivity->organisation->name}}({{$huntingActivity->huntingLicense->license_number}}) - Add Off-take Species</h4>
+                        <h4 class="mb-sm-0">{{$huntingActivity->organisation->name}} - Add Off-take Species -> Activity ({{str_pad($huntingActivity->id, 6, '0', STR_PAD_LEFT)}})</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -95,12 +95,9 @@
                                     <th>Quota</th>
                                     <th>Species Image</th>
                                     <th>Species</th>
-                                    <th>Special Species</th>
+                                    <th>Is Special?</th>
                                     <th>Off-Take</th>
                                     <th>RBZ Trastool Number</th>
-                                    <th>Trophy Size</th>
-                                    <th>Trophy Quality</th>
-                                    <th>Kill Location</th>
                                     <th>Action</th>
                                     <!-- Add more columns as needed -->
                                 </tr>
@@ -108,7 +105,7 @@
                                 <tbody>
                                 @foreach ($huntingActivity->huntingDetails as $detail)
                                     <tr>
-                                        <td>{{ \App\Models\QuotaRequest::find($detail->quota_request_id)->year}} Quota</td>
+                                        <td>{{ \App\Models\QuotaRequest::find($detail->quota_request_id)->year}}</td>
                                         <td>
                                             <div class="avatar-md bg-light rounded p-1"><img src="{{asset($detail->species->avatar)}}" alt="" class="img-fluid d-block"></div>
                                         </td>
@@ -122,12 +119,9 @@
                                         </td>
                                         <td>{{ $detail->offtake}}</td>
                                         <td>{{ $detail->rbz_trastool_number}}</td>
-                                        <td>{{ $detail->trophy_size }}</td>
-                                        <td>{{ $detail->trophy_quality }}</td>
-                                        <td>{{ $detail->location }}</td>
                                         <td>
                                             <a href="{{route('organisation.hunting-activities.edit-species-details',[$organisation->slug,$detail->id])}}"
-                                               class="btn btn-primary btn-sm"><i class="fa fa-edit"></i> Update</a>
+                                               class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i> Kill Info</a>
                                             <a href="{{route('organisation.hunting-activities.delete-species-details',[$organisation->slug,$detail->id])}}"
                                                class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>
                                         <!-- Add more data fields as needed -->
@@ -183,7 +177,7 @@
                                                 <!-- Display Hunting Concession and Quota Request -->
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <p><strong>Hunting Concession:</strong> <span
+                                                        <p><strong>Hunting Concession: {{$huntingActivity->huntingConcession->name}}</strong> <span
                                                                 id="huntingConcession"></span></p>
                                                     </div>
                                                     <div class="col-md-6">
@@ -198,9 +192,9 @@
                                                         <thead>
                                                         <tr>
                                                             <th>Species Name</th>
-                                                            <th>Initial Quota</th>
+                                                            <th>Hunting Quota</th>
+                                                            <th>Offtake(number to be hunter)</th>
                                                             <th>RBZ Trastool Number</th>
-                                                            <th>Offtake Number</th>
                                                         </tr>
                                                         </thead>
                                                         <tbody id="speciesList">
@@ -256,98 +250,71 @@
                     });
                 });
 
-                // Function to update species list based on selected year and hunting concession ID
-                function updateSpeciesList(year, huntingConcessionId) {
-                    // Send an AJAX request to fetch quota requests with species data
-                    $.ajax({
-                        url: '/api/fetch-quota-requests', // Route to fetch quota requests
-                        method: 'GET',
-                        data: {
-                            year: year,
-                            huntingConcessionId: huntingConcessionId
-                        },
-                        success: function (data) {
-                            // Clear the species list
-                            $('#speciesList').empty();
 
-                            // Populate the species list with data
-                            data.forEach(function (quotaRequest) {
-                                var species = quotaRequest.species.name;
-                                var initialQuota = quotaRequest.initial_quota;
-                                var isSpecial = quotaRequest.species.is_special;
+                $(document).ready(function () {
+                    // Function to fetch and display quota distributions
+                    function fetchAndDisplayQuotaDistributions(year, huntingConcessionId) {
+                        $.ajax({
+                            url: '/api/fetch-ward-quota-distributions',
+                            method: 'GET',
+                            data: {
+                                year: year,
+                                huntingConcessionId: huntingConcessionId
+                            },
+                            success: function (data) {
+                                $('#speciesList').empty(); // Clear the current list
 
-                                var row = `
-                    <tr>
-                        <td>${species}</td>
-                        <td>${initialQuota}</td>
-                        <td>
-                            <input type="text" class="form-control" name="offtake[]" placeholder="Enter Offtake">
-                            <input type="hidden" name="species_id[]" value="${quotaRequest.species.id}">
-                            <input type="hidden" name="is_special[]" value="${isSpecial ? 1 : 0}">
-                            <input type="hidden" name="quota_request_id[]" value="${quotaRequest.id}"
-                        </td>
-                        <td>
-                        <td>
+                                data.forEach(function (item) {
+                                    // Define variables for each piece of data
+                                    var speciesName = item.species_name;
+                                    var huntingQuota = item.hunting_quota;
+                                    var speciesId = item.species_id;
+                                    var isSpecial = item.is_special === 1; // Ensure 'is_special' is treated as a boolean
+                                    var quotaRequestId = item.quota_request_id; // Get the quota request ID
 
-                          <input type="text" class="form-control" name="rbz_trastool_number[]" placeholder="Enter RBZ Trastool Number" ${isSpecial ? '' : 'disabled'}>
-                        </td>
-                    </tr>
-                `;
-                                $('#speciesList').append(row);
-                            });
-                        },
-                        error: function () {
-                            alert('Failed to fetch quota request data.');
+                                    // Construct the HTML for a table row
+                                    var row = `
+                                        <tr>
+                                            <td>${speciesName}</td>
+                                            <td>${huntingQuota}</td>
+                                            <td>
+                                                <input type="hidden" name="species_id[]" value="${speciesId}">
+                                                <input type="text" class="form-control" name="offtake[]" placeholder="Enter Offtake">
+                                                <input type="hidden" name="is_special[]" value="${isSpecial ? '1' : '0'}">
+                                                <input type="hidden" name="quota_request_id[]" value="${quotaRequestId}">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control rbz-trastool-number" name="rbz_trastool_number[]" placeholder="Enter RBZ Trastool Number" ${isSpecial ? '' : 'disabled'}>
+                                            </td>
+                                        </tr>
+                                        `;
+
+                                    $('#speciesList').append(row);
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.error('Failed to fetch quota distribution data:', error);
+                            }
+                        });
+                    }
+
+                    // Event listener for year selection change
+                    $('#year').on('change', function () {
+                        var selectedYear = $(this).val();
+                        var huntingConcessionId = $('#huntingConcessionId').val(); // Use the hidden field value
+
+                        if (selectedYear) {
+                            fetchAndDisplayQuotaDistributions(selectedYear, huntingConcessionId);
                         }
                     });
-                }
 
-
-                // Event listener for year selection change
-                $('#year').on('change', function () {
-                    var selectedYear = $(this).val();
-                    var huntingConcessionId = $('#huntingConcessionId').val();
-
-                    if (selectedYear && huntingConcessionId) {
-                        // Update species list based on selected year and hunting concession ID
-                        updateSpeciesList(selectedYear, huntingConcessionId);
-                    }
-                });
-
-                // Trigger the event when the page loads (if year and huntingConcessionId are preselected)
-                $(document).ready(function () {
+                    // Trigger the fetch function on page load if values are preselected
                     var preselectedYear = $('#year').val();
-                    var preselectedHuntingConcessionId = $('#huntingConcessionId').val();
-
-                    if (preselectedYear && preselectedHuntingConcessionId) {
-                        updateSpeciesList(preselectedYear, preselectedHuntingConcessionId);
+                    var huntingConcessionId = $('#huntingConcessionId').val();
+                    if (preselectedYear) {
+                        fetchAndDisplayQuotaDistributions(preselectedYear, huntingConcessionId);
                     }
                 });
-
-                // Function to enable/disable rbz_trastool_number field based on isSpecial value
-                function toggleRBZTrastoolNumber(isSpecial, rowIndex) {
-                    var rbzTrastoolNumberInput = $(`input[name="rbz_trastool_number[${rowIndex}]"]`);
-
-                    if (isSpecial) {
-                        rbzTrastoolNumberInput.prop('disabled', false);
-                        rbzTrastoolNumberInput.prop('required', true);
-                    } else {
-                        rbzTrastoolNumberInput.prop('disabled', true);
-                        rbzTrastoolNumberInput.prop('required', false);
-                        rbzTrastoolNumberInput.val(''); // Clear the value
-                    }
-                }
-
-                // Event listener for is_special change
-                $('input[name^="is_special"]').on('change', function () {
-                    // Get the row index of the changed input
-                    var rowIndex = $(this).data('row-index');
-                    var isSpecial = $(this).prop('checked');
-
-                    // Enable/disable rbz_trastool_number field for the corresponding row
-                    toggleRBZTrastoolNumber(isSpecial, rowIndex);
-                });
-
 
             </script>
 

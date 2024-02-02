@@ -17,19 +17,19 @@ class HuntingActivityController extends Controller
     //display hunting activities
     public function index(Organisation $organisation)
     {
-        $huntingActivities = HuntingActivity::where('organisation_id', $organisation->id)
-            ->with('huntingLicense') // Ensure this relationship exists in the HuntingActivity model
-            ->paginate(10); // Example pagination
 
-        $huntingLicenses = $organisation->huntingLicenses; // Direct property access if you prefer
+        $huntingActivities = HuntingActivity::where('organisation_id', $organisation->id)->get();
 
-        $ruralDistrictCouncils = Organisation::whereExists(function ($query) {
+        /*$ruralDistrictCouncils = Organisation::whereExists(function ($query) {
             $query->select(DB::raw(1))
                 ->from('hunting_concessions')
                 ->whereColumn('hunting_concessions.organisation_id', 'organisations.id');
-        })->get();
+        })->get();*/
 
-        return view('organisation.hunting_activities.index', compact('organisation', 'huntingActivities', 'huntingLicenses', 'ruralDistrictCouncils'));
+        $ruralDistrictCouncils = Organisation::where('id',$organisation->id)->get();
+
+        return view('organisation.hunting_activities.index', compact('organisation', 'huntingActivities', 'ruralDistrictCouncils'));
+
     }
 
     //add hunting activity
@@ -37,9 +37,9 @@ class HuntingActivityController extends Controller
     {
         // Validate the request data
         $validator = Validator::make($request->all(), [
-            'hunting_license_id' => 'nullable|exists:hunting_licenses,id',
+            'hunting_license' => 'nullable|string|max:255',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'hunting_concession_id' => 'required|exists:hunting_concessions,id',
         ]);
 
@@ -57,19 +57,20 @@ class HuntingActivityController extends Controller
         // Redirect back with a success message
         return redirect()->route('organisation.hunting-activities.index', $organisation->slug)
             ->with('success', 'Hunting activity added successfully.');
+
     }
 
     //display hunting activity
     public function show(Organisation $organisation, HuntingActivity $huntingActivity)
     {
-        $huntingActivity->load('huntingLicense', 'huntingDetails', 'huntingVehicles', 'hunters');
+        $huntingActivity->load( 'huntingDetails', 'huntingVehicles', 'hunters');
 
         return view('organisation.hunting_activities.show', compact('organisation', 'huntingActivity'));
     }
 
     public function addHunterClient(Organisation $organisation, HuntingActivity $huntingActivity)
     {
-        $huntingActivity->load('huntingLicense', 'huntingDetails', 'huntingVehicles', 'hunters');
+        $huntingActivity->load( 'huntingDetails', 'huntingVehicles', 'hunters');
         $hunters = Hunter::all();
         $countries = Country::all();
         return view('organisation.hunting_activities.add_hunting_client', compact('organisation',
@@ -128,11 +129,11 @@ class HuntingActivityController extends Controller
             ->where('hunter_id', $hunter->id)
             ->exists();
         if ($exists) {
-            return redirect()->route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $huntingActivity->slug])->with('error', 'The selected hunter is already added to this hunting activity.');
+            return redirect()->route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $huntingActivity->slug])->with('error', 'The selected client is already added to this hunting activity.');
         } else {
             //attach hunter to hunting activity
             $huntingActivity->hunters()->attach($hunter->id);
-            return redirect()->route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $huntingActivity->slug])->with('success', 'Hunting client added successfully.');
+            return redirect()->route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $huntingActivity->slug])->with('success', 'Client added successfully.');
         }
 
 

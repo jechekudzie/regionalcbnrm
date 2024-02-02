@@ -84,6 +84,8 @@
                                    aria-describedby="buttons-datatables_info">
                                 <thead>
                                 <tr>
+                                    <th>Activity ID</th>
+                                    <th>Year</th>
                                     <th>Hunting Concession</th>
                                     <th>Safari Operator</th>
                                     <th>Safari License</th>
@@ -98,19 +100,21 @@
                                 <tbody>
                                 @foreach ($huntingActivities as $activity)
                                     <tr>
+                                        <td>{{ str_pad($activity->id, 6, '0', STR_PAD_LEFT) }}</td>
+                                        <td>{{ $year = date('Y', strtotime($activity->start_date))}}</td>
                                         <td>{{ $activity->huntingConcession->name }}</td>
                                         <td>{{ $activity->organisation->name }}</td>
-                                        <td>{{ optional($activity->huntingLicense)->license_number ?? 'N/A' }}</td>
+                                        <td>{{$activity->hunting_license}}</td>
                                         <td>{{ $activity->start_date }}</td>
                                         <td>{{ $activity->end_date }}</td>
                                         <td>
                                             <a href="{{ route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $activity->slug]) }}">
-                                                Hunting Clients ({{ $activity->hunters->count() ?? '0' }})
+                                                 Clients ({{ $activity->hunters->count() ?? '0' }})
                                             </a>
                                         </td>
                                         <td>
                                             <a href="{{ route('organisation.hunting-activities.add-hunting-vehicles', [$organisation->slug, $activity->slug]) }}">
-                                                Hunting Vehicles ({{ $activity->huntingVehicles->count() ?? '0' }})
+                                                Vehicles ({{ $activity->huntingVehicles->count() ?? '0' }})
                                             </a>
                                         </td>
                                         <td>
@@ -151,7 +155,8 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post" action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
+                                        <form method="post"
+                                              action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
                                             @csrf
                                             <!-- Hidden Organisation ID (Safari Operator) -->
                                             <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
@@ -160,7 +165,8 @@
                                                 <!-- RDC Dropdown -->
                                                 <div class="col-md-6 mb-3">
                                                     <label for="rdc_id" class="form-label">RDC</label>
-                                                    <select class="form-control" id="rdc_id" name="rdc_id" required onchange="updateConcessionsDropdown()">
+                                                    <select class="form-control" id="rdc_id" name="rdc_id" required
+                                                            onchange="updateConcessionsDropdown()">
                                                         <option value="">Select RDC</option>
                                                         @foreach ($ruralDistrictCouncils as $rdc)
                                                             <option value="{{ $rdc->id }}">{{ $rdc->name }}</option>
@@ -170,8 +176,10 @@
 
                                                 <!-- Hunting Concession Dropdown -->
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="hunting_concession_id" class="form-label">Hunting Concession</label>
-                                                    <select class="form-control" id="hunting_concession_id" name="hunting_concession_id" required>
+                                                    <label for="hunting_concession_id" class="form-label">Hunting
+                                                        Concession</label>
+                                                    <select class="form-control" id="hunting_concession_id"
+                                                            name="hunting_concession_id" required>
                                                         <option value="">Select Hunting Concession</option>
                                                         {{-- Options will be dynamically populated based on RDC selection --}}
                                                     </select>
@@ -179,25 +187,24 @@
 
                                                 <!-- Hunting License Dropdown -->
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="hunting_license_id" class="form-label">Safari Hunting License</label>
-                                                    <select class="form-control" id="hunting_license_id" name="hunting_license_id" required>
-                                                        <option value="">Select Hunting License</option>
-                                                        @foreach ($huntingLicenses as $license)
-                                                            <option value="{{ $license->id }}">{{ $license->license_number }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                    <label for="hunting_license" class="form-label">PH Hunting
+                                                        License</label>
+                                                    <input type="text" class="form-control" id="hunting_license"
+                                                           name="hunting_license" placeholder="Enter PH License">
                                                 </div>
 
                                                 <!-- Start Date -->
                                                 <div class="col-md-3 mb-3">
                                                     <label for="start_date" class="form-label">Start Date</label>
-                                                    <input type="date" class="form-control" id="start_date" name="start_date">
+                                                    <input type="date" class="form-control" id="start_date"
+                                                           name="start_date">
                                                 </div>
 
                                                 <!-- End Date -->
                                                 <div class="col-md-3 mb-3">
                                                     <label for="end_date" class="form-label">End Date</label>
-                                                    <input type="date" class="form-control" id="end_date" name="end_date">
+                                                    <input type="date" class="form-control" id="end_date"
+                                                           name="end_date">
                                                 </div>
                                             </div>
 

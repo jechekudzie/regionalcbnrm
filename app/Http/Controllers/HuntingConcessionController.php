@@ -11,6 +11,8 @@ class HuntingConcessionController extends Controller
     //index pass hunting concessions to view
     public function index(Organisation $organisation)
     {
+
+
         $huntingConcessions = HuntingConcession::all();
         return view('organisation.hunting_concessions.index', compact('huntingConcessions', 'organisation'));
     }

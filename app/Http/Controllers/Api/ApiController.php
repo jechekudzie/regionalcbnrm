@@ -9,6 +9,7 @@ use App\Models\OrganisationType;
 use App\Models\QuotaRequest;
 use App\Models\Species;
 use App\Models\User;
+use App\Models\WardQuotaDistribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
@@ -178,19 +179,38 @@ class ApiController extends Controller
         return response()->json($speciesData);
     }
 
-    public function fetchQuotaRequests(Request $request)
+    public function fetchWardQuotaDistributions(Request $request)
     {
         $year = $request->input('year');
         $huntingConcessionId = $request->input('huntingConcessionId');
 
-        // Retrieve QuotaRequest objects with Species relationship
-        $quotaRequests = QuotaRequest::with('species')
-            ->where('year', $year)
+        // Retrieve ward IDs covered by the specified hunting concession
+        $wardIds = DB::table('hunting_concession_ward')
             ->where('hunting_concession_id', $huntingConcessionId)
-            ->get();
+            ->pluck('ward_id');
 
-        return response()->json($quotaRequests);
+        // Fetch and aggregate quota distributions for these wards
+        $quotaDistributions = WardQuotaDistribution::with(['quotaRequest.species'])
+            ->whereIn('ward_id', $wardIds)
+            ->whereHas('quotaRequest', function ($query) use ($year) {
+                $query->where('year', $year);
+            })
+            ->get()
+            ->groupBy('quotaRequest.species_id') // Group by species_id
+            ->map(function ($groupedDistributions) {
+                // Sum up quotas for each species group
+                return [
+                    'species_name' => $groupedDistributions->first()->quotaRequest->species->name,
+                    'hunting_quota' => $groupedDistributions->sum('hunting_quota'),
+                    'species_id' => $groupedDistributions->first()->quotaRequest->species_id,
+                    'is_special' => $groupedDistributions->first()->quotaRequest->species->is_special ?? 0,
+                    'quota_request_id' => $groupedDistributions->first()->quotaRequest->id,
+                ];
+            })->values(); // Convert the collection to a plain array
+
+        return response()->json($quotaDistributions);
     }
+
 
 
 }

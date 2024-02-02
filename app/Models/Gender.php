@@ -13,6 +13,11 @@ class Gender extends Model
 
     protected $guarded = [];
 
+    public function poachers()
+    {
+        return $this->hasMany(Poacher::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

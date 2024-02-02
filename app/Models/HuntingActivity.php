@@ -29,10 +29,6 @@ class HuntingActivity extends Model
         return $this->belongsToMany(Hunter::class, 'hunting_activity_hunter');
     }
 
-    public function huntingLicense()
-    {
-        return $this->belongsTo(HuntingLicense::class);
-    }
 
     public function huntingDetails()
     {

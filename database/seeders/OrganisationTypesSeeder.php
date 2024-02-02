@@ -28,6 +28,7 @@ class OrganisationTypesSeeder extends Seeder
             ['name' => 'Campfire Committee', 'slug' => 'campfire-committee', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['name' => 'Villages', 'slug' => 'villages', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
             ['name' => 'Zimparks Stations', 'slug' => 'zimparks-stations', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
+            ['name' => 'Associations', 'slug' => 'associations', 'created_at' => Carbon::now(), 'updated_at' => Carbon::now()],
 
         ];
 

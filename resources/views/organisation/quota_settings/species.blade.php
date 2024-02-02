@@ -48,9 +48,9 @@
                                 @endif
 
                                 @foreach($species as $specie)
-                                    <div class="col-xxl-3 col-lg-3">
+                                    <div class="col-xxl-2 col-lg-2">
                                         <div class="card card-overlay">
-                                            <img style="height: 250px;" class="card-img img-fluid"
+                                            <img style="height: 150px;margin-top: 50px;" class="card-img img-responsive"
                                                  src="{{asset($specie->avatar)}}"
                                                  alt="Card image">
                                             <div class="card-img-overlay p-0 d-flex flex-column">

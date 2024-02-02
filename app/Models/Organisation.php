@@ -15,12 +15,25 @@ class Organisation extends Model
 
     protected $guarded = [];
 
+
+    public function organisationType()
+    {
+        return $this->belongsTo(OrganisationType::class);
+    }
+
+    //has many organisations
+    public function organisations()
+    {
+        return $this->hasMany(Organisation::class);
+    }
+
     //belongs to many users
     public function users()
     {
         return $this->belongsToMany(User::class, 'organisation_users')
             ->withPivot('role_id');
     }
+
 
     //has many roles
     public function organisationRoles()
@@ -44,6 +57,36 @@ class Organisation extends Model
         return $this->hasMany(Organisation::class, 'organisation_id');
     }
 
+
+    public function firstGroupOfChildOrganisations()
+    {
+        // Get all child organizations
+        $childOrganizations = $this->hasMany(Organisation::class, 'organisation_id')->get();
+
+        // Group the child organizations by organisation_type_id
+        $groupedOrganizations = $childOrganizations->groupBy('organisation_type_id');
+
+        // Get the first group
+        $firstGroup = $groupedOrganizations->first();
+
+        return $firstGroup;
+    }
+
+    public function anyGroupOfChildOrganisations()
+    {
+        // Get all child organizations
+        $childOrganizations = $this->hasMany(Organisation::class, 'organisation_id')->get();
+
+        // Group the child organizations by organisation_type_id
+        $groupedOrganizations = $childOrganizations->groupBy('organisation_type_id');
+
+        // Get the second group using skip(1) or any other index
+        $anyGroup = $groupedOrganizations->skip(1)->first();
+
+        return $anyGroup;
+    }
+
+
     public function getAllChildren()
     {
         $children = [];
@@ -56,18 +99,6 @@ class Organisation extends Model
         return $children;
     }
 
-
-    //has many organisations
-    public function organisations()
-    {
-        return $this->hasMany(Organisation::class);
-    }
-
-    public function organisationType()
-    {
-        return $this->belongsTo(OrganisationType::class);
-    }
-
     //has many population estimates
     public function populationEstimates()
     {
@@ -76,7 +107,12 @@ class Organisation extends Model
 
     public function quotaRequests()
     {
-        return $this->hasMany(QuotaRequest::class, 'organisation_id');
+        return $this->hasMany(QuotaRequest::class, 'organisation_id');// for RDCs
+    }
+
+    public function wardQuotaDistributions()
+    {
+        return $this->hasMany(WardQuotaDistribution::class, 'ward_id');
     }
 
 
@@ -101,18 +137,17 @@ class Organisation extends Model
         return $this->hasMany(HuntingLicense::class);
     }
 
-    //wards coveredWards by the hunting concession
-    public function coveredWards()
-    {
-        return $this->belongsToMany(Organisation::class, 'hunting_concession_ward', 'hunting_concession_id', 'ward_id');
-    }
-
     //has many incidents
     public function incidents()
     {
         return $this->hasMany(Incident::class);
     }
 
+    //has many poaching incidents
+    public function poachingIncidents()
+    {
+        return $this->hasMany(PoachingIncident::class);
+    }
 
     public function getSlugOptions(): SlugOptions
     {

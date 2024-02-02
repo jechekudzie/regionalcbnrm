@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{$organisation->name}} {{$incident->title}} - Conflict </h4>
+                        <h4 class="mb-sm-0">{{$organisation->name}} {{$incident->title}} - HWC Conflict </h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -81,7 +81,7 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>{{$incident->title}} - Conflicts</h2>
+                            <h2>{{$incident->title}} - HWC Conflicts</h2>
                             <table style="width: 100%;" id="buttons-datatables"
                                    class="display table table-bordered dataTable no-footer"
                                    aria-describedby="buttons-datatables_info">

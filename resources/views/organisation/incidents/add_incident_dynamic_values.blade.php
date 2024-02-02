@@ -89,7 +89,7 @@
                                 @endphp
 
                                 @if($maxRows > 0) <!-- Only render the table if there are rows to display -->
-                                <table class="table">
+                                <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap">
                                     <thead>
                                     <tr>
                                         @foreach($dynamicFieldsWithValues as $fieldName => $values)

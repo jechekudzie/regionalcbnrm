@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h2 class="mb-sm-0">{{$organisation->name}} - Species</h2>
+                        <h2 class="mb-sm-0">CBNRM - Wildlife and Conservation Species</h2>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -66,9 +66,9 @@
                                 @endif
 
                                 @foreach($species as $specie)
-                                    <div class="col-xxl-3 col-lg-3">
+                                    <div class="col-xxl-2 col-lg-2">
                                         <div class="card card-overlay">
-                                            <img style="height: 250px;" class="card-img img-fluid"
+                                            <img style="height: 150px;margin-top: 50px;" class="card-img img-responsive"
                                                  src="{{asset($specie->avatar)}}"
                                                  alt="Card image">
                                             <div class="card-img-overlay p-0 d-flex flex-column">
@@ -78,10 +78,10 @@
                                                 <div class="card-body">
 
                                                 </div>
-                                                <div class="card-footer bg-transparent text-center">
+                                                {{--<div class="card-footer bg-transparent text-center">
                                                     <a href="javascript:void(0);" class="link-light">Read More <i
                                                             class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i></a>
-                                                </div>
+                                                </div>--}}
                                             </div>
                                         </div>
                                     </div><!-- end col -->

@@ -18,6 +18,13 @@ class SpeciesGender extends Model
         return $this->hasMany(PopulationEstimate::class);
     }
 
+    public function species()
+    {
+        return $this->hasMany(Species::class, 'species_gender_id');
+    }
+
+    //has many poaching
+
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()

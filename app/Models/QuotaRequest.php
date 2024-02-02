@@ -14,14 +14,19 @@ class QuotaRequest extends Model
     protected $guarded = [];
 
 
+    public function organisation()
+    {
+        return $this->belongsTo(Organisation::class);
+    }
+
+    public function wardQuotaDistributions()
+    {
+        return $this->hasMany(WardQuotaDistribution::class);
+    }
+
     public function species()
     {
         return $this->belongsTo(Species::class);
-    }
-
-    public function huntingConcession() // The concession requesting the quota
-    {
-        return $this->belongsTo(HuntingConcession::class);
     }
 
     public function getSlugOptions(): SlugOptions

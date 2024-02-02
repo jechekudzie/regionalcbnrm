@@ -18,6 +18,10 @@ class Maturity extends Model
         return $this->hasMany(PopulationEstimate::class);
     }
 
+    public function species()
+    {
+        return $this->hasMany(Species::class, 'maturity_id');
+    }
     public function getSlugOptions() : SlugOptions
     {
         return SlugOptions::create()
