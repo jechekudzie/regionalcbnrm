@@ -38,14 +38,14 @@
                                             <i class="fa fa-arrow-left"></i> Back
                                         </a>
 
-                                        <a href="" class="btn btn-info add-btn">
+                                      {{--  <a href="" class="btn btn-info add-btn">
                                             <i class="fa fa-plus"></i> Add Direct
                                         </a>
 
                                         <button class="btn btn-info add-btn" data-bs-toggle="modal"
                                                 data-bs-target="#showModal">
                                             <i class="fa fa-plus"></i> Add Modal
-                                        </button>
+                                        </button>--}}
                                     </div>
                                 </div>
                             </div>

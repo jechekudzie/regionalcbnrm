@@ -16,14 +16,13 @@ use Spatie\Permission\Models\Role;
 
 class ApiController extends Controller
 {
-    //
-    private $generatedNumbers = [];
-
     /*
      |--------------------------------------------------------------------------
-     | Organisation Types
+     | Organisation Management
      |--------------------------------------------------------------------------
      */
+    private $generatedNumbers = [];
+
     public function fetchTemplate()
     {
         $organisations = OrganisationType::whereDoesntHave('parents')->get();
@@ -48,11 +47,6 @@ class ApiController extends Controller
         return $data;
     }
 
-    /*
-     |--------------------------------------------------------------------------
-     | Organisation Management
-     |--------------------------------------------------------------------------
-     */
     function generateUniqueNumber($min, $max)
     {
         $num = rand($min, $max);
@@ -210,7 +204,6 @@ class ApiController extends Controller
 
         return response()->json($quotaDistributions);
     }
-
 
 
 }

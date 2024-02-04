@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('role_id')->nullable();
             $table->boolean('is_active')->default(1);
-
+            $table->timestamps();
         });
     }
 
@@ -28,5 +28,6 @@ return new class extends Migration
     public function down(): void
     {
         //
+        Schema::dropIfExists('organisation_users');
     }
 };

@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('organisation_type_id');
             $table->unsignedBigInteger('organisation_id')->nullable();//can be child of another organisation
-            $table->string('logo')->nullable();//can be child of another organisation
-            $table->longText('description')->nullable();//can be child of another organisation
+            $table->string('logo')->nullable();
+            $table->longText('description')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });

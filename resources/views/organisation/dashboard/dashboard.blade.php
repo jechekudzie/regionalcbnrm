@@ -66,8 +66,7 @@
 
                                             <p class="text-muted text-end">
                                                 <i class="fa fa-sitemap text-primary fs-18 align-right me-2"></i>
-                                                child
-                                                organisations @if($organisation && method_exists($organisation, 'getAllChildren'))
+                                                child organisations @if($organisation && method_exists($organisation, 'getAllChildren'))
                                                     ( {{ count($organisation->getAllChildren()) }})
                                                 @else
                                                     child organisations (0)

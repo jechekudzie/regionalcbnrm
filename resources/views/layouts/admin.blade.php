@@ -259,14 +259,14 @@
 
                                 <li class="nav-item">
                                     <a href="{{route('admin.organisations.index')}}"
-                                       class="nav-link {{ Request::routeIs('admin.organisations*') ? 'active' : '' }}">
-                                        Create Organisations
+                                       class="nav-link {{ Request::routeIs('admin.organisations.index') ? 'active' : '' }}">
+                                        Add Organisations
                                     </a>
                                 </li>
 
                                 <li class="nav-item">
                                     <a href="{{route('admin.organisations.manage')}}"
-                                       class="nav-link {{ Request::routeIs('admin.organisations.manage*') ? 'active' : '' }}">
+                                       class="nav-link {{ Request::routeIs('admin.organisations.manage') ? 'active' : '' }}">
                                         Manage Organisations
                                     </a>
                                 </li>

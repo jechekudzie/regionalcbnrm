@@ -50,7 +50,7 @@ class OrganisationRolesController extends Controller
             ->with('success', 'Role updated successfully.');
     }
 
-    //desrtroy role
+    //destroy role
     public function destroy(Role $role)
     {
 
