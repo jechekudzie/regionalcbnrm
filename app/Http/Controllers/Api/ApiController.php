@@ -80,45 +80,42 @@ class ApiController extends Controller
         return response()->json($data);
     }
 
-    private function formatOrganisationTreeData($organisations)
+    private function formatOrganisationTreeData($entities, $parentOrganisationId = null, $parentOrganisationName = null)
     {
         $data = [];
 
-        foreach ($organisations as $organisation) {
+        foreach ($entities as $entity) {
             //random number
             $rand = $this->generateUniqueNumber(1, 1000000);
 
-            if ($organisation instanceof Organisation) {
-
-                //add the organisation id to the organisationType children array elements
-                $organisation->organisationType->children->map(function ($item) use ($organisation) {
-                    $item->organisation_id = $organisation->id;
-                });
-
-                // Assuming $organisation is an instance of Organisation
-                $parentOrganisation = $organisation->parentOrganisation; // This will get the parent Organisation
+            if ($entity instanceof Organisation) {
 
                 $data[] = [
-                    'id' => $rand . '-o-' . $organisation->id,
-                    'text' => $organisation->name,
+                    'id' => $rand . '-o-' . $entity->id,
+                    'text' => $entity->name,
                     'type' => 'organisation',
-                    'slug' => $organisation->slug,
-                    'parentId' => $organisation->organisation_id,// Set parent ID to organisation_id for child organisations
-                    'parentName' => optional($parentOrganisation)->name,
-                    'children' => $this->formatOrganisationTreeData($organisation->organisationType->children),
+                    'type_id' => $entity->organisation_type_id,
+                    'slug' => $entity->slug,
+                    'parentId' => $entity->parentOrganisation->id ?? null,// Set parent ID to organisation_id for child organisations
+                    'parentName' => $entity->parentOrganisation->name ?? null, //fetch using parentOrganisation method in Organisation model
+                    // Process children OrganisationTypes, passing current Organisation as parent
+                    'children' => $this->formatOrganisationTreeData($entity->organisationType->children, $rand . '-o-' . $entity->id, $entity->name),
                 ];
             } else {
-                // This is presumably an OrganisationType instance
-                $parentOrgType = $organisation->parents()->first(); // Retrieve the first parent OrganisationType
+
+                $parts = explode('-', $parentOrganisationId);
+
+                $organisation_id = isset($parts[2]) ? $parts[2] : null;
 
                 $data[] = [
-                    'id' => $rand . '-ot-' . $organisation->id,
-                    'text' => $organisation->name,
+                    'id' => $rand . '-ot-' . $entity->id,
+                    'text' => $entity->name,
                     'type' => 'organisationType',
-                    'slug' => $organisation->slug,
-                    'parentId' => $parentOrgType ? $rand . '-ot-' . $parentOrgType->id : null, // Use parent OrganisationType ID if available
-                    'parentName' => $parentOrgType ? $parentOrgType->name : null,
-                    'children' => $this->formatOrganisationTreeData($organisation->organisations()->where('organisation_id', $organisation->organisation_id)->get()),
+                    'type_id' => $entity->id,
+                    'parentId' => $parentOrganisationId, // Inherit parent ID from the Organisation above
+                    'parentName' => $parentOrganisationName, // Inherit parent name from the Organisation above
+                    // Process child Organisations, maintaining current OrganisationType as parent
+                    'children' => $this->formatOrganisationTreeData($entity->organisations()->where('organisation_id', $organisation_id)->get(), $rand . '-ot-' . $entity->id, $entity->name),
                 ];
             }
         }

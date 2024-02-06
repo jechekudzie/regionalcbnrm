@@ -41,7 +41,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <!--start tree-->
-                                <div id="tree"></div>
+                                <div style="overflow:scroll; height:600px;" id="tree"></div>
                                 <!--end tree-->
                             </div>
                         </div>
@@ -56,6 +56,7 @@
                             <div class="card-body">
                                 <div class="card border card-border-light">
                                     <div class="card-header">
+                                        <p id="location"></p>
                                         <h6 id="card-title" class="card-title mb-0">Add New Organisation</h6>
                                         <p style="font-size: 15px;color: red;"><i class="fa fa-arrow-left"></i>
                                             Select an
@@ -73,12 +74,10 @@
                                                        placeholder="Enter organisation name" value="">
                                             </div>
                                             <!-- Make sure the name attribute matches your database column name -->
-                                            <input type="hidden" name="organisation_id" value="" id="parent_id">
+                                            <input type="hidden" name="parent_id" value="" id="parent_id">
                                             <input type="hidden" name="parent_name" value="" id="parent_name">
-                                            <input type="hidden" name="organisation_type" value=""
-                                                   id="organisation_type">
-                                            <input type="hidden" name="organisation_type_id" value=""
-                                                   id="organisation_type_id">
+                                            <input type="hidden" name="organisation_type" value="" id="organisation_type">
+                                            <input type="hidden" name="organisation_type_id" value="" id="organisation_type_id">
 
                                             <div class="text-start">
                                                 <button id="submit-button" type="submit"
@@ -159,18 +158,20 @@
             let organisationType = null;
             let organisationName = null;
             let organisationSlug = null;
+            let typeName = null;
+            let typeId = null;
             let actionUrl = null;
             actionUrl = '/admin/organisations/store';
 
             var submitButton = $('#submit-button');
             var cardTitle = $('#card-title');
             var pageTitle = $('#page-title');
-            var manageOrganisationTitle = $('#manageOrganisationTitle');
+
 
 
             // Handle node selection
             tree.on('select', function (e, $node, id) {
-                saveSelectedNodeId(id);
+                /*saveSelectedNodeId(id);*/
                 var nodeData = tree.getDataById(id);
 
                 if (nodeData) {
@@ -178,6 +179,8 @@
                     nodeName = nodeData.text;
                     parentId = nodeData.parentId;
                     parentName = nodeData.parentName;
+                    typeName = nodeData.type;
+                    typeId = nodeData.type_id;
 
                     [rand, type, organisation_id] = nodeData.id.split('-');
 
@@ -186,14 +189,16 @@
                     organisationName = nodeName;
                     organisationSlug = nodeData.slug;
 
-                    cardTitle.text('Add - ' + organisationName);
+                    cardTitle.text('Add - ' + organisationName + ' for ' + parentName);
                     pageTitle.text('Add - ' + organisationName);
+
+                   /* alert('Parent id '+ parentId + ' and Parent Name '+ parentName + ' Type id '+ typeId + ' and Type Name '+ typeName);*/
 
                     submitButton.text('Add ' + organisationName + ' New');
                     $('#parent_id').val(parentId);
                     $('#parent_name').val(parentName);
-                    $('#organisation_type').val(organisationType);
-                    $('#organisation_type_id').val(organisationID);
+                    $('#organisation_type').val(typeName);
+                    $('#organisation_type_id').val(typeId);
 
                     if (organisationType === 'ot') {
                         organisationForm.show();
@@ -210,10 +215,8 @@
                         actionUrl = '/admin/organisations/' + organisationSlug + '/update';
                         $('input[name="_method"]').val('PATCH');
                         submitButton.text('Update ' + organisationName);
-                        manageOrganisation.show();
-                        manageUsers.show();
+
                         cardTitle.text('Edit - ' + organisationName);
-                        manageOrganisationTitle.text('Manage - ' + organisationName);
                         fetchOrganisation(organisationSlug);
                     }
 
@@ -221,11 +224,7 @@
                     checkedNodeNameElement.text(nodeName);
                 }
             });
-            tree.on('unselect', function (e, node, id) {
-                actionUrl = '/admin/organisations/store';
-                organisationForm.hide();
-                clearSavedNodeId();
-            });
+
 
             $('#organisationForm').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -268,76 +267,6 @@
                 });
             });
 
-
-
-            var treeReloaded = true; // Flag to check if tree has been reloaded
-
-            // Function to save selected node ID to local storage
-            function saveSelectedNodeId(nodeId) {
-                localStorage.setItem('selectedNodeId', nodeId);
-            }
-
-            // Function to get selected node ID from local storage
-            function getSelectedNodeId() {
-                return localStorage.getItem('selectedNodeId');
-            }
-
-            // Function to clear the saved node ID from local storage
-            function clearSavedNodeId() {
-                localStorage.removeItem('selectedNodeId');
-            }
-
-            // Function to expand from root to a given node
-            function expandFromRootToNode(nodeId) {
-                var parents = tree.parents(nodeId);
-                if (parents && parents.length) {
-                    parents.reverse().forEach(function (parentId) {
-                        tree.expand(parentId);
-                    });
-                }
-                tree.expand(nodeId);
-            }
-
-            // Function to select and expand from root to a node by ID
-            function selectAndExpandFromRootToNode(nodeId) {
-                console.log("Selecting and expanding node: ", nodeId);
-                var nodeToSelect = tree.getNodeById(nodeId);
-                if (nodeToSelect) {
-                    tree.select(nodeToSelect);  // Selects the node
-                    expandFromRootToNode(nodeId);  // Expands from root to the node
-                } else {
-                    console.log("Node not found: ", nodeId);
-                }
-            }
-
-            // Select and expand from root to the node if it's saved in local storage
-            var savedNodeId = getSelectedNodeId();
-            if (savedNodeId) {
-                selectAndExpandFromRootToNode(savedNodeId);
-            }
-
-            // Event listener for node selection
-            tree.on('select', function (e, node, id) {
-                saveSelectedNodeId(id);
-            });
-
-            // Event listener for node unselection (if applicable)
-            // Replace 'unselect' with the correct event name if different
-            tree.on('unselect', function (e, node, id) {
-                clearSavedNodeId();
-            });
-
-            // Handle the dataBound event
-            tree.on('dataBound', function () {
-                if (treeReloaded) {
-                    var savedNodeId = getSelectedNodeId();
-                    if (savedNodeId) {
-                        selectAndExpandFromRootToNode(savedNodeId);
-                    }
-                    // Reset the flag
-                    treeReloaded = false;
-                }
-            });
 
         });
 

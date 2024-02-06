@@ -27,25 +27,6 @@ class Organisation extends Model
         return $this->hasMany(Organisation::class);
     }
 
-    //belongs to many users
-    public function users()
-    {
-        return $this->belongsToMany(User::class, 'organisation_users')
-            ->withPivot('role_id');
-    }
-
-
-    //has many roles
-    public function organisationRoles()
-    {
-        return $this->hasMany(Role::class, 'organisation_id');
-    }
-
-    public function availablePermissions()
-    {
-        return $this->belongsToMany(Permission::class, 'organisation_permissions');
-    }
-
 
     public function parentOrganisation()
     {
@@ -98,6 +79,27 @@ class Organisation extends Model
 
         return $children;
     }
+
+
+    //belongs to many users
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'organisation_users')
+            ->withPivot('role_id');
+    }
+
+
+    //has many roles
+    public function organisationRoles()
+    {
+        return $this->hasMany(Role::class, 'organisation_id');
+    }
+
+    public function availablePermissions()
+    {
+        return $this->belongsToMany(Permission::class, 'organisation_permissions');
+    }
+
 
     //has many population estimates
     public function populationEstimates()

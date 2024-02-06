@@ -116,7 +116,7 @@
                                             <td>
                                                 <!-- Edit Button -->
                                                 <a href="javascript:void(0);" class="edit-button btn btn-sm btn-primary"
-                                                   data-name="{{ $conflictOutcome->name }}" data-slug="{{ $conflictOutcome->slug }}" title="Edit">
+                                                   data-name="{{ $conflictOutcome->name }}" data-slug="{{ $conflictOutcome->slug }}" data-conflict-type-id="{{ $conflictOutcome->conflictType->id }}" title="Edit">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
                                                 <!-- Delete Button -->
@@ -203,11 +203,13 @@
             submitButton.text('Add New');
             //on load by default name field to be empty
             $('#name').val('');
+            $('#conflict_type_id').val('');
 
 
             // Click event for the edit button
             $('.edit-button').on('click', function () {
                 var name = $(this).data('name');
+                var conflict_type_id = $(this).data('conflict-type-id');
                 var conflictOutCome = $(this).data('slug');
 
                 // Set form action for update, method to PATCH, and button text to Update
@@ -216,8 +218,9 @@
                 submitButton.text('Update');
                 // Populate the form for editing
                 $('#name').val(name);
-                $('#card-title').text('Edit - ' + name + ' Conflict Outcomes');
-                $('#page-title').text('Edit - ' + name + ' Conflict Outcomes');
+                $('#conflict_type_id').val(conflict_type_id);
+                $('#card-title').text('Edit - ' + name + ' Outcomes');
+                $('#page-title').text('Edit - ' + name + ' Outcomes');
             });
 
             // Click event for adding a new item
@@ -227,8 +230,9 @@
                 $('input[name="_method"]').val('POST');
                 submitButton.text('Add New');
                 $('#name').val('');
+                $('#conflict_type_id').val('');
                 $('#card-title').text('Add Conflict Outcomes');
-                $('#page-title').text('Add New Conflict Outcomes');
+                $('#page-title').text('Add Conflict Outcomes');
             });
         });
 

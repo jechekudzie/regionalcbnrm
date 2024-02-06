@@ -20,22 +20,19 @@ class OrganisationsController extends Controller
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
+                'parent_id' => 'required',
                 'organisation_type_id' => 'required|exists:organisation_types,id',
-                // other fields to validate
             ]);
 
-            $organisation = Organisation::create($validatedData);
+            $parts = explode('-', $validatedData['parent_id']);
 
-            // Find parent OrganisationType
-            $organisationType = OrganisationType::find($validatedData['organisation_type_id']);
-            $parentOrganisationType = $organisationType->parents()->first();
-            if ($parentOrganisationType) {
-                $parentOrganisation = Organisation::where('organisation_type_id', $parentOrganisationType->id)->first();
-                if ($parentOrganisation) {
-                    $organisation->organisation_id = $parentOrganisation->id;
-                }
-            }
-            $organisation->save();
+            $parent_id = isset($parts[2]) ? $parts[2] : null;
+
+            $organisation = Organisation::create([
+                'name' => $validatedData['name'],
+                'organisation_type_id' => $validatedData['organisation_type_id'],
+                'organisation_id' => $parent_id,
+            ]);
 
             // Create admin role
             $organisation->organisationRoles()->create([
@@ -69,7 +66,6 @@ class OrganisationsController extends Controller
         $organisation->update($data);
         return redirect()->route('admin.organisations.index')->with('success', 'Organisation created successfully');
     }
-
 
     public function destroy(Organisation $organisation)
     {

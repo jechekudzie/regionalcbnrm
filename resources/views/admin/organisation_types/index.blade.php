@@ -133,9 +133,9 @@
                     organisationTypeName = nodeName;
                     organisationTypeSlug = nodeData.slug;
 
-                    cardTitle.text('Add - ' + organisationTypeName + ' Organisation Type');
-                    pageTitle.text('Add - ' + organisationTypeName + ' Organisation Type');
-                    submitButton.text('Add ' + organisationTypeName + ' Organisation Type');
+                    cardTitle.text('Add - ' + organisationTypeName + ' (children organisation types)');
+                    pageTitle.text('Add - ' + organisationTypeName + ' (children organisation types)');
+                    submitButton.text('Add ' + organisationTypeName + '(children organisation types)');
                     /*$('#organisationTypeform').attr('action', '/admin/organisation-types/' + organisationTypeSlug);*/
                     actionUrl =  '/admin/organisation-types/' + organisationTypeSlug;
 

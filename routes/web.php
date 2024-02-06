@@ -20,33 +20,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/test', function () {
 
-    $plain  = \Illuminate\Support\Facades\Hash::check('password','$2y$12$XG6a5.gxjXj4y6ybu/gike6hfJTtKeVVFDhl7UdxVPvr7EdZrFc2G');
 
-    dd($plain);
 
-    $organisation = \App\Models\Organisation::find(3);
 
-    foreach (\App\Models\Species::all() as $specie){
-        echo $specie->name.' '.'<img src="'.$specie->avatar.'" width="100px" height="100px">'.'<br>';
-    }
-
-    /*$organisation = \App\Models\Organisation::find(3);
-    $organisation->organisationType->children->map(function ($item) use ($organisation) {
-        $item->organisation_id = $organisation->id;
-    });
-
-    // Assuming $organisation is an instance of Organisation
-    $parentOrganisation = $organisation->parentOrganisation; // This will get the parent Organisation
-
-    dd($parentOrganisation);
-
-    $string = "687549-ot-1";
+    $string = "800350-ot-5";
     $parts = explode('-', $string);
 
-// The parts will be ["687549", "ot", "1"]
-// If you want to get the number after "ot-", that would be the third element in the array
-    $number = isset($parts[2]) ? $parts[2] : null;*/
+    $number = isset($parts[2]) ? $parts[2] : null;
 
+    dd($number);
 //    echo $number;
     return view('welcome');
 });

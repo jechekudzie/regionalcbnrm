@@ -216,7 +216,7 @@
                     <img src="{{asset('logo/logo.png')}}" alt="" height="50">
                 </span>
                 <span class="logo-lg">
-                    <img src="{{asset('logo/logo.png')}}" alt="" height="80">
+                    <img src="{{asset('logo/logo.png')}}" alt="" height="60">
                 </span>
             </a>
             <!-- Light Logo-->
@@ -225,7 +225,7 @@
                      <img src="{{asset('logo/logo.png')}}" alt="" height="50">
                  </span>
                 <span class="logo-lg">
-                     <img src="{{asset('logo/logo.png')}}" alt="" height="80">
+                     <img src="{{asset('logo/logo.png')}}" alt="" height="60">
                  </span>
             </a>
             <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
