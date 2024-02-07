@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('layouts.organisation')
 
 @push('head')
 
@@ -16,7 +16,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0" id="page-title">Modules - {{$organisation->name}}  - Assign {{$role->name}} Permissions</h4>
+                        <h4 class="mb-sm-0" id="page-title">Modules - {{$organisation->name}} -
+                            Assign {{$userRole->name}} Permissions</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -40,7 +41,8 @@
                                         </a>
                                         <button class="btn btn-success btn-sm" data-bs-toggle="modal"
                                                 data-bs-target="#showModal"><i
-                                                class="fa fa-plus"></i> {{$organisation->name}}  - Assign {{$role->name}} Permissions
+                                                class="fa fa-plus"></i> {{$organisation->name}} -
+                                            Assign {{$userRole->name}} Permissions
                                         </button>
                                     </div>
                                 </div>
@@ -79,37 +81,43 @@
                                     <thead>
                                     <tr>
                                         <th class="sorting sorting_asc" {{--tabindex="0"--}}
-                                            aria-controls="buttons-datatables" {{--rowspan="1" colspan="1"--}}
+                                        aria-controls="buttons-datatables" {{--rowspan="1" colspan="1"--}}
                                             aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending"
-                                            >Module
+                                        >#
+                                        </th>
+                                        <th class="sorting sorting_asc" {{--tabindex="0"--}}
+                                        aria-controls="buttons-datatables" {{--rowspan="1" colspan="1"--}}
+                                            aria-sort="ascending"
+                                            aria-label="Name: activate to sort column descending"
+                                        >Module
                                         </th>
                                         <th class="sorting" {{--tabindex="0"--}} aria-controls="buttons-datatables"
                                             {{--rowspan="1" colspan="1"--}}
                                             aria-label="Position: activate to sort column ascending"
-                                           >View
+                                        >View
                                         </th>
 
                                         <th class="sorting" {{--tabindex="0"--}} aria-controls="buttons-datatables"
                                             {{--rowspan="1" colspan="1"--}}
                                             aria-label="Position: activate to sort column ascending"
-                                            >Create
+                                        >Create
                                         </th>
 
                                         <th class="sorting" {{--tabindex="0"--}} aria-controls="buttons-datatables"
                                             {{--rowspan="1" colspan="1"--}}
                                             aria-label="Salary: activate to sort column ascending"
-                                            >Read
+                                        >Read
                                         </th>
                                         <th class="sorting" {{--tabindex="0"--}} aria-controls="buttons-datatables"
                                             {{--rowspan="1" colspan="1"--}}
                                             aria-label="Salary: activate to sort column ascending"
-                                            >Update
+                                        >Update
                                         </th>
                                         <th class="sorting" {{--tabindex="0"--}} aria-controls="buttons-datatables"
                                             {{--rowspan="1" colspan="1"--}}
                                             aria-label="Salary: activate to sort column ascending"
-                                            >Delete
+                                        >Delete
                                         </th>
                                     </tr>
                                     </thead>
@@ -120,12 +128,13 @@
                                         @endphp
 
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $module->name }}</td>
                                             <!-- Display permission name and badge -->
                                             @foreach(['view', 'create', 'read', 'update', 'delete'] as $action)
                                                 @php
                                                     $permissionName = "{$action}-{$moduleName}";
-                                                    $hasPermission = $rolePermissions->contains(fn($perm) => Str::contains($perm->name, $permissionName));
+                                                    $hasPermission = $permissions->contains(fn($perm) => Str::contains($perm->name, $permissionName));
                                                 @endphp
                                                 <td>
                                                     @if($hasPermission)
@@ -154,11 +163,14 @@
                                             <div class="card border">
                                                 <div class="card-header">
 
-                                                    <h4 class="card-title mb-0"> {{$organisation->name}}  - Assign {{$role->name}} Permissions</h4>
+                                                    <h4 class="card-title mb-0"> {{$organisation->name}} -
+                                                        Assign {{$userRole->name}} Permissions</h4>
                                                 </div>
                                                 <div class="card-body">
 
-                                                    <form action="{{route('admin.permissions.assign-permission-to-role',[$organisation->slug,$role->id])}}" method="POST">
+                                                    <form
+                                                        action="{{route('admin.permissions.assign-permission-to-role',[$organisation->slug,$userRole->id])}}"
+                                                        method="POST">
                                                         @csrf
                                                         <div class="table-responsive">
                                                             <table class="table table-bordered">
@@ -173,24 +185,42 @@
                                                                 </tr>
                                                                 </thead>
                                                                 <tbody>
+                                                                @php
+                                                                    // Extract module names from permissions
+                                                                           $permissionModuleNames = $permissions->map(function ($permission) {
+                                                                            // Split the permission name to extract the module part, then replace hyphens with spaces and convert to title case
+                                                                            $moduleName = explode('-', $permission->name, 2)[1] ?? ''; // Default to empty string if split fails
+                                                                            $moduleName = str_replace('-', ' ', $moduleName); // Convert hyphens back to spaces
+                                                                            $moduleName = ucwords($moduleName); // Convert to title case to match module names
+                                                                            return $moduleName;
+                                                                        })->unique();
+
+                                                                        // Filter modules based on those present in permissions
+                                                                        $modules = $modules->filter(function ($module) use ($permissionModuleNames) {
+                                                                            return $permissionModuleNames->contains($module->name); // Directly use the module's name for comparison
+                                                                        });
+                                                                @endphp
+
                                                                 @foreach ($modules as $module)
                                                                     @php
                                                                         $moduleName = strtolower(str_replace(' ', '-', $module->name));
                                                                     @endphp
                                                                     <tr>
                                                                         <td>{{ $module->name }}</td>
-                                                                        <!-- Checkboxes for permissions -->
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="view-{{ $moduleName }}" {{ $permissions->contains("view-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="create-{{ $moduleName }}" {{ $permissions->contains("create-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="read-{{ $moduleName }}" {{ $permissions->contains("read-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="update-{{ $moduleName }}" {{ $permissions->contains("update-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="delete-{{ $moduleName }}" {{ $permissions->contains("delete-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <!-- Dynamically check if the permission exists within the user's permissions -->
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="view-{{ $moduleName }}" {{ $permissions->pluck('name')->contains("view-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="create-{{ $moduleName }}" {{ $permissions->pluck('name')->contains("create-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="read-{{ $moduleName }}" {{ $permissions->pluck('name')->contains("read-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="update-{{ $moduleName }}" {{ $permissions->pluck('name')->contains("update-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="delete-{{ $moduleName }}" {{ $permissions->pluck('name')->contains("delete-{$moduleName}") ? 'checked' : '' }}></td>
                                                                     </tr>
                                                                 @endforeach
+
                                                                 </tbody>
                                                             </table>
                                                         </div>
-                                                        <button type="submit" class="btn btn-primary">Save Permissions</button>
+                                                        <button type="submit" class="btn btn-primary">Save Permissions
+                                                        </button>
                                                     </form>
 
                                                 </div>

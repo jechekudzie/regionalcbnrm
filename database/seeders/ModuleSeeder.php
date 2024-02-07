@@ -32,7 +32,7 @@ class ModuleSeeder extends Seeder
         ];
 
         foreach ($modules as $module) {
-            Module::create(['name' => $module]);
+            Module::create(['name' => ucfirst($module)]);
         }
     }
 }

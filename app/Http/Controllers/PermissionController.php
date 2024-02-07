@@ -24,7 +24,7 @@ class PermissionController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|unique:modules',
         ]);
-        $module = Module::create(['name' => $request->name]);
+        $module = Module::create(['name' => ucfirst($request->name)]);
 
         return redirect()->route('admin.permissions.index');
     }

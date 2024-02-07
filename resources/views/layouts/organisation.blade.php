@@ -415,6 +415,13 @@
                         </a>
 
                     </li>
+                    <li class="nav-item">
+                        <a style="margin: 10px;" class="btn btn-success btn-sm"
+                           href="{{route('test.roles.index',$organisation->slug)}}">
+                            <span data-key="t-dashboards">Test Permissions</span>
+                        </a>
+
+                    </li>
 
                 </ul>
             </div>

@@ -21,8 +21,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test', function () {
 
 
-
-
     $string = "800350-ot-5";
     $parts = explode('-', $string);
 
@@ -32,6 +30,12 @@ Route::get('/test', function () {
 //    echo $number;
     return view('welcome');
 });
+
+
+
+//organisation r
+Route::get('/{organisation}/roles', [\App\Http\Controllers\OrganisationPermissionController::class, 'index'])->name('test.roles.index');
+
 
 Route::get('/', function () {
 
