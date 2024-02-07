@@ -30,6 +30,12 @@ class Hunter extends Model
         return $this->belongsToMany(HuntingActivity::class, 'hunting_activity_hunter');
     }
 
+
+    //has many hunting detail out comes
+    public function huntingDetailOutComes()
+    {
+        return $this->hasMany(HuntingDetailOutCome::class);
+    }
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
@@ -42,4 +48,5 @@ class Hunter extends Model
     {
         return 'slug';
     }
+
 }

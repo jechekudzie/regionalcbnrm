@@ -237,12 +237,14 @@
 
         <!-- SIDEBARD -->
         <div id="scrollbar">
-            <div  class="container-fluid">
+            <div class="container-fluid">
                 <div id="two-column-menu"></div>
                 <ul class="navbar-nav" id="navbar-nav">
-                    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Organisation</span></li>
+                    <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Organisation</span>
+                    </li>
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#species" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#species"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="species">
                             <span data-key="t-dashboards">Wildlife</span>
                         </a>
@@ -259,7 +261,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#populationEstimates" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#populationEstimates"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="populationEstimates">
                             <span data-key="t-dashboards">Population Estimates</span>
                         </a>
@@ -277,7 +280,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#quotaSetings" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#quotaSetings"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="quotaSetings">
                             <span data-key="t-dashboards">Quota Settings</span>
                         </a>
@@ -304,7 +308,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hunting" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hunting"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="hunting">
                             <span data-key="t-dashboards">Hunting Activities</span>
                         </a>
@@ -314,7 +319,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.hunters.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.hunters*') ? 'active' : '' }}">
-                                         Clients
+                                        Clients
                                     </a>
                                 </li>
 
@@ -335,8 +340,10 @@
                         </div>
                     </li>
 
+
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hwc" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hwc"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="hwc">
                             <span data-key="t-dashboards">Human Wildlife Conflict </span>
                         </a>
@@ -346,15 +353,15 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.incidents.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.incidents.index*') ? 'active' : '' }}">
-                                       Human Wildlife Conflict
+                                        Human Wildlife Conflict
                                     </a>
                                 </li>
                             </ul>
                         </div>
                     </li>
-
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#poaching" data-bs-toggle="collapse"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#poaching"
+                           data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="poaching">
                             <span data-key="t-dashboards">Poaching Incidents </span>
                         </a>
@@ -372,6 +379,43 @@
                         </div>
                     </li>
 
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#childOrganisation"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="childOrganisation">
+                            <span data-key="t-dashboards">Child Organisations </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="childOrganisation">
+                            <ul class="nav nav-sm flex-column">
+                                @if($organisation && method_exists($organisation, 'childOrganisations'))
+                                    @foreach($organisation->childOrganisations as $childOrganisation)
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="{{route('organisation.dashboard.index',$childOrganisation->slug)}}">
+                                                {{ $childOrganisation->name }}
+                                            </a>
+                                            @foreach($childOrganisation->childOrganisations as $child)
+                                                <ul class="nav nav-sm flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="{{route('organisation.dashboard.index',$child->slug)}}">{{ $child->name }}</a>
+                                                    </li>
+                                                </ul>
+                                            @endforeach
+                                        </li>
+
+                                    @endforeach
+                                @endif
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="margin: 10px;" class="btn btn-success btn-sm"
+                           href="{{route('organisation.dashboard')}}">
+                            <span data-key="t-dashboards">Return To Main Dashboard</span>
+                        </a>
+
+                    </li>
+
                 </ul>
             </div>
             <!-- Sidebar -->
@@ -386,6 +430,7 @@
 
     <div class="main-content">
         @yield('content')
+
         <footer class="footer">
             <div class="container-fluid">
                 <div class="row">
@@ -446,8 +491,22 @@
         });
     });
 
+
+    // Wait for the DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function () {
+        // Set a timeout to hide the alerts after 10 seconds
+        setTimeout(function () {
+            var alertMessages = document.getElementsByClassName('alert-dismissible');
+            for (var i = 0; i < alertMessages.length; i++) {
+                alertMessages[i].style.display = 'none';
+            }
+        }, 5000); // 5000 milliseconds = 5 seconds
+    });
+
+
 </script>
 @stack('scripts')
+
 </body>
 
 </html>

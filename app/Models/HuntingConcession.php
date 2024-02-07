@@ -71,6 +71,12 @@ class HuntingConcession extends Model
         return $this->hasMany(HuntingActivity::class);
     }
 
+    //hunting Detail
+    public function huntingDetails()
+    {
+        return $this->hasMany(HuntingDetail::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

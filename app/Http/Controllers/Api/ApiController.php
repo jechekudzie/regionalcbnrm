@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hunter;
+use App\Models\HuntingDetailOutCome;
 use App\Models\Organisation;
 use App\Models\OrganisationType;
 use App\Models\QuotaRequest;
@@ -70,6 +71,7 @@ class ApiController extends Controller
                 'id' => $rand . '-ot-' . $organisation->id,
                 'text' => $organisation->name,
                 'type' => 'organisationType',
+                'type_id' => $organisation->id,
                 'slug' => $organisation->slug,
                 'parentId' => null, // Set parent ID to null for top-level Organisation Types
                 'parentName' => null,
@@ -96,7 +98,7 @@ class ApiController extends Controller
                     'type' => 'organisation',
                     'type_id' => $entity->organisation_type_id,
                     'slug' => $entity->slug,
-                    'parentId' => $entity->parentOrganisation->id ?? null,// Set parent ID to organisation_id for child organisations
+                    'parentId' => $parentId = $entity->parentOrganisation ? $rand . '-o-' . $entity->parentOrganisation->id : null, // Set parent ID to organisation parent
                     'parentName' => $entity->parentOrganisation->name ?? null, //fetch using parentOrganisation method in Organisation model
                     // Process children OrganisationTypes, passing current Organisation as parent
                     'children' => $this->formatOrganisationTreeData($entity->organisationType->children, $rand . '-o-' . $entity->id, $entity->name),
@@ -104,8 +106,7 @@ class ApiController extends Controller
             } else {
 
                 $parts = explode('-', $parentOrganisationId);
-
-                $organisation_id = isset($parts[2]) ? $parts[2] : null;
+                $organisation_id = $parts[2] ?? null;
 
                 $data[] = [
                     'id' => $rand . '-ot-' . $entity->id,
@@ -203,4 +204,15 @@ class ApiController extends Controller
     }
 
 
+
+    public function getPicturesBySlug(Request $request, HuntingDetailOutCome $huntingDetailOutCome)
+    {
+        // Fetch the HuntingDetailOutcome by slug
+
+        // Decode the JSON pictures field into an array
+        $pictures = json_decode($huntingDetailOutCome->pictures, true);
+
+        // Return the pictures as a JSON response
+        return response()->json(['pictures' => $pictures]);
+    }
 }

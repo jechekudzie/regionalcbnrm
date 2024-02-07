@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('poachers', function (Blueprint $table) {
+        Schema::create('hunting_out_comes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('age')->nullable();
-            $table->unsignedBigInteger('gender_id')->nullable();
-            $table->unsignedBigInteger('country_id')->nullable();
-            $table->unsignedBigInteger('province_id')->nullable();
-            $table->string('origin')->nullable();
+            $table->longText('description')->nullable();
             $table->string('slug')->nullable();
             $table->timestamps();
         });
@@ -29,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('poachers');
+        Schema::dropIfExists('hunting_out_comes');
     }
 };

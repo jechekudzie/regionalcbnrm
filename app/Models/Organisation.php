@@ -48,7 +48,7 @@ class Organisation extends Model
         $groupedOrganizations = $childOrganizations->groupBy('organisation_type_id');
 
         // Get the first group
-        $firstGroup = $groupedOrganizations->first();
+        $firstGroup = $groupedOrganizations->skip(1)->first();
 
         return $firstGroup;
     }

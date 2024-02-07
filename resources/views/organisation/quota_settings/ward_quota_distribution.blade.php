@@ -84,13 +84,15 @@
                             @endif
 
                             <div class="align-content-start">
-                                <h2>{{$organisation->name}} - {{$quotaRequest->species->name}} Ward Quota
-                                    Distribution
-                                </h2>
+
                             </div>
                             <div class="align-content-end">
                                 <img width="200" src="{{asset($quotaRequest->species->avatar)}}" alt=""
-                                     class="img-fluid d-block"><br/>
+                                     class="img-fluid d-block">
+                                <br/>
+                                <h2>{{$organisation->name}} - {{$quotaRequest->species->name}} Ward Quota
+                                    Distribution
+                                </h2>
                             </div>
 
                             <br/>
@@ -120,7 +122,8 @@
                                         <td>{{ $wardQuotaDistribution->rational_quota }}</td>
                                         <td>
                                             <!-- Edit Button -->
-                                            <a href="#" class="edit-ward-link" data-bs-toggle="modal" data-bs-target="#updateWardModal"
+                                            <a href="#" class="edit-ward-link" data-bs-toggle="modal"
+                                               data-bs-target="#updateWardModal"
                                                data-ward-name="{{$wardQuotaDistribution->ward->name}}"
                                                data-ward-id="{{$wardQuotaDistribution->ward_id}}"
                                                data-hunting-quota="{{$wardQuotaDistribution->hunting_quota}}"
@@ -155,38 +158,61 @@
 
                                         <h4 class="card-title mb-0">{{$organisation->name}}
                                             - {{$quotaRequest->species->name}} Ward Quota Distribution</h4>
+                                        <br/>
+                                        <button type="button" class="btn btn-primary btn-sm">
+                                            Hunting <span class="badge bg-success btn-sm ms-1 ">{{$quotaRequest->hunting_quota}}</span>
+                                        </button>
+
+                                        <button type="button" class="btn btn-success btn-sm">
+                                            PAC <span class="badge bg-danger ms-1">{{$quotaRequest->pac_quota}}</span>
+                                        </button>
+
+                                        <button type="button" class="btn btn-secondary btn-sm ">
+                                            Rational <span class="badge bg-success ms-1">{{$quotaRequest->rational_quota}}</span>
+                                        </button>
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post" action="{{ route('organisation.ward-quota-distribution.store', [$organisation->slug, $quotaRequest->slug]) }}">
+                                        <form method="post"
+                                              action="{{ route('organisation.ward-quota-distribution.store', [$organisation->slug, $quotaRequest->slug]) }}">
                                             @csrf
 
                                             <!-- Hidden Fields -->
                                             <!-- Hidden Organisation ID -->
                                             <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
 
-                                            @foreach($organisation->childOrganisations as $ward)
+                                            @foreach($organisation->firstGroupOfChildOrganisations() as $ward)
                                                 <div class="ward-section mb-4">
                                                     <h5>{{ $ward->name }} Quotas</h5>
-                                                    <input type="hidden" name="wards[{{ $ward->id }}][ward_id]" value="{{ $ward->id }}">
+                                                    <input type="hidden" name="wards[{{ $ward->id }}][ward_id]"
+                                                           value="{{ $ward->id }}">
 
                                                     <!-- Quota Fields for each Ward -->
                                                     <div class="row mb-3">
                                                         <div class="col-md-4">
-                                                            <label for="wards_{{ $ward->id }}_hunting_quota" class="form-label">Hunting Quota</label>
-                                                            <input type="number" class="form-control" id="wards_{{ $ward->id }}_hunting_quota"
-                                                                   name="wards[{{ $ward->id }}][hunting_quota]" placeholder="Enter hunting quota"
+                                                            <label for="wards_{{ $ward->id }}_hunting_quota"
+                                                                   class="form-label">Hunting Quota</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="wards_{{ $ward->id }}_hunting_quota"
+                                                                   name="wards[{{ $ward->id }}][hunting_quota]"
+                                                                   placeholder="Enter hunting quota"
                                                                    min="0">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="wards_{{ $ward->id }}_pac_quota" class="form-label">PAC Quota</label>
-                                                            <input type="number" class="form-control" id="wards_{{ $ward->id }}_pac_quota"
-                                                                   name="wards[{{ $ward->id }}][pac_quota]" placeholder="Enter PAC quota" min="0">
+                                                            <label for="wards_{{ $ward->id }}_pac_quota"
+                                                                   class="form-label">PAC Quota</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="wards_{{ $ward->id }}_pac_quota"
+                                                                   name="wards[{{ $ward->id }}][pac_quota]"
+                                                                   placeholder="Enter PAC quota" min="0">
                                                         </div>
                                                         <div class="col-md-4">
-                                                            <label for="wards_{{ $ward->id }}_rational_quota" class="form-label">Rational Quota</label>
-                                                            <input type="number" class="form-control" id="wards_{{ $ward->id }}_rational_quota"
-                                                                   name="wards[{{ $ward->id }}][rational_quota]" placeholder="Enter rational quota"
+                                                            <label for="wards_{{ $ward->id }}_rational_quota"
+                                                                   class="form-label">Rational Quota</label>
+                                                            <input type="number" class="form-control"
+                                                                   id="wards_{{ $ward->id }}_rational_quota"
+                                                                   name="wards[{{ $ward->id }}][rational_quota]"
+                                                                   placeholder="Enter rational quota"
                                                                    min="0">
                                                         </div>
                                                     </div>
@@ -196,7 +222,9 @@
                                             <!-- Submit Button -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit Quota Distribution</button>
+                                                    <button type="submit" class="btn btn-primary">Submit Quota
+                                                        Distribution
+                                                    </button>
                                                 </div>
                                             </div>
                                         </form>
@@ -233,24 +261,31 @@
 
                                                 <!-- Hunting Quota Field -->
                                                 <div class="mb-3">
-                                                    <label for="updateHuntingQuota" class="form-label">Hunting Quota</label>
-                                                    <input type="number" class="form-control" id="updateHuntingQuota" name="hunting_quota" min="0">
+                                                    <label for="updateHuntingQuota" class="form-label">Hunting
+                                                        Quota</label>
+                                                    <input type="number" class="form-control" id="updateHuntingQuota"
+                                                           name="hunting_quota" min="0">
                                                 </div>
 
                                                 <!-- PAC Quota Field -->
                                                 <div class="mb-3">
                                                     <label for="updatePacQuota" class="form-label">PAC Quota</label>
-                                                    <input type="number" class="form-control" id="updatePacQuota" name="pac_quota" min="0">
+                                                    <input type="number" class="form-control" id="updatePacQuota"
+                                                           name="pac_quota" min="0">
                                                 </div>
 
                                                 <!-- Rational Quota Field -->
                                                 <div class="mb-3">
-                                                    <label for="updateRationalQuota" class="form-label">Rational Quota</label>
-                                                    <input type="number" class="form-control" id="updateRationalQuota" name="rational_quota" min="0">
+                                                    <label for="updateRationalQuota" class="form-label">Rational
+                                                        Quota</label>
+                                                    <input type="number" class="form-control" id="updateRationalQuota"
+                                                           name="rational_quota" min="0">
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Close
+                                                </button>
                                                 <button type="submit" class="btn btn-primary">Update Quota</button>
                                             </div>
                                         </form>
@@ -292,8 +327,8 @@
 
                 // Assuming you have jQuery available
 
-                $(document).ready(function() {
-                    $('.edit-ward-link').on('click', function() {
+                $(document).ready(function () {
+                    $('.edit-ward-link').on('click', function () {
                         var wardId = $(this).data('ward-id');
                         var wardName = $(this).data('ward-name');
                         var huntingQuota = $(this).data('hunting-quota');

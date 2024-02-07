@@ -53,7 +53,7 @@
                 <div class="d-flex">
                     <!-- LOGO -->
                     <div class="navbar-brand-box horizontal-logo">
-                        <a href="{{url('/')}}" class="logo logo-dark"
+                        <a href="{{url('/')}}" class="logo logo-dark">
                         </a>
 
                         <a href="{{url('/')}}" class="logo logo-light">

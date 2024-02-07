@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Regional Organisations</h4>
+                        <h4 class="mb-sm-0">Regional CBNRM - Organisations</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                                <li class="breadcrumb-item active">Regional Organisations</li>
+                                <li class="breadcrumb-item active">Regional CBNRM -  Organisations</li>
                             </ol>
                         </div>
                     </div>
@@ -61,12 +61,6 @@
                                        aria-describedby="buttons-datatables_info">
                                     <thead>
                                     <tr>
-                                        <th class="sorting sorting_asc" tabindex="0"
-                                            aria-controls="buttons-datatables" rowspan="1" colspan="1"
-                                            aria-sort="ascending"
-                                            aria-label="Name: activate to sort column descending"
-                                            style="width: 224.4px;">#
-                                        </th>
 
                                         <th class="sorting sorting_asc" tabindex="0"
                                             aria-controls="buttons-datatables" rowspan="1" colspan="1"
@@ -98,11 +92,7 @@
                                             aria-label="Start date: activate to sort column ascending"
                                             style="width: 156.4px;"> Users
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
-                                            rowspan="1" colspan="1"
-                                            aria-label="Age: activate to sort column ascending"
-                                            style="width: 83.4px;">Permissions
-                                        </th>
+
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Salary: activate to sort column ascending"
@@ -114,13 +104,11 @@
 
                                     @foreach($organisations as $organisation)
                                         <tr class="even">
-                                            <td>{{$loop->iteration}}</td>
                                             <td>{{$organisation->name}}</td>
                                             <td>{{$organisation->parentOrganisation->name ?? ''}}</td>
                                             <td class="sorting_1">{{$organisation->organisationType->name}}</td>
                                             <td><a href="{{route('admin.organisation-roles.index',$organisation->slug)}}">Manage ({{$organisation->organisationRoles->count()}})</a></td>
                                             <td><a href="{{route('admin.organisation-users.index',$organisation->slug)}}">Manage ({{$organisation->users->count()}})</a></td>
-                                            <td><a href="{{url('/')}}">Manage</a></td>
                                             <td>
                                                 <!-- Edit Button -->
                                                 <a href="javascript:void(0);" class="edit-button btn btn-sm btn-primary"

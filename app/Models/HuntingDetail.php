@@ -23,6 +23,18 @@ class HuntingDetail extends Model
         return $this->belongsTo(Species::class);
     }
 
+    //hunting concession
+    public function huntingConcession()
+    {
+        return $this->belongsTo(HuntingConcession::class);
+    }
+
+    //has many hunting detail out comes
+    public function huntingDetailOutComes()
+    {
+        return $this->hasMany(HuntingDetailOutCome::class);
+    }
+
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

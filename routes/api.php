@@ -35,6 +35,8 @@ Route::get('/fetch-quota-requests', [ApiController::class, 'fetchQuotaRequests']
 
 Route::get('/fetch-ward-quota-distributions', [ApiController::class, 'fetchWardQuotaDistributions'])->name('fetch-ward-quota-distributions.index');
 
+Route::get('/hunting-outcomes/pictures/{huntingDetailOutCome}', [ApiController::class, 'getPicturesBySlug']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

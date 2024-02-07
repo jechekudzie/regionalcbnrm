@@ -40,7 +40,7 @@ Route::get('/', function () {
 
 Route::get('/admin', function () {
     return view('admin.index');
-});
+})->name('admin.index')->middleware('role:super-admin');
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +75,20 @@ Route::get('/admin/organisation-users/{organisation}', [OrganisationUsersControl
 Route::post('/admin/organisation-users/{organisation}/store', [OrganisationUsersController::class, 'store'])->name('admin.organisation-users.store');
 Route::patch('/admin/organisation-users/{user}/update', [OrganisationUsersController::class, 'update'])->name('admin.organisation-users.update');
 Route::delete('/admin/organisation-users/{user}/{organisation}', [OrganisationUsersController::class, 'destroy'])->name('admin.organisation-users.destroy');
+
+//create permissions
+Route::get('/admin/permissions', [\App\Http\Controllers\PermissionController::class, 'index'])->name('admin.permissions.index');
+Route::post('/admin/permissions/store', [\App\Http\Controllers\PermissionController::class, 'store'])->name('admin.permissions.store');
+Route::get('/admin/permissions/{permission}/edit', [\App\Http\Controllers\PermissionController::class, 'edit'])->name('admin.permissions.edit');
+Route::patch('/admin/permissions/{permission}/update', [\App\Http\Controllers\PermissionController::class, 'update'])->name('admin.permissions.update');
+Route::delete('/admin/permissions/{permission}', [\App\Http\Controllers\PermissionController::class, 'destroy'])->name('admin.permissions.destroy');
+
+//assign permission to organisation roles
+Route::get('/admin/permissions/{organisation}/{role}/assignPermission', [\App\Http\Controllers\PermissionController::class, 'assignPermission'])->name('admin.permissions.assign');
+Route::post('/admin/permissions/{organisation}/{role}/assignPermissionToRole', [\App\Http\Controllers\PermissionController::class, 'assignPermissionToRole'])->name('admin.permissions.assign-permission-to-role');
+
+
+
 
 //routes for species
 Route::get('/admin/species', [\App\Http\Controllers\SpeciesController::class, 'index'])->name('admin.species.index');
@@ -141,8 +155,11 @@ Route::delete('/admin/conflict-types/{conflictType}', [\App\Http\Controllers\Con
 |--------------------------------------------------------------------------
 */
 //organisation dashboard
+Route::get('/organisation/dashboard/check/{organisation}', [\App\Http\Controllers\OrganisationDashboardController::class, 'checkDashboardAccess'])->name('organisation.check-dashboard-access')->middleware('auth');
 Route::get('/organisation/dashboard', [\App\Http\Controllers\OrganisationDashboardController::class, 'dashboard'])->name('organisation.dashboard')->middleware('auth');
 Route::get('/{organisation}/index', [\App\Http\Controllers\OrganisationDashboardController::class, 'index'])->name('organisation.dashboard.index')->middleware('auth');
+
+Route::get('/rural-district-councils', [\App\Http\Controllers\OrganisationDashboardController::class, 'ruralDistrictCouncils'])->name('organisation.dashboard.rural-district-councils')->middleware('auth');
 
 //wildlife species
 Route::get('/{organisation}/species', [\App\Http\Controllers\OrganisationSpeciesController::class, 'index'])->name('organisation.species.index');
@@ -226,7 +243,15 @@ Route::get('/{organisation}/hunting-activities/{huntingDetail}/edit-species-deta
 Route::patch('/{organisation}/hunting-activities/{huntingDetail}/update-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'updateSpeciesDetails'])->name('organisation.hunting-activities.update-species-details');
 Route::delete('/{organisation}/hunting-activities/{huntingDetail}/delete-species-details', [\App\Http\Controllers\HuntingDetailsController::class, 'deleteSpeciesDetails'])->name('organisation.hunting-activities.delete-species-details');
 
-//incident routes
+//hunting detail outcomes
+Route::get('/{organisation}/hunting-activities/{huntingDetail}/hunting-outcomes', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'index'])->name('organisation.hunting-detail-outcome.index');
+Route::post('/{organisation}/hunting-activities/{huntingDetail}/hunting-outcomes/store', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'store'])->name('organisation.hunting-detail-outcome.store');
+Route::get('/{organisation}/hunting-activities/hunting-outcomes/{huntingDetailOutCome}/edit', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'edit'])->name('organisation.hunting-detail-outcome.edit');
+Route::patch('/{organisation}/hunting-activities/hunting-outcomes/{huntingDetailOutCome}/update', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'update'])->name('organisation.hunting-detail-outcome.update');
+Route::delete('/{organisation}/hunting-activities/hunting-outcomes/{huntingDetailOutCome}', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'destroy'])->name('organisation.hunting-detail-outcome.destroy');
+
+
+//HWC incident routes
 Route::get('/{organisation}/incidents', [\App\Http\Controllers\IncidentController::class, 'index'])->name('organisation.incidents.index');
 Route::get('/{organisation}/incidents/create', [\App\Http\Controllers\IncidentController::class, 'create'])->name('organisation.incidents.create');
 Route::post('/{organisation}/incidents/store', [\App\Http\Controllers\IncidentController::class, 'store'])->name('organisation.incidents.store');

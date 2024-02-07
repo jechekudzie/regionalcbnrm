@@ -16,11 +16,11 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0" id="page-title">{{$organisation->name}} - Organisation roles</h4>
+                        <h4 class="mb-sm-0" id="page-title">System Modules</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                                <li class="breadcrumb-item active">Organisation roles</li>
+                                <li class="breadcrumb-item active">System Modules</li>
                             </ol>
                         </div>
                     </div>
@@ -34,9 +34,9 @@
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
 
-                                        <a href="{{route('admin.organisations.manage')}}"
+                                        <a href="{{route('admin.permissions.index')}}"
                                            class="btn btn-info btn-sm add-btn">
-                                            <i class="fa fa-arrow-left"></i> Back to list
+                                            <i class="fa fa-refresh"></i> Refresh
                                         </a>
                                         <button id="new-button" class="btn btn-success btn-sm add-btn">
                                             <i class="fa fa-plus"></i> Add new
@@ -81,67 +81,67 @@
                                             aria-controls="buttons-datatables" rowspan="1" colspan="1"
                                             aria-sort="ascending"
                                             aria-label="Name: activate to sort column descending"
-                                            style="width: 224.4px;">#
+                                        >#
+                                        </th>
+                                        <th class="sorting sorting_asc" tabindex="0"
+                                            aria-controls="buttons-datatables" rowspan="1" colspan="1"
+                                            aria-sort="ascending"
+                                            aria-label="Name: activate to sort column descending"
+                                            >Module
                                         </th>
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Role
+                                            >View
                                         </th>
 
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Guard name
-                                        </th>
-
-                                        <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
-                                            rowspan="1" colspan="1"
-                                            aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Permissions
+                                            >Create
                                         </th>
 
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Salary: activate to sort column ascending"
-                                            style="width: 112.4px;">Action
+                                            >Read
                                         </th>
-
+                                        <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
+                                            rowspan="1" colspan="1"
+                                            aria-label="Salary: activate to sort column ascending"
+                                            >Update
+                                        </th>
+                                        <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
+                                            rowspan="1" colspan="1"
+                                            aria-label="Salary: activate to sort column ascending"
+                                            >Delete
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($roles as $role)
-                                        <tr class="even">
-                                            <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$role->name}}</td>
-                                            <td>{{$role->guard_name}}</td>
+                                    @foreach ($modules as $module)
+                                        @php
+                                            $moduleName = strtolower(str_replace(' ', '-', $module->name));
+                                        @endphp
 
-
-                                            <td>
-                                                <a href="{{route('admin.permissions.assign',[$organisation->slug,$role->id])}}"
-                                                   class="btn btn-sm btn-primary" title="View permissions">
-                                                    <i class="fa fa-terminal"></i> Assign Permissions
-                                                </a>
-                                            </td>
-                                            <td>
-                                                <!-- Edit Button -->
-                                                <a href="javascript:void(0);" class="edit-button btn btn-sm btn-primary"
-                                                   data-name="{{ $role->name }}" data-id="{{ $role->id }}" title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </a>
-
-                                                <!-- Delete Button -->
-                                                <form
-                                                    action="{{ route('admin.organisation-roles.destroy', $role->id) }}"
-                                                    method="POST" onsubmit="return confirm('Are you sure?');"
-                                                    style="display: inline-block;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger" title="Delete">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </td>
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $module->name }}</td>
+                                            <!-- Display permission name and badge -->
+                                            @foreach(['view', 'create', 'read', 'update', 'delete'] as $action)
+                                                @php
+                                                    $permissionName = "{$action}-{$moduleName}";
+                                                    $hasPermission = $permissions->contains(fn($perm) => Str::contains($perm->name, $permissionName));
+                                                @endphp
+                                                <td>
+                                                    @if($hasPermission)
+                                                        <span class="badge bg-success">Yes</span><br/>
+                                                        {{ $permissionName }}
+                                                    @else
+                                                        <span class="badge bg-danger">No</span>  {{ $permissionName }}
+                                                    @endif
+                                                </td>
+                                            @endforeach
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -154,22 +154,20 @@
                     <div class="col-xxl-3">
                         <div class="card border card-border-light">
                             <div class="card-header">
-                                <h6 id="card-title" class="card-title mb-0">Add Organisation role</h6>
+                                <h6 id="card-title" class="card-title mb-0">Add System Modules</h6>
                             </div>
                             <div class="card-body">
-                                <form id="edit-form"
-                                      action="{{route('admin.organisation-roles.store',$organisation->slug)}}"
-                                      method="post" enctype="multipart/form-data">
+                                <form id="edit-form" action="{{route('admin.permissions.store')}}" method="post"
+                                      enctype="multipart/form-data">
                                     <input type="hidden" name="_method" value="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Organisation role</label>
+                                        <label for="name" class="form-label">System Module</label>
                                         <input type="text" name="name" class="form-control" id="name"
-                                               placeholder="Enter role" value="">
+                                               placeholder="Enter Module Name" value="">
                                     </div>
-
                                     <div class="text-end">
-                                        <button id="submit-button" type="submit" class="btn btn-primary">Add New
+                                        <button id="submit-button" type="submit" class="btn btn-primary">Add New Module
                                         </button>
                                     </div>
                                 </form>
@@ -178,8 +176,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!--end col-->
                     <!--end card-->
                 </div>
 
@@ -218,32 +214,33 @@
             submitButton.text('Add New');
             //on load by default name field to be empty
             $('#name').val('');
-            var organisation_id = $('#organisation_id').val();
+
 
             // Click event for the edit button
             $('.edit-button').on('click', function () {
                 var name = $(this).data('name');
-                var id = $(this).data('id');
-
+                var description = $(this).data('description');
+                var slug = $(this).data('slug');
 
                 // Set form action for update, method to PATCH, and button text to Update
-                $('#edit-form').attr('action', '/admin/organisation-roles/' + id + '/update');
+                $('#edit-form').attr('action', '/admin/permissions/' + slug + '/update');
                 $('input[name="_method"]').val('PATCH');
                 submitButton.text('Update');
                 // Populate the form for editing
                 $('#name').val(name);
-                $('#card-title').text('Edit - ' + name + 'Organisation role');
-                $('#page-title').text('Edit - ' + name + ' Organisation role');
+                $('#card-title').text('Edit - ' + name + ' System Modules');
+                $('#page-title').text('Edit - ' + name + ' System Modules');
             });
 
             // Click event for adding a new item
             $('#new-button').on('click', function () {
                 // Clear the form, set action for creation, method to POST, and button text to Add New
+                $('#edit-form').attr('action', 'admin/conflict-types/store');
                 $('input[name="_method"]').val('POST');
                 submitButton.text('Add New');
                 $('#name').val('');
-                $('#card-title').text('Add Organisation role');
-                $('#page-title').text('Add New Organisation role');
+                $('#card-title').text('Add System Modules');
+                $('#page-title').text('Add New System Modules');
             });
         });
 

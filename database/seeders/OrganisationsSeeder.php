@@ -38,8 +38,35 @@ class OrganisationsSeeder extends Seeder
             ['name' => 'Mbire', 'organisation_type_id' => 5, 'organisation_id' => 5, 'slug' => 'mbire', 'created_at' => Carbon::parse('2024-02-02 01:26:30'), 'updated_at' => Carbon::parse('2024-02-02 01:26:30')],
             ['name' => 'Nyaminyami', 'organisation_type_id' => 5, 'organisation_id' => 5, 'slug' => 'nyaminyami', 'created_at' => Carbon::parse('2024-02-02 01:26:35'), 'updated_at' => Carbon::parse('2024-02-02 01:26:35')],
             ['name' => 'Tsholotsho', 'organisation_type_id' => 5, 'organisation_id' => 5, 'slug' => 'tsholotsho', 'created_at' => Carbon::parse('2024-02-02 01:26:42'), 'updated_at' => Carbon::parse('2024-02-02 01:26:42')],
-            ['name' => 'Campfire Association', 'organisation_type_id' => 12, 'organisation_id' => 5, 'slug' => 'campfire-association', 'created_at' => Carbon::parse('2024-02-02 01:26:42'), 'updated_at' => Carbon::parse('2024-02-02 01:26:42')]
+            ['name' => 'Campfire Association', 'organisation_type_id' => 12, 'organisation_id' => 5, 'slug' => 'campfire-association', 'created_at' => Carbon::parse('2024-02-02 01:26:42'), 'updated_at' => Carbon::parse('2024-02-02 01:26:42')],
+            ['name' => 'Sentinel Safaris', 'organisation_type_id' => 13, 'organisation_id' => 6, 'slug' => 'sentinel-safaris', 'created_at' => '2024-02-07 06:45:04', 'updated_at' => '2024-02-07 06:45:04'],
+            ['name' => 'Nengasha Safaris', 'organisation_type_id' => 13, 'organisation_id' => 6, 'slug' => 'nengasha-safaris', 'created_at' => '2024-02-07 06:45:10', 'updated_at' => '2024-02-07 06:45:10'],
+            ['name' => 'Threeways Safaris', 'organisation_type_id' => 13, 'organisation_id' => 6, 'slug' => 'threeways-safaris', 'created_at' => '2024-02-07 06:45:17', 'updated_at' => '2024-02-07 06:45:17'],
+            ['name' => 'Lowveld Hunters', 'organisation_type_id' => 13, 'organisation_id' => 7, 'slug' => 'lowveld-hunters', 'created_at' => '2024-02-07 06:45:39', 'updated_at' => '2024-02-07 06:45:39'],
+            ['name' => 'Lodzi Hunters', 'organisation_type_id' => 13, 'organisation_id' => 7, 'slug' => 'lodzi-hunters', 'created_at' => '2024-02-07 06:45:47', 'updated_at' => '2024-02-07 06:45:47'],
+            ['name' => 'Muvhimi safaris', 'organisation_type_id' => 13, 'organisation_id' => 8, 'slug' => 'muvhimi-safaris', 'created_at' => '2024-02-07 06:46:11', 'updated_at' => '2024-02-07 06:46:11'],
+            ['name' => 'Nengasha Safaris', 'organisation_type_id' => 13, 'organisation_id' => 9, 'slug' => 'nengasha-safaris-1', 'created_at' => '2024-02-07 06:46:32', 'updated_at' => '2024-02-07 06:46:32'],
+            ['name' => 'Zambezi Hunters', 'organisation_type_id' => 13, 'organisation_id' => 10, 'slug' => 'zambezi-hunters', 'created_at' => '2024-02-07 06:46:59', 'updated_at' => '2024-02-07 06:46:59'],
+            ['name' => 'Shangani Safaris', 'organisation_type_id' => 13, 'organisation_id' => 11, 'slug' => 'shangani-safaris', 'created_at' => '2024-02-07 06:47:37', 'updated_at' => '2024-02-07 06:47:37'],
+            ['name' => 'SSG Safaris', 'organisation_type_id' => 13, 'organisation_id' => 11, 'slug' => 'ssg-safaris', 'created_at' => '2024-02-07 06:47:44', 'updated_at' => '2024-02-07 06:47:44'],
+            ['name' => 'Lowveld Hunters', 'organisation_type_id' => 13, 'organisation_id' => 11, 'slug' => 'lowveld-hunters-1', 'created_at' => '2024-02-07 06:47:51', 'updated_at' => '2024-02-07 06:47:51'],
+            ['name' => 'Afropride Safaris', 'organisation_type_id' => 13, 'organisation_id' => 12, 'slug' => 'afropride-safaris', 'created_at' => '2024-02-07 06:48:54', 'updated_at' => '2024-02-07 06:48:54'],
+            ['name' => 'Afropride Safaris', 'organisation_type_id' => 13, 'organisation_id' => 13, 'slug' => 'afropride-safaris-1', 'created_at' => '2024-02-07 06:49:22', 'updated_at' => '2024-02-07 06:49:22'],
+            ['name' => 'Hurungwe Safaris', 'organisation_type_id' => 13, 'organisation_id' => 14, 'slug' => 'hurungwe-safaris', 'created_at' => '2024-02-07 06:50:12', 'updated_at' => '2024-02-07 06:50:12'],
+            ['name' => 'Mbalabala Safaris', 'organisation_type_id' => 13, 'organisation_id' => 15, 'slug' => 'mbalabala-safaris', 'created_at' => '2024-02-07 06:50:34', 'updated_at' => '2024-02-07 06:50:34'],
+            ['name' => 'Rogue Hunting & Safaris', 'organisation_type_id' => 13, 'organisation_id' => 16, 'slug' => 'rogue-hunting-safaris', 'created_at' => '2024-02-07 06:51:59', 'updated_at' => '2024-02-07 06:51:59'],
+            ['name' => 'Nyamazana Safaris', 'organisation_type_id' => 13, 'organisation_id' => 17, 'slug' => 'nyamazana-safaris', 'created_at' => '2024-02-07 06:52:23', 'updated_at' => '2024-02-07 06:52:23'],
+            ['name' => 'Western Safaris', 'organisation_type_id' => 13, 'organisation_id' => 18, 'slug' => 'western-safaris', 'created_at' => '2024-02-07 06:52:40', 'updated_at' => '2024-02-07 06:52:40'],
+            ['name' => 'Matebele Hunters', 'organisation_type_id' => 13, 'organisation_id' => 18, 'slug' => 'matebele-hunters', 'created_at' => '2024-02-07 06:52:46', 'updated_at' => '2024-02-07 06:52:46'],
+            ['name' => 'C.M Safaris', 'organisation_type_id' => 13, 'organisation_id' => 19, 'slug' => 'cm-safaris', 'created_at' => '2024-02-07 06:53:16', 'updated_at' => '2024-02-07 06:53:16'],
+            ['name' => 'HHK Safaris', 'organisation_type_id' => 13, 'organisation_id' => 19, 'slug' => 'hhk-safaris', 'created_at' => '2024-02-07 06:54:30', 'updated_at' => '2024-02-07 06:54:30'],
+            ['name' => 'National Safaris', 'organisation_type_id' => 13, 'organisation_id' => 20, 'slug' => 'national-safaris', 'created_at' => '2024-02-07 06:55:12', 'updated_at' => '2024-02-07 06:55:12'],
+            ['name' => 'Track A Hunt Safaris', 'organisation_type_id' => 13, 'organisation_id' => 20, 'slug' => 'track-a-hunt-safaris', 'created_at' => '2024-02-07 06:55:19', 'updated_at' => '2024-02-07 06:55:19'],
+            ['name' => 'Matupula Hunters', 'organisation_type_id' => 13, 'organisation_id' => 21, 'slug' => 'matupula-hunters', 'created_at' => '2024-02-07 06:55:57', 'updated_at' => '2024-02-07 06:55:57'],
+            ['name' => 'Lodzi Hunters', 'organisation_type_id' => 13, 'organisation_id' => 21, 'slug' => 'lodzi-hunters-1', 'created_at' => '2024-02-07 06:56:06', 'updated_at' => '2024-02-07 06:56:06'],
+
         ];
+
 
         foreach ($organisations as $organisation) {
 

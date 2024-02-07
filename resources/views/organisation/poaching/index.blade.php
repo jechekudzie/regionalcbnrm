@@ -68,6 +68,7 @@
                                     <th>Date</th>
                                     <th>Time</th>
                                     <th>Species Involved</th>
+                                    <th>Poachers</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -81,6 +82,12 @@
                                         <td> {{ $poachingIncident->time }} </td>
                                         <td>
                                             <a href="{{route('organisation.poaching-incident-species.index',[$organisation->slug,$poachingIncident->slug])}}">Species
+                                                ({{ $poachingIncident->species->count() }})
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{route('organisation.poaching-incident-species.index',[$organisation->slug,$poachingIncident->slug])}}">Poachers
                                                 ({{ $poachingIncident->species->count() }})
                                             </a>
                                         </td>

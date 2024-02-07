@@ -270,6 +270,26 @@
                                         Manage Organisations
                                     </a>
                                 </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#permissions"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="permissions">
+                            <span data-key="t-dashboards">Modules & Permissions</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="permissions">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{route('admin.permissions.index')}}"
+                                       class="nav-link {{ Request::routeIs('admin.permissions.index') ? 'active' : '' }}">
+                                        Modules & Permissions
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </li>
@@ -348,6 +368,14 @@
                         </div>
                     </li>
 
+                    <li class="nav-item">
+                        <a style="margin: 10px;" class="btn btn-success btn-sm"
+                           href="{{route('organisation.dashboard')}}">
+                            <span data-key="t-dashboards">Return To Main Dashboard</span>
+                        </a>
+
+                    </li>
+
                 </ul>
             </div>
             <!-- Sidebar -->
@@ -424,6 +452,8 @@
 
 </script>
 @stack('scripts')
+
+
 </body>
 
 </html>

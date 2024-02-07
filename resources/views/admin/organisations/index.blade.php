@@ -49,7 +49,7 @@
                     <!--end col-->
                     <div class="col-xxl-8">
                         <!-- Place this where you want to display messages -->
-                        <div id="messageContainer"></div>
+                        <div id="messageContainer" class="messageContainer"></div>
                         <div id="errorContainer"></div>
                         <!-- Rest of your HTML -->
                         <div class="card">
@@ -171,7 +171,7 @@
 
             // Handle node selection
             tree.on('select', function (e, $node, id) {
-                /*saveSelectedNodeId(id);*/
+                saveSelectedNodeId(id);
                 var nodeData = tree.getDataById(id);
 
                 if (nodeData) {
@@ -225,6 +225,12 @@
                 }
             });
 
+            tree.on('unselect', function (e, node, id) {
+                actionUrl = '/admin/organisations/store';
+                organisationForm.hide();
+                clearSavedNodeId();
+            });
+
 
             $('#organisationForm').submit(function (event) {
                 event.preventDefault(); // Prevent the default form submission
@@ -247,6 +253,11 @@
                                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                                 '</div>');
                         }
+
+                        // Set a timeout to hide the message container after 5000 milliseconds
+                        setTimeout(function() {
+                            $('#messageContainer').fadeOut('slow');
+                        }, 5000); // 5000 milliseconds = 5 seconds
                     },
                     error: function(xhr) { // Added 'xhr' parameter to access response
                         if (xhr.status === 422) { // Validation Error
@@ -259,6 +270,10 @@
                                     '</div>';
                             });
                             $('#errorContainer').html(errorsHtml);
+                            //Set a timeout to hide the message container after 5000 milliseconds
+                            setTimeout(function() {
+                                $('#errorContainer').fadeOut('slow');
+                            }, 5000); // 5000 milliseconds = 5 seconds
                         } else {
                             // Handle other kinds of errors
                             console.error('An error occurred while submitting the form.');
@@ -268,8 +283,78 @@
             });
 
 
+            var treeReloaded = true; // Flag to check if tree has been reloaded
+
+            // Function to save selected node ID to local storage
+            function saveSelectedNodeId(nodeId) {
+                localStorage.setItem('selectedNodeId', nodeId);
+            }
+
+            // Function to get selected node ID from local storage
+            function getSelectedNodeId() {
+                return localStorage.getItem('selectedNodeId');
+            }
+
+            // Function to clear the saved node ID from local storage
+            function clearSavedNodeId() {
+                localStorage.removeItem('selectedNodeId');
+            }
+
+            // Function to expand from root to a given node
+            function expandFromRootToNode(nodeId) {
+                var parents = tree.parents(nodeId);
+                if (parents && parents.length) {
+                    parents.reverse().forEach(function(parentId) {
+                        tree.expand(parentId);
+                    });
+                }
+                tree.expand(nodeId);
+            }
+
+            // Function to select and expand from root to a node by ID
+            function selectAndExpandFromRootToNode(nodeId) {
+                console.log("Selecting and expanding node: ", nodeId);
+                var nodeToSelect = tree.getNodeById(nodeId);
+                if (nodeToSelect) {
+                    tree.select(nodeToSelect);  // Selects the node
+                    expandFromRootToNode(nodeId);  // Expands from root to the node
+                } else {
+                    console.log("Node not found: ", nodeId);
+                }
+            }
+
+            // Select and expand from root to the node if it's saved in local storage
+            var savedNodeId = getSelectedNodeId();
+            if (savedNodeId) {
+                selectAndExpandFromRootToNode(savedNodeId);
+            }
+
+            // Event listener for node selection
+            tree.on('select', function (e, node, id) {
+                saveSelectedNodeId(id);
+            });
+
+            // Event listener for node unselection (if applicable)
+            // Replace 'unselect' with the correct event name if different
+            tree.on('unselect', function (e, node, id) {
+                clearSavedNodeId();
+            });
+
+            // Handle the dataBound event
+            tree.on('dataBound', function() {
+                if (treeReloaded) {
+                    var savedNodeId = getSelectedNodeId();
+                    if (savedNodeId) {
+                        selectAndExpandFromRootToNode(savedNodeId);
+                    }
+                    // Reset the flag
+                    treeReloaded = false;
+                }
+            });
+
         });
 
-
     </script>
+
+
 @endsection

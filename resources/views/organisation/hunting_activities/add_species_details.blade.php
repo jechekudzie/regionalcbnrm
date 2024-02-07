@@ -120,8 +120,8 @@
                                         <td>{{ $detail->offtake}}</td>
                                         <td>{{ $detail->rbz_trastool_number}}</td>
                                         <td>
-                                            <a href="{{route('organisation.hunting-activities.edit-species-details',[$organisation->slug,$detail->id])}}"
-                                               class="btn btn-danger btn-sm"><i class="fa fa-exclamation-triangle"></i> Kill Info</a>
+                                            <a href="{{route('organisation.hunting-detail-outcome.index',[$organisation->slug,$detail->slug])}}"
+                                               class="btn btn-info btn-sm"><i class="fa fa-info"></i> Info</a>
                                             <a href="{{route('organisation.hunting-activities.delete-species-details',[$organisation->slug,$detail->id])}}"
                                                class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Delete</a>
                                         <!-- Add more data fields as needed -->

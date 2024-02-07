@@ -31,28 +31,7 @@
                                         <i class="fa fa-arrow-left"></i>
                                         Return to dashboard
                                     </a>
-                                    @can('view-generic')
-                                        <a style="margin: 3px;" href="{{route('organisation.dashboard.rural-district-councils')}}"
-                                           class="btn btn-danger"
-                                        >View RDC Organisations
-                                            <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
-                                        </a>
-                                    @endcan
-                                    @if(auth()->user()->hasRole('super-admin'))
-                                        <a style="margin: 3px;" href="{{route('admin.organisations.manage')}}"
-                                           class="btn btn-success" target="_blank"
-                                        >Super Admin Dashboard
-                                            <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
-                                        </a>
-                                    @endif
-                                </div>
-                                <div class="flex-shrink-0">
-                                    <div class="hstack text-nowrap gap-2">
-                                        <button type="button" id="dropdownMenuLink1" data-bs-toggle="dropdown"
-                                                aria-expanded="false" class="btn btn-soft-info"><i
-                                                class="ri-more-2-fill"></i></button>
 
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -61,22 +40,16 @@
                 <!--end col-->
                 <div class="col-xxl-12">
                     <div class="row">
-                        @foreach($organisations as $organisation)
+                        @foreach($ruralDistrictCouncils as $ruralDistrictCouncil)
                             <div class="col-lg-4 col-md-4">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h5 class="text-center fs-15 fw-semibold mb-8">{{$organisation->name}}</h5>
+                                        <h5 class="text-center fs-15 fw-semibold mb-8">{{$ruralDistrictCouncil->name}}</h5>
                                         <div class="d-flex flex-wrap justify-content-evenly">
-                                            <p class="text-muted text-start">
-                                                <i class="fa fa-user text-success fs-18 align-left me-2"></i>
-                                                @if($user->roles())
-                                                    {{$user->roles()->wherePivot('organisation_id', $organisation->id)->first()->name ?? 'Default Name'}}
-                                                @endif
-                                            </p>
                                             <p class="text-muted text-end">
                                                 <i class="fa fa-sitemap text-primary fs-18 align-right me-2"></i>
-                                                child organisations @if($organisation && method_exists($organisation, 'getAllChildren'))
-                                                    ( {{ count($organisation->getAllChildren()) }})
+                                                child organisations @if($ruralDistrictCouncil && method_exists($ruralDistrictCouncil, 'getAllChildren'))
+                                                    ( {{ count($ruralDistrictCouncil->getAllChildren()) }})
                                                 @else
                                                     child organisations (0)
                                                 @endif
@@ -98,12 +71,18 @@
                                         <!-- Buttons Grid -->
                                         <div class="d-grid gap-2">
                                             <a style="margin: 3px;"
-                                               href="{{route('organisation.dashboard.index', $organisation->slug)}}"
-                                               class="btn btn-success btn-sm  float-start">Enter Your Organisation <i
-                                                    class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
+                                               href="{{route('organisation.dashboard.index', $ruralDistrictCouncil->slug)}}"
+                                               class="btn btn-danger  btn-sm  float-start">Enter This Organisation
+                                                <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
                                             </a>
 
-
+                                            <a style="margin: 3px;" href="javascript:void(0);"
+                                               class="btn btn-primary btn-sm float-end"
+                                               data-slug="{{$ruralDistrictCouncil->slug}}" data-name="{{$ruralDistrictCouncil->name}}"
+                                               data-id="{{$ruralDistrictCouncil->id}}"
+                                            >View Child Organisations
+                                                <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
+                                            </a>
                                         </div>
 
                                     </div>
@@ -115,7 +94,6 @@
                     </div>
                     <!--end card-->
                 </div>
-
             </div>
             <!--end row-->
 
