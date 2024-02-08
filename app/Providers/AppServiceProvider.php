@@ -22,6 +22,11 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         View::composer('*', function ($view) {
+            // Skip for CLI or specific views
+            if (app()->runningInConsole() || $view->getName() === 'mails.mail') {
+                return;
+            }
+
             // Attempt to resolve the Organisation model instance using route model binding
             $organisation = request()->route('organisation');
 
@@ -36,12 +41,13 @@ class AppServiceProvider extends ServiceProvider
                 $userRole = $user->getFirstCommonRoleWithOrganization($organisation);
             }
 
-            // Share the organisation object and role with all views
+            // Share the organisation object and role with all views except the specified ones
             $view->with([
                 'organisation' => $organisation,
                 'userRole' => $userRole,
             ]);
         });
+
 
     }
 }

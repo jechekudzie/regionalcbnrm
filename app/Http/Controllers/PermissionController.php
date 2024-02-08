@@ -47,7 +47,7 @@ class PermissionController extends Controller
     public function assignPermissionToRole(Request $request, Organisation $organisation, Role $role)
     {
 
-        // Retrieve selected permissions from the request
+        // Retrieve selected permissions names from the request
         $permissions = $request->input('permissions', []);
 
         // Find or create permissions based on the provided names

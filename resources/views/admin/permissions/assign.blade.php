@@ -78,6 +78,13 @@
                                        aria-describedby="buttons-datatables_info">
                                     <thead>
                                     <tr>
+
+                                        <th class="sorting sorting_asc" {{--tabindex="0"--}}
+                                        aria-controls="buttons-datatables" {{--rowspan="1" colspan="1"--}}
+                                            aria-sort="ascending"
+                                            aria-label="Name: activate to sort column descending"
+                                        >#
+                                        </th>
                                         <th class="sorting sorting_asc" {{--tabindex="0"--}}
                                             aria-controls="buttons-datatables" {{--rowspan="1" colspan="1"--}}
                                             aria-sort="ascending"
@@ -120,6 +127,7 @@
                                         @endphp
 
                                         <tr>
+                                            <td>{{ $loop->iteration }}</td>
                                             <td>{{ $module->name }}</td>
                                             <!-- Display permission name and badge -->
                                             @foreach(['view', 'create', 'read', 'update', 'delete'] as $action)
@@ -176,17 +184,20 @@
                                                                 @foreach ($modules as $module)
                                                                     @php
                                                                         $moduleName = strtolower(str_replace(' ', '-', $module->name));
+                                                                        // Get an array of permission names for the current role
+                                                                        $rolePermissions = $role->permissions->pluck('name')->toArray();
                                                                     @endphp
                                                                     <tr>
                                                                         <td>{{ $module->name }}</td>
                                                                         <!-- Checkboxes for permissions -->
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="view-{{ $moduleName }}" {{ $permissions->contains("view-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="create-{{ $moduleName }}" {{ $permissions->contains("create-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="read-{{ $moduleName }}" {{ $permissions->contains("read-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="update-{{ $moduleName }}" {{ $permissions->contains("update-{$moduleName}") ? 'checked' : '' }}></td>
-                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="delete-{{ $moduleName }}" {{ $permissions->contains("delete-{$moduleName}") ? 'checked' : '' }}></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="view-{{ $moduleName }}" @if(in_array("view-{$moduleName}", $rolePermissions)) checked @endif></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="create-{{ $moduleName }}" @if(in_array("create-{$moduleName}", $rolePermissions)) checked @endif></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="read-{{ $moduleName }}" @if(in_array("read-{$moduleName}", $rolePermissions)) checked @endif></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="update-{{ $moduleName }}" @if(in_array("update-{$moduleName}", $rolePermissions)) checked @endif></td>
+                                                                        <td><input class="form-check-input" type="checkbox" name="permissions[]" value="delete-{{ $moduleName }}" @if(in_array("delete-{$moduleName}", $rolePermissions)) checked @endif></td>
                                                                     </tr>
                                                                 @endforeach
+
                                                                 </tbody>
                                                             </table>
                                                         </div>

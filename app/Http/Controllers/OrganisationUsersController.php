@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AccountCreatedMail;
 use App\Models\Organisation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
 class OrganisationUsersController extends Controller
@@ -60,6 +62,10 @@ class OrganisationUsersController extends Controller
 
         }
         $organisation->users()->attach($user->id, ['role_id' => $role->id]);
+
+        $organisation = $organisation->refresh();
+        //send email to user
+        Mail::to($user->email)->queue(new AccountCreatedMail($user->id, $organisation->id));
 
         return redirect()->route('admin.organisation-users.index', $organisation->slug)
             ->with('success', 'User created successfully.');
