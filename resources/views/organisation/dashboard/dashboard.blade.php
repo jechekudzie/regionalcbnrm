@@ -66,6 +66,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="text-center fs-15 fw-semibold mb-8">{{$organisation->name}}</h5>
+                                        <p class="text-center fs-12 fw-semibold mb-8">({{$organisation->parentOrganisation->name}})</p>
                                         <div class="d-flex flex-wrap justify-content-evenly">
                                             <p class="text-muted text-start">
                                                 <i class="fa fa-user text-success fs-18 align-left me-2"></i>

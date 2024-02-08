@@ -29,7 +29,8 @@ class AccountCreatedMail extends Mailable implements ShouldQueue
 
     public function build()
     {
-        return $this->markdown('mails.mail');
+        return $this->markdown('mails.mail')
+            ->subject('Account Created');
     }
     public function attachments(): array
     {
