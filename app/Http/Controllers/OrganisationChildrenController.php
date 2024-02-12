@@ -9,32 +9,36 @@ use Illuminate\Http\Request;
 class OrganisationChildrenController extends Controller
 {
     //
-    public function index(Organisation $organisation, OrganisationType $organisationType)
+    public function index(Organisation $organisation, OrganisationType $organisationType,Organisation $parentOrganisation)
     {
 
-       //dd( $organisationType->parentOrganisationType()->name);
-        return view('organisation.organisation_children.index',compact('organisation','organisationType'));
+        return view('organisation.organisation_children.index',compact('organisation','organisationType','parentOrganisation'));
     }
 
     //store organisation of organisation
-    public function store(Organisation $organisation, OrganisationType $organisationType, Request $request)
+    public function store(Organisation $organisation, OrganisationType $organisationType,Organisation $parentOrganisation, Request $request)
     {
+
+        //dd($parentOrganisation);
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
             ]);
 
-            $organisation->organisations()->create([
+            $parentOrganisation->organisations()->create([
                 'name' => $validatedData['name'],
                 'organisation_type_id' => $organisationType->id,
                /* 'organisation_id' => $organisation->id,*/
             ]);
 
-            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug])->with('success', 'Organisation created successfully');
+
+            //dd($parentOrganisation);
+
+            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug,$parentOrganisation->slug])->with('success', 'Organisation created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug])->with('error', 'Organisation not created');
+            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug,$parentOrganisation->slug])->with('error', 'Organisation not created');
         } catch (\Exception $e) {
-            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug])->with('error', 'Organisation not created');
+            return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug,$parentOrganisation->slug])->with('error', 'Organisation not created');
         }
     }
 

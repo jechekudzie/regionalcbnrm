@@ -38,7 +38,6 @@ class Organisation extends Model
         return $this->hasMany(Organisation::class, 'organisation_id');
     }
 
-
     public function firstGroupOfChildOrganisations()
     {
         // Get all child organizations
@@ -87,7 +86,6 @@ class Organisation extends Model
         return $this->belongsToMany(User::class, 'organisation_users')
             ->withPivot('role_id');
     }
-
 
     //has many roles
     public function organisationRoles()

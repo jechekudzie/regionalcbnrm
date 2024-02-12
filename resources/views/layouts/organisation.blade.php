@@ -396,7 +396,7 @@
                                     <ul class="nav nav-sm flex-column no-bullet">
                                         @include('components.organisation-type-tree', [
                                             'organisationTypes' => $organisation->organisationType->children,
-                                            'parentOrganisationId' => $organisation->id
+                                            'parentOrganisation' => $organisation
                                         ])
                                     </ul>
                                 @endif

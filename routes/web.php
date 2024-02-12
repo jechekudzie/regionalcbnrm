@@ -308,19 +308,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'destroy'])->name('organisation.poaching-incident-species.destroy');
 
     //organisation create
-    Route::get('/{organisation}/organisations/{organisationType}/index', [\App\Http\Controllers\OrganisationChildrenController::class, 'index'])->name('organisation.organisations.index');
-    Route::post('/{organisation}/organisations/{organisationType}/store', [\App\Http\Controllers\OrganisationChildrenController::class, 'store'])->name('organisation.organisations.store');
+    Route::get('/{organisation}/organisations/{organisationType}/{parentOrganisation}/index', [\App\Http\Controllers\OrganisationChildrenController::class, 'index'])->name('organisation.organisations.index');
+    Route::post('/{organisation}/organisations/{organisationType}/{parentOrganisation}/store', [\App\Http\Controllers\OrganisationChildrenController::class, 'store'])->name('organisation.organisations.store');
     Route::get('/{organisation}/organisations/{organisationType}/edit', [\App\Http\Controllers\OrganisationChildrenController::class, 'edit'])->name('organisation.organisations.edit');
     Route::patch('/{organisation}/organisations/{organisationToUpdate}/update', [\App\Http\Controllers\OrganisationChildrenController::class, 'update'])->name('organisation.organisations.update');
     Route::delete('/{organisation}/organisations/{organisationToDelete}', [\App\Http\Controllers\OrganisationChildrenController::class, 'destroy'])->name('organisation.organisations.destroy');
 });
 
-Route::get('/send-test-emails', function () {
-    Mail::raw('This is a test email', function ($message) {
-        $message->to('nigel@leadingdigital.africa')->subject('Test Email');
-    });
-    return 'Test email sent';
-});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

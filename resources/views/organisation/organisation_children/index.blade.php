@@ -17,7 +17,7 @@
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                         <h4 class="mb-sm-0" id="page-title">{{$organisation->name}}
-                            - ({{$organisationType->parentOrganisationType()->name}}) - {{$organisationType->name}}</h4>
+                            - ({{$parentOrganisation->name}}) - {{$organisationType->name}}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -35,11 +35,11 @@
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
 
-                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug])}}"
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->id])}}"
                                            class="btn btn-info btn-sm add-btn">
                                             <i class="fa fa-refresh"></i> Refresh
                                         </a>
-                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug])}}"
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->id])}}"
                                            class="btn btn-success btn-sm add-btn">
                                             <i class="fa fa-plus"></i> Add new
                                         </a>
@@ -105,7 +105,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($organisation->childOrganisations()->where('organisation_type_id',$organisationType->id)->get() as $childOrganisation)
+                                   {{-- @php dd($parentOrganisation->id) @endphp--}}
+                                    @foreach($parentOrganisation->childOrganisations()->where('organisation_type_id',$organisationType->id)->get() as $childOrganisation)
                                         <tr class="even">
                                             <td class="sorting_1">{{$loop->iteration}}</td>
                                             <td>{{$childOrganisation->name}}</td>
@@ -146,11 +147,11 @@
                         <div class="card border card-border-light">
                             <div class="card-header">
                                 <h6 id="card-title" class="card-title mb-0">
-                                    Add ({{$organisationType->parentOrganisationType()->name}}) {{$organisationType->name}}</h6>
+                                    Add {{$organisation->name}} - ({{$parentOrganisation->name}}) {{$organisationType->name}}</h6>
                             </div>
                             <div class="card-body">
                                 <form id="edit-form"
-                                      action="{{route('organisation.organisations.store',[$organisation->slug,$organisationType->slug])}}"
+                                      action="{{route('organisation.organisations.store',[$organisation->slug,$organisationType->slug,$parentOrganisation->slug])}}"
                                       method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_method" value="POST">
                                     @csrf
