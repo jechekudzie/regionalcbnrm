@@ -35,11 +35,11 @@
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
 
-                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->id])}}"
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->slug])}}"
                                            class="btn btn-info btn-sm add-btn">
                                             <i class="fa fa-refresh"></i> Refresh
                                         </a>
-                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->id])}}"
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug,$parentOrganisation->slug])}}"
                                            class="btn btn-success btn-sm add-btn">
                                             <i class="fa fa-plus"></i> Add new
                                         </a>
