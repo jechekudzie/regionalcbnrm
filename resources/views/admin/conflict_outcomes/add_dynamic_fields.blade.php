@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0" id="page-title">{{$conflictOutCome->name}} - Dynamic fields</h4>
+                        <h4 class="mb-sm-0" id="page-title">{{$ConflictOutCome->name}} - Dynamic fields</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -37,7 +37,7 @@
                                             <i class="fa fa-arrow-left"></i> Back Outcomes
                                         </a>
 
-                                        <a href="{{route('admin.dynamic-fields.index',$conflictOutCome->slug)}}"
+                                        <a href="{{route('admin.dynamic-fields.index',$ConflictOutCome->slug)}}"
                                            class="btn btn-success add-btn">
                                             <i class="fa fa-refresh"></i> Add New
                                         </a>
@@ -124,8 +124,8 @@
                                                    data-bs-target="#optionsModal"
                                                    data-name="{{ $field->field_name }}"
                                                    data-type="{{ $field->field_type }}" data-label="{{ $field->label }}"
-                                                   data-outcome_name="{{ $conflictOutCome->name }}"
-                                                   data-outcome_slug="{{ $conflictOutCome->slug }}"
+                                                   data-outcome_name="{{ $ConflictOutCome->name }}"
+                                                   data-outcome_slug="{{ $ConflictOutCome->slug }}"
                                                    data-slug="{{ $field->slug }}" title="Add">
                                                     <i class="fa fa-plus"></i> add options
                                                 </a>
@@ -136,8 +136,8 @@
                                                    data-field_name="{{ $field->field_name }}"
                                                    data-field_type="{{ $field->field_type }}"
                                                    data-label="{{ $field->label }}"
-                                                   data-outcome_slug="{{ $conflictOutCome->slug }}"
-                                                   data-outcome_name="{{ $conflictOutCome->name }}"
+                                                   data-outcome_slug="{{ $ConflictOutCome->slug }}"
+                                                   data-outcome_name="{{ $ConflictOutCome->name }}"
                                                    data-slug="{{ $field->slug }}" title="Edit">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
@@ -214,12 +214,12 @@
                     <div class="col-xxl-3">
                         <div class="card border card-border-light">
                             <div class="card-header">
-                                <h6 id="card-title" class="card-title mb-0">Add {{$conflictOutCome->name }} Dynamic
+                                <h6 id="card-title" class="card-title mb-0">Add {{$ConflictOutCome->name }} Dynamic
                                     Fields</h6>
                             </div>
                             <div class="card-body">
                                 <form id="edit-form"
-                                      action="{{route('admin.dynamic-fields.store',$conflictOutCome->slug)}}"
+                                      action="{{route('admin.dynamic-fields.store',$ConflictOutCome->slug)}}"
                                       method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_method" value="POST">
                                     @csrf
@@ -307,11 +307,11 @@
                 var field_type = $(this).data('field_type');
                 var label = $(this).data('label');
                 var outcome_name = $(this).data('outcome_name');
-                var conflictOutCome = $(this).data('outcome_slug');
+                var ConflictOutCome = $(this).data('outcome_slug');
                 var dynamicField = $(this).data('slug');
 
                 // Set form action for update, method to PATCH, and button text to Update
-                $('#edit-form').attr('action', '/admin/conflict-outcomes/' + conflictOutCome + '/dynamic-fields/' + dynamicField + '/update');
+                $('#edit-form').attr('action', '/admin/conflict-outcomes/' + ConflictOutCome + '/dynamic-fields/' + dynamicField + '/update');
 
                 $('input[name="_method"]').val('PATCH');
 
@@ -336,11 +336,11 @@
                 var type = $(this).data('type');
                 var field_type = $(this).data('field_type');
                 var outcome_name = $(this).data('outcome_name');
-                var conflictOutCome = $(this).data('outcome_slug');
+                var ConflictOutCome = $(this).data('outcome_slug');
                 var dynamicField = $(this).data('slug');
 
 
-                $('#optionsForm').attr('action', '/admin/conflict-outcomes/' + conflictOutCome + '/dynamic-fields/' + dynamicField + '/options/store');
+                $('#optionsForm').attr('action', '/admin/conflict-outcomes/' + ConflictOutCome + '/dynamic-fields/' + dynamicField + '/options/store');
                 // Populate the modal fields
                 $('#optionsModal .card-title').text(outcome_name + name + ' Options');
                 // Populate other fields in the modal as needed

@@ -91,7 +91,7 @@
 
                                         </td>
                                         <td>
-                                            <a href="{{route('organisation.incident-outcomes.index',[$organisation->slug,$incident->slug])}}">Outcomes ({{ $incident->conflictOutcomes->count() }})</a>
+                                            <a href="{{route('organisation.incident-outcomes.index',[$organisation->slug,$incident->slug])}}">Outcomes ({{ $incident->ConflictOutComes->count() }})</a>
 
                                         </td>
                                         <td> Action</td>

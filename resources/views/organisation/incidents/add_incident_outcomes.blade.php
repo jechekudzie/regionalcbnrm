@@ -150,15 +150,15 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Conflict Involved</label>
                                                 <div class="row">
-                                                    @foreach ($conflictOutcomes as $conflictOutcomes)
+                                                    @foreach ($ConflictOutComes as $ConflictOutComes)
                                                         <div class="col-md-3 col-lg-3 mb-3">
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox"
-                                                                       value="{{ $conflictOutcomes->id }}"
-                                                                       id="conflict_outcomes{{ $conflictOutcomes->id }}" name="conflict_outcomes[]">
+                                                                       value="{{ $ConflictOutComes->id }}"
+                                                                       id="conflict_outcomes{{ $ConflictOutComes->id }}" name="conflict_outcomes[]">
                                                                 <label class="form-check-label"
-                                                                       for="conflict_outcomes{{ $conflictOutcomes->id }}">
-                                                                    {{ $conflictOutcomes->name }}
+                                                                       for="conflict_outcomes{{ $ConflictOutComes->id }}">
+                                                                    {{ $ConflictOutComes->name }}
                                                                 </label>
                                                             </div>
                                                         </div>

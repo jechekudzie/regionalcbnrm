@@ -81,7 +81,7 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>{{$incident->title}} - {{$conflictOutCome->name}} </h2>
+                            <h2>{{$incident->title}} - {{$ConflictOutCome->name}} </h2>
                                 <br>
 
                                 @php
@@ -141,7 +141,7 @@
 
                                                     <form action="{{route('organisation.incident-outcomes-dynamic-fields.store',[$organisation->slug,$incident->slug,$incidentOutCome])}}" method="POST">
                                                         @csrf
-                                                        @foreach($conflictOutCome->dynamicFields as $field)
+                                                        @foreach($ConflictOutCome->dynamicFields as $field)
                                                             <div class="mb-3">
                                                                 <label>{{ $field->label }}</label>
                                                                 @if(in_array($field->field_type, ['text', 'number', 'email', 'date', 'time']))

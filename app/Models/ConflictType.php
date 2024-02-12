@@ -19,7 +19,7 @@ class ConflictType extends Model
         return $this->belongsToMany(Incident::class, 'incident_conflict_type', 'conflict_type_id', 'incident_id');
     }
 
-    public function conflictOutcomes()
+    public function ConflictOutComes()
     {
         return $this->hasMany(ConflictOutCome::class);
     }

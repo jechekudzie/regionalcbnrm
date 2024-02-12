@@ -11,9 +11,9 @@ class ConflictOutComeController extends Controller
     //index method passing the data to the view
     public function index()
     {
-        $conflictOutcomes = ConflictOutCome::all();
+        $ConflictOutComes = ConflictOutCome::all();
         $conflictTypes = ConflictType::all();
-        return view('admin.conflict_outcomes.index', compact('conflictOutcomes','conflictTypes'));
+        return view('admin.conflict_outcomes.index', compact('ConflictOutComes','conflictTypes'));
     }
 
     //store method
@@ -24,7 +24,7 @@ class ConflictOutComeController extends Controller
             'conflict_type_id' => 'required|exists:conflict_types,id',
         ]);
 
-        $conflictOutCome = ConflictOutCome::create([
+        $ConflictOutCome = ConflictOutCome::create([
             'name' => $validated['name'],
             'conflict_type_id' => $validated['conflict_type_id'],
         ]);
@@ -33,14 +33,14 @@ class ConflictOutComeController extends Controller
     }
 
     //update method
-    public function update(Request $request, ConflictOutCome $conflictOutCome)
+    public function update(Request $request, ConflictOutCome $ConflictOutCome)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'conflict_type_id' => 'required|exists:conflict_types,id',
         ]);
 
-        $conflictOutCome->update([
+        $ConflictOutCome->update([
             'name' => $validated['name'],
             'conflict_type_id' => $validated['conflict_type_id'],
         ]);

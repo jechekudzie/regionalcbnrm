@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('hunting_concession_id');// Hunting concession in which the activity takes place
             $table->unsignedBigInteger('organisation_id'); // RDC or other
+            $table->unsignedBigInteger('safari_id')->nullable();
             $table->string('hunting_license')->nullable(); // Professional Hunter license
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();

@@ -33,7 +33,7 @@ class ConflictOutCome extends Model
         return $this->hasMany(DynamicField::class, 'conflict_outcome_id');
     }
 
-    // In ConflictOutcome model
+    // In ConflictOutCome model
 
     public function getDynamicFieldValuesForIncident($incidentId)
     {

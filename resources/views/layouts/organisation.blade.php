@@ -37,9 +37,23 @@
         .gj-tree-bootstrap-4 ul.gj-list-bootstrap li.active {
             background-color: gray !important;
         }
+        .nav, .nav-sm {
+            list-style-type: none !important; /* Remove bullets */
+            padding-left: 0; /* Remove indentation */
+            margin-left: 0; /* Additional alignment, if necessary */
+        }
+
+        .menu-dropdown .nav, .menu-dropdown .nav-sm {
+            list-style-type: none !important; /* Remove bullets */
+            padding-left: 0; /* Remove indentation */
+            margin-left: 0; /* Additional alignment, if necessary */
+        }
+
     </style>
 
     @stack('head')
+
+
 </head>
 
 <body>
@@ -368,36 +382,32 @@
                         </div>
                     </li>
 
+                    <!-- Main navigation structure -->
                     <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#childOrganisation"
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#ChildOrganisations"
                            data-bs-toggle="collapse"
-                           role="button" aria-expanded="false" aria-controls="childOrganisation">
+                           role="button" aria-expanded="false" aria-controls="ChildOrganisations">
                             <span data-key="t-dashboards">Child Organisations </span>
                         </a>
-                        <div class="collapse menu-dropdown" id="childOrganisation">
-                            <ul class="nav nav-sm flex-column">
-                                @if($organisation && method_exists($organisation, 'childOrganisations'))
-                                    @foreach($organisation->childOrganisations as $childOrganisation)
-                                        <li class="nav-item">
-                                            <a class="nav-link"
-                                               href="{{route('organisation.dashboard.index',$childOrganisation->slug)}}">
-                                                {{ $childOrganisation->name }}
-                                            </a>
-                                            @foreach($childOrganisation->childOrganisations as $child)
-                                                <ul class="nav nav-sm flex-column">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link"
-                                                           href="{{route('organisation.dashboard.index',$child->slug)}}">{{ $child->name }}</a>
-                                                    </li>
-                                                </ul>
-                                            @endforeach
-                                        </li>
-
-                                    @endforeach
+                        <div class="collapse menu-dropdown" id="ChildOrganisations">
+                            <ul class="nav nav-sm flex-column no-bullet">
+                                <!-- Include the recursive organisation types component -->
+                                @if($organisation && $organisation->organisationType)
+                                    <ul class="nav nav-sm flex-column no-bullet">
+                                        @include('components.organisation-type-tree', [
+                                            'organisationTypes' => $organisation->organisationType->children,
+                                            'parentOrganisationId' => $organisation->id
+                                        ])
+                                    </ul>
                                 @endif
+
                             </ul>
                         </div>
                     </li>
+
+
+
+
 
                     <li class="nav-item">
                         <a style="margin: 10px;" class="btn btn-success btn-sm"
@@ -406,13 +416,13 @@
                         </a>
 
                     </li>
-                    <li class="nav-item">
+                    {{--<li class="nav-item">
                         <a style="margin: 10px;" class="btn btn-success btn-sm"
                            href="{{route('test.roles.index',$organisation->slug)}}">
                             <span data-key="t-dashboards">Test Permissions</span>
                         </a>
 
-                    </li>
+                    </li>--}}
 
                 </ul>
             </div>
@@ -500,6 +510,20 @@
             }
         }, 5000); // 5000 milliseconds = 5 seconds
     });
+
+    function toggleDropdown(dropdownId) {
+        // Toggle the dropdown visibility
+        var dropdown = document.getElementById(dropdownId);
+        if (dropdown.classList.contains('show')) {
+            dropdown.classList.remove('show');
+        } else {
+            dropdown.classList.add('show');
+            // Optionally navigate to the link's href after a slight delay
+            // setTimeout(() => {
+            //     window.location.href = yourLinkHref;
+            // }, 300);
+        }
+    }
 
 
 </script>

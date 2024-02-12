@@ -186,6 +186,35 @@
                         </div>
                     </div>
 
+                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                            <div class="modal-content border-0">
+                                <div class="modal-header bg-soft-info p-3">
+                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close" id="close-modal"></button>
+                                </div>
+
+                                <div class="card border">
+                                    <div class="card-header">
+
+                                        <h4 class="card-title mb-0"> Delete Member</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <form method="post" action="">
+                                            @csrf
+
+                                            <!-- Submit Button -->
+                                            <button type="submit" class="btn btn-primary">Delete Member</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
                 <!--end row-->

@@ -33,6 +33,12 @@ class OrganisationType extends Model
         return $this->belongsToMany(OrganisationType::class, 'organisation_type_organisation_type', 'child_id', 'organisation_type_id')->withPivot('notes');
     }
 
+    public function parentOrganisationType()
+    {
+        return $this->parents->first();
+    }
+
+
 
     public function getSlugOptions() : SlugOptions
     {

@@ -21,10 +21,10 @@ class Incident extends Model
         return $this->belongsToMany(ConflictType::class, 'incident_conflict_type', 'incident_id', 'conflict_type_id');
     }
 
-    public function conflictOutcomes()
+    public function ConflictOutComes()
     {
         // Custom pivot table and column names
-        return $this->belongsToMany(ConflictOutcome::class, 'incident_conflict_outcome', 'incident_id', 'conflict_outcome_id');
+        return $this->belongsToMany(ConflictOutCome::class, 'incident_conflict_outcome', 'incident_id', 'conflict_outcome_id');
     }
 
     public function species()

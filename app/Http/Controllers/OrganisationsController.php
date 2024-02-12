@@ -77,6 +77,8 @@ class OrganisationsController extends Controller
     {
         //all organisations sort by organisation type
         $organisations = Organisation::all()->sortBy('organisation_type_id');
+
+        //dd($organisations);
         return view('admin.organisations.manage', compact('organisations'));
 
     }

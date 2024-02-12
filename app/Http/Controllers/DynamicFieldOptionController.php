@@ -16,7 +16,7 @@ class DynamicFieldOptionController extends Controller
     }
 
     //store
-    public function store(Request $request, ConflictOutCome $conflictOutCome, DynamicField $dynamicField)
+    public function store(Request $request, ConflictOutCome $ConflictOutCome, DynamicField $dynamicField)
     {
         $request->validate([
             'option_value' => 'required',

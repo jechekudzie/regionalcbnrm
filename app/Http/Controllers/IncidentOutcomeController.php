@@ -12,10 +12,10 @@ class IncidentOutcomeController extends Controller
     //
     public function index(Organisation $organisation, Incident $incident)
     {
-        $incidentOutcomes = $incident->conflictOutcomes()->get();
+        $incidentOutcomes = $incident->ConflictOutComes()->get();
 
-        $conflictOutcomes = ConflictOutCome::all();
-        return view('organisation.incidents.add_incident_outcomes', compact('conflictOutcomes','incidentOutcomes', 'incident', 'organisation'));
+        $ConflictOutComes = ConflictOutCome::all();
+        return view('organisation.incidents.add_incident_outcomes', compact('ConflictOutComes','incidentOutcomes', 'incident', 'organisation'));
     }
 
     public function store(Request $request, Organisation $organisation, Incident $incident)
@@ -27,7 +27,7 @@ class IncidentOutcomeController extends Controller
             'conflict_outcomes.*' => 'exists:conflict_out_comes,id', // Ensure each conflict_outcomes ID exists in the database
         ]);
 
-        $incident->conflictOutcomes()->syncWithoutDetaching($validated['conflict_outcomes']);
+        $incident->ConflictOutComes()->syncWithoutDetaching($validated['conflict_outcomes']);
         // Where $validated['conflict_outcomes'] is an array of conflict_outcomes IDs.
 
         // Redirect back with a success message
@@ -37,7 +37,7 @@ class IncidentOutcomeController extends Controller
     public function destroy(Organisation $organisation, Incident $incident, $incidentOutcome)
     {
 
-        $incident->conflictOutcomes()->detach($incidentOutcome);
+        $incident->ConflictOutComes()->detach($incidentOutcome);
         return redirect()->route('organisation.incident-outcomes.index', [$organisation->slug,$incident->slug])->with('success', 'Conflict Outcome removed from incident successfully.');
     }
 }

@@ -13,8 +13,8 @@ class DynamicField extends Model
 
     protected $guarded = [];
 
-    //conflictOutcome
-    public function conflictOutcome()
+    //ConflictOutCome
+    public function ConflictOutCome()
     {
         return $this->belongsTo(ConflictOutCome::class);
     }

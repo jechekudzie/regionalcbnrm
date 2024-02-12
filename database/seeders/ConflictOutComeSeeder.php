@@ -18,7 +18,7 @@ class ConflictOutComeSeeder extends Seeder
         //
         $conflictTypes = ConflictType::whereIn('name', ['Human - Wildlife', 'Wildlife - Human'])->get()->keyBy('name');
 
-        $conflictOutcomes = [
+        $ConflictOutComes = [
             ['name' => 'Human death', 'type' => 'Human - Wildlife'],
             ['name' => 'Human Injury', 'type' => 'Human - Wildlife'],
             ['name' => 'Livestock killing', 'type' => 'Wildlife - Human'],
@@ -29,10 +29,10 @@ class ConflictOutComeSeeder extends Seeder
             ['name' => 'Threat to human life', 'type' => 'Human - Wildlife'],
         ];
 
-        foreach ($conflictOutcomes as $conflictOutcome) {
-            ConflictOutcome::create([
-                'name' => $conflictOutcome['name'],
-                'conflict_type_id' => $conflictTypes[$conflictOutcome['type']]->id,
+        foreach ($ConflictOutComes as $ConflictOutCome) {
+            ConflictOutCome::create([
+                'name' => $ConflictOutCome['name'],
+                'conflict_type_id' => $conflictTypes[$ConflictOutCome['type']]->id,
             ]);
         }
 

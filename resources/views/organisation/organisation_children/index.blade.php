@@ -1,13 +1,14 @@
-@extends('layouts.admin')
+@extends('layouts.organisation')
 
 @push('head')
+
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
     <!--datatable responsive css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css"/>
+
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
 @endpush
-
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
@@ -15,11 +16,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0" id="page-title">Conflict Outcomes</h4>
+                        <h4 class="mb-sm-0" id="page-title">{{$organisation->name}}
+                            - ({{$organisationType->parentOrganisationType()->name}}) - {{$organisationType->name}}</h4>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
-                                <li class="breadcrumb-item active">Conflict Outcomes</li>
+                                <li class="breadcrumb-item active">{{$organisationType->name}}</li>
                             </ol>
                         </div>
                     </div>
@@ -32,13 +34,15 @@
                             <div class="card-header">
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
-                                        <a href="{{route('admin.species-gender.index')}}"
-                                           class="btn btn-info add-btn">
+
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug])}}"
+                                           class="btn btn-info btn-sm add-btn">
                                             <i class="fa fa-refresh"></i> Refresh
                                         </a>
-                                        <button id="new-button" class="btn btn-success add-btn">
-                                            <i class="fa fa-plus"></i> Add new outcome
-                                        </button>
+                                        <a href="{{route('organisation.organisations.index',[$organisation->slug,$organisationType->slug])}}"
+                                           class="btn btn-success btn-sm add-btn">
+                                            <i class="fa fa-plus"></i> Add new
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -48,6 +52,7 @@
                     <div class="col-xxl-9">
                         @if(session()->has('errors'))
                             @if($errors->any())
+
                                 @foreach($errors->all() as $error)
                                     <!-- Success Alert -->
                                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -83,45 +88,44 @@
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Outcome
+                                            style="width: 336.4px;">{{$organisationType->name}}
                                         </th>
+
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Type
+                                            style="width: 336.4px;">Description
                                         </th>
-                                        <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
-                                            rowspan="1" colspan="1"
-                                            aria-label="Position: activate to sort column ascending"
-                                            style="width: 336.4px;">Custom Data Fields
-                                        </th>
+
                                         <th class="sorting" tabindex="0" aria-controls="buttons-datatables"
                                             rowspan="1" colspan="1"
                                             aria-label="Salary: activate to sort column ascending"
-                                            style="width: 112.4px;">Actions
+                                            style="width: 112.4px;">Action
                                         </th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($ConflictOutComes as $ConflictOutCome)
+                                    @foreach($organisation->childOrganisations()->where('organisation_type_id',$organisationType->id)->get() as $childOrganisation)
                                         <tr class="even">
                                             <td class="sorting_1">{{$loop->iteration}}</td>
-                                            <td>{{$ConflictOutCome->name}}</td>
-                                            <td>{{$ConflictOutCome->conflictType->name}}</td>
-                                            <td>
-                                                <a href="{{route('admin.dynamic-fields.index',$ConflictOutCome->slug)}}">
-                                                    Data Fields ({{$ConflictOutCome->dynamicFields->count()}})
-                                                </a>
-                                            </td>
+                                            <td>{{$childOrganisation->name}}</td>
+                                            <td>{{$childOrganisation->description}}</td>
                                             <td>
                                                 <!-- Edit Button -->
                                                 <a href="javascript:void(0);" class="edit-button btn btn-sm btn-primary"
-                                                   data-name="{{ $ConflictOutCome->name }}" data-slug="{{ $ConflictOutCome->slug }}" data-conflict-type-id="{{ $ConflictOutCome->conflictType->id }}" title="Edit">
+                                                   data-name="{{ $childOrganisation->name }}"
+                                                   data-slug="{{ $childOrganisation->slug }}"
+                                                   data-description="{{ $childOrganisation->description }}"
+                                                   data-organisation="{{ $organisation->slug }}"
+                                                   title="Edit">
                                                     <i class="fa fa-pencil"></i>
                                                 </a>
+
                                                 <!-- Delete Button -->
-                                                <form action="{{ route('admin.conflict-outcomes.destroy',$ConflictOutCome->slug)}}"
-                                                    method="POST" onsubmit="return confirm('Are you sure?');" style="display: inline-block;">
+                                                <form
+                                                        action="{{ route('organisation.organisations.destroy', [$organisation->slug,$childOrganisation->slug]) }}"
+                                                        method="POST" onsubmit="return confirm('Are you sure?');"
+                                                        style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger" title="Delete">
@@ -141,40 +145,44 @@
                     <div class="col-xxl-3">
                         <div class="card border card-border-light">
                             <div class="card-header">
-                                <h6 id="card-title" class="card-title mb-0">Add Conflict Outcomes</h6>
+                                <h6 id="card-title" class="card-title mb-0">
+                                    Add ({{$organisationType->parentOrganisationType()->name}}) {{$organisationType->name}}</h6>
                             </div>
                             <div class="card-body">
-                                <form id="edit-form" action="{{route('admin.conflict-outcomes.store')}}" method="post" enctype="multipart/form-data">
+                                <form id="edit-form"
+                                      action="{{route('organisation.organisations.store',[$organisation->slug,$organisationType->slug])}}"
+                                      method="post" enctype="multipart/form-data">
                                     <input type="hidden" name="_method" value="POST">
                                     @csrf
                                     <div class="mb-3">
-                                        <label for="name" class="form-label">Conflict Outcomes</label>
-                                        <input type="text" name="name" class="form-control" id="name" placeholder="Enter outcome"/>
+                                        <label for="name" class="form-label">name</label>
+                                        <input type="text" name="name" class="form-control" id="name"
+                                               placeholder="Enter {{$organisationType->name}}" value="">
                                     </div>
-                                    <!-- Conflict Types Dropdown -->
-                                    <div class="mb-3">
-                                        <label for="conflict_type_id" class="form-label">Conflict Type</label>
-                                            <select name="conflict_type_id" id="conflict_type_id" class="form-control">
-                                                <option value="">Select Conflict Type</option>
-                                                @foreach ($conflictTypes as $type)
-                                                    <option value="{{ $type->id }}">{{ $type->name }}</option>
-                                                @endforeach
-                                            </select>
-                                    </div>
+
+                                    <input type="hidden" value="{{$organisationType->name}}" id="organisationTypeName">
                                     <div class="text-end">
-                                        <button id="submit-button" type="submit" class="btn btn-primary">Add New</button>
+                                        <button id="submit-button" type="submit" class="btn btn-primary">Add New
+                                        </button>
                                     </div>
                                 </form>
+
+
                             </div>
                         </div>
                     </div>
+
+                    <!--end col-->
+                    <!--end card-->
                 </div>
+
             </div>
             <!--end row-->
+
         </div>
+        <!-- container-fluid -->
     </div>
 @stop
-
 @push('scripts')
     <!--datatable js-->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -203,36 +211,37 @@
             submitButton.text('Add New');
             //on load by default name field to be empty
             $('#name').val('');
-            $('#conflict_type_id').val('');
+            var organisationTypeName = $('#organisationTypeName').val();
+            var organisation = $('#organisation').val();
 
 
             // Click event for the edit button
             $('.edit-button').on('click', function () {
                 var name = $(this).data('name');
-                var conflict_type_id = $(this).data('conflict-type-id');
-                var ConflictOutCome = $(this).data('slug');
+                var description = $(this).data('description');
+                var organisationType = $(this).data('organisationType');
+                var slug = $(this).data('slug');
+                var organisation = $(this).data('organisation');
+
 
                 // Set form action for update, method to PATCH, and button text to Update
-                $('#edit-form').attr('action', '/admin/conflict-outcomes/' + ConflictOutCome + '/update');
+                $('#edit-form').attr('action', '/'+ organisation +'/organisations/' + slug + '/update');
                 $('input[name="_method"]').val('PATCH');
                 submitButton.text('Update');
                 // Populate the form for editing
                 $('#name').val(name);
-                $('#conflict_type_id').val(conflict_type_id);
-                $('#card-title').text('Edit - ' + name + ' Outcomes');
-                $('#page-title').text('Edit - ' + name + ' Outcomes');
+                $('#card-title').text('Edit - ' + name);
+
             });
 
             // Click event for adding a new item
             $('#new-button').on('click', function () {
                 // Clear the form, set action for creation, method to POST, and button text to Add New
-                $('#edit-form').attr('action', 'admin/conflict-outcomes/store');
                 $('input[name="_method"]').val('POST');
                 submitButton.text('Add New');
                 $('#name').val('');
-                $('#conflict_type_id').val('');
-                $('#card-title').text('Add Conflict Outcomes');
-                $('#page-title').text('Add Conflict Outcomes');
+                $('#card-title').text('Add '+ organisationTypeName);
+                $('#page-title').text('Add New '+ organisationTypeName);
             });
         });
 
