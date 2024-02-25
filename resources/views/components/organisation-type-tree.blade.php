@@ -1,15 +1,15 @@
-@foreach($organisationTypes as $type)
+@foreach($organisationTypes as $organisationType)
     <li class="nav-item">
         <a class="nav-link menu-link collapsed"
-           href="#orgType{{ $type->id }}_{{ $parentOrganisation->id }}"
+           href="#orgType{{ $organisationType->id }}_{{ $parentOrganisation->id }}"
            data-bs-toggle="collapse" role="button" aria-expanded="false"
-           aria-controls="orgType{{ $type->id }}_{{ $parentOrganisation->id }}"
+           aria-controls="orgType{{ $organisationType->id }}_{{ $parentOrganisation->id }}"
            style="font-weight: bolder;">
-            {{ $type->name }}
+            {{ $organisationType->name }}
         </a>
-        <div class="collapse menu-dropdown" id="orgType{{ $type->id }}_{{ $parentOrganisation->id }}">
+        <div class="collapse menu-dropdown" id="orgType{{ $organisationType->id }}_{{ $parentOrganisation->id }}">
             <ul class="nav nav-sm flex-column no-bullet">
-                @foreach($type->organisations->where('organisation_id', $parentOrganisation->id) as $childOrganisation)
+                @foreach($organisationType->organisations->where('organisation_id', $parentOrganisation->id) as $childOrganisation)
                     <li class="nav-item">
                         <a class="nav-link menu-link collapsed"
                            href="#childOrg{{ $childOrganisation->id }}"
@@ -31,7 +31,7 @@
                     </li>
                 @endforeach
                 <li class="nav-item">
-                    <a href="{{ route('organisation.organisations.index', [$organisation->slug, $type->slug,$parentOrganisation->slug]) }}" class="nav-link">Add New {{ $type->name }}</a>
+                    <a href="{{ route('organisation.organisations.index', [$organisation->slug, $organisationType->slug,$parentOrganisation->slug]) }}" class="nav-link">Add New {{ $organisationType->name }}</a>
                 </li>
             </ul>
         </div>

@@ -92,13 +92,11 @@
                                     <th>Species</th>
                                     <th>Year</th>
                                     <th>Hunting Quota</th>
-                                    <th>PAC Quota</th>
+                                    <th>Hunting Quota Balance</th>
                                     <th>Rational Quota</th>
-                                    {{--<th>Zimpark Hunting</th>
-                                    <th>Zimpark PAC</th>
-                                    <th>Zimpark Rational</th>--}}
+                                    <th>Rational Quota Balance</th>
                                     <th>Status</th>
-                                    <th>Distribution</th>
+                                   {{-- <th>Distribution</th>--}}
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -111,18 +109,16 @@
                                         <td>{{ $quota->species->name }}</td>
                                         <td>{{ $quota->year }}</td>
                                         <td>{{ $quota->hunting_quota }}</td>
-                                        <td>{{ $quota->pac_quota }}</td>
+                                        <td>{{ $quota->hunting_quota_balance }}</td>
                                         <td>{{ $quota->rational_quota }}</td>
-                                        {{--<td>{{ $quota->zimpark_hunting_quota }}</td>
-                                        <td>{{ $quota->zimpark_pac_quota }}</td>
-                                        <td>{{ $quota->national_rational_quota }}</td>--}}
+                                        <td>{{ $quota->rational_quota_balance }}</td>
                                         <td>{{ $quota->status }}</td>
-                                        <td>
+                                        {{--<td>
                                             <a href="{{ route('organisation.ward-quota-distribution.index', [$organisation->slug, $quota->slug]) }}"
                                                class="btn btn-sm btn-primary" title="View Distribution">
                                                 <i class="fa fa-eye"></i> View Distribution
                                             </a>
-                                        </td>
+                                        </td>--}}
                                         <td>
                                             <!-- Edit Button -->
                                             <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"

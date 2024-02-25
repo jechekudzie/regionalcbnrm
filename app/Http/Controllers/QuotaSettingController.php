@@ -39,7 +39,7 @@ class QuotaSettingController extends Controller
                 'required', 'integer', 'min:2015', 'max:' . (now()->year + 1),
                 function ($attribute, $value, $fail) use ($request) {
                     // Including hunting_concession_id in the uniqueness check
-                    if (QuotaRequest::where('organisation_id', $request->hunting_concession_id)
+                    if (QuotaRequest::where('organisation_id', $request->organisation_id)
                         ->where('species_id', $request->species_id)
                         ->where('year', $value)
                         ->exists()) {
@@ -48,7 +48,6 @@ class QuotaSettingController extends Controller
                 },
             ],
             'hunting_quota' => 'required|integer',
-            'pac_quota' => 'nullable|integer',
             'rational_quota' => 'nullable|integer',
             'zimpark_hunting_quota' => 'nullable|integer',
             'zimpark_pac_quota' => 'nullable|integer',
@@ -63,6 +62,12 @@ class QuotaSettingController extends Controller
 
         $quotaRequest = new QuotaRequest($validator->validated());
         $quotaRequest->save();
+
+        //update the hunting_quota_balance and relational_quota_balance
+        $quotaRequest->update([
+            'hunting_quota_balance' => $quotaRequest->hunting_quota,
+            'rational_quota_balance' => $quotaRequest->rational_quota
+        ]);
 
         $species = Species::findOrFail($request->species_id);
 
@@ -89,7 +94,6 @@ class QuotaSettingController extends Controller
             'organisation_id' => 'required|exists:organisations,id',
             'year' => 'required|integer|min:2015|max:' . (now()->year + 1),
             'hunting_quota' => 'required|integer',
-            'pac_quota' => 'nullable|integer',
             'rational_quota' => 'nullable|integer',
             'zimpark_hunting_quota' => 'nullable|integer',
             'zimpark_pac_quota' => 'nullable|integer',

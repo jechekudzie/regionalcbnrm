@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hunting_detail_id');
             $table->unsignedBigInteger('hunter_id')->nullable();
             $table->unsignedBigInteger('professional_hunter_id')->nullable();
+            $table->string('professional_hunter')->nullable();
             $table->unsignedBigInteger('shot_id')->nullable();
             $table->string('location_of_shot')->nullable();
             $table->integer('number_of_shots')->nullable();

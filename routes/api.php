@@ -14,6 +14,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+Route::get('/test-data', [\App\Http\Controllers\TestController::class, 'index'])->name('test.roles.index');
+
+
 //organisation types
 Route::get('/admin/organisation-types', [ApiController::class, 'fetchTemplate'])->name('admin.organisation-types.index');
 //organisations
@@ -34,6 +37,8 @@ Route::get('/mobile-registration', [ApiController::class, 'mobileRegistration'])
 Route::get('/fetch-quota-requests', [ApiController::class, 'fetchQuotaRequests'])->name('fetch-species.index');
 
 Route::get('/fetch-ward-quota-distributions', [ApiController::class, 'fetchWardQuotaDistributions'])->name('fetch-ward-quota-distributions.index');
+
+Route::get('/fetch-species-for-quota', [ApiController::class, 'fetchSpeciesForQuota'])->name('fetch-species-for-quota');
 
 Route::get('/hunting-outcomes/pictures/{huntingDetailOutCome}', [ApiController::class, 'getPicturesBySlug']);
 

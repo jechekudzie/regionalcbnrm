@@ -184,7 +184,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/{organisation}/quota-settings/{quotaRequest}/edit', [\App\Http\Controllers\QuotaSettingController::class, 'edit'])->name('organisation.quota-settings.edit');
     Route::patch('/{organisation}/quota-settings/{quotaRequest}/update', [\App\Http\Controllers\QuotaSettingController::class, 'update'])->name('organisation.quota-settings.update');
 
-//routes for WardQuotaDistributionC for a quota request
+//routes for WardQuotaDistribution for a quota request
     Route::get('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution', [\App\Http\Controllers\WardQuotaDistributionController::class, 'index'])->name('organisation.ward-quota-distribution.index');
     Route::post('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/store', [\App\Http\Controllers\WardQuotaDistributionController::class, 'store'])->name('organisation.ward-quota-distribution.store');
     Route::get('/{organisation}/quota-settings/{quotaRequest}/ward-quota-distribution/{wardQuotaDistribution}/edit', [\App\Http\Controllers\WardQuotaDistributionController::class, 'edit'])->name('organisation.ward-quota-distribution.edit');

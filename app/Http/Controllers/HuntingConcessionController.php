@@ -23,7 +23,7 @@ class HuntingConcessionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'hectarage' => 'nullable|string|max:255',
-            'wards' => 'nullable|array',
+            'wards' => 'required|array',
             'wards.*' => 'exists:organisations,id'
         ]);
 

@@ -193,7 +193,7 @@
                                                         <tr>
                                                             <th>Species Name</th>
                                                             <th>Hunting Quota</th>
-                                                            <th>Offtake(number to be hunter)</th>
+                                                            <th>Off-take</th>
                                                             <th>RBZ Trastool Number</th>
                                                         </tr>
                                                         </thead>
@@ -250,12 +250,11 @@
                     });
                 });
 
-
                 $(document).ready(function () {
                     // Function to fetch and display quota distributions
                     function fetchAndDisplayQuotaDistributions(year, huntingConcessionId) {
                         $.ajax({
-                            url: '/api/fetch-ward-quota-distributions',
+                            url: '/api/fetch-species-for-quota',
                             method: 'GET',
                             data: {
                                 year: year,
@@ -267,7 +266,7 @@
                                 data.forEach(function (item) {
                                     // Define variables for each piece of data
                                     var speciesName = item.species_name;
-                                    var huntingQuota = item.hunting_quota;
+                                    var huntingQuota = item.hunting_quota_balance;
                                     var speciesId = item.species_id;
                                     var isSpecial = item.is_special === 1; // Ensure 'is_special' is treated as a boolean
                                     var quotaRequestId = item.quota_request_id; // Get the quota request ID

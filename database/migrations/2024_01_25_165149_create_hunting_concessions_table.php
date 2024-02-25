@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->unsignedBigInteger('organisation_id'); // Foreign key for organisation
             $table->string('hectarage')->nullable(); //size of hunting concession
+            $table->longText('description')->nullable(); //description of hunting concession
             $table->string('slug'); // URL friendly version of name
             $table->timestamps();
         });

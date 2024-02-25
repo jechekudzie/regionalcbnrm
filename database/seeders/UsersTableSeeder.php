@@ -27,12 +27,12 @@ class UsersTableSeeder extends Seeder
                 'password' => 'password@1',
                 'organisation_id' => 4,
             ],
-            [
+           /* [
                 'name' => 'Dr Shylock Muyengwa',
                 'email' => 'shylock.muyengwa@resourceafrica.net',
                 'password' => 'password@1',
                 'organisation_id' => 2,
-            ],
+            ],*/
         ];
 
         foreach ($users as $userData) {

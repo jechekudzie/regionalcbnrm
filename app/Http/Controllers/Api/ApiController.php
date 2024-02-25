@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Hunter;
+use App\Models\HuntingConcession;
 use App\Models\HuntingDetailOutCome;
 use App\Models\Organisation;
 use App\Models\OrganisationType;
@@ -201,6 +202,42 @@ class ApiController extends Controller
             })->values(); // Convert the collection to a plain array
 
         return response()->json($quotaDistributions);
+    }
+
+
+    public function fetchSpeciesForQuota(Request $request)
+    {
+        $year = $request->input('year');
+        $huntingConcessionId = $request->input('huntingConcessionId');
+
+        // Find the hunting concession
+        $huntingConcession = HuntingConcession::with('organisation.quotaRequests.species')->find($huntingConcessionId);
+
+        // Check if the hunting concession and its organisation exist
+        if (!$huntingConcession || !$huntingConcession->organisation) {
+            return response()->json(['error' => 'Hunting concession or organisation not found'], 404);
+        }
+
+        $organisation = $huntingConcession->organisation;
+
+        // Fetch quota requests for the organisation that match the given year
+        $quotaRequests = $organisation->quotaRequests()->where('year', $year)->get();
+        // Prepare the species data
+        $speciesData = [];
+        foreach ($quotaRequests as $quotaRequest) {
+                $speciesData[] = [
+                    'species_name' => $quotaRequest->species->name,
+                    'hunting_quota_balance' => $quotaRequest->hunting_quota_balance, // Ensure this field exists in your species table
+                    'species_id' => $quotaRequest->species->id,
+                    'is_special' => $quotaRequest->species->is_special, // Ensure this field exists and is properly cast to boolean in your species model
+                    'quota_request_id' => $quotaRequest->id,
+                ];
+
+        }
+
+// Return the species data as a JSON response
+        return response()->json($speciesData);
+
     }
 
 

@@ -282,6 +282,26 @@
                     </li>
 
                     <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#huntingConcessions"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="huntingConcessions">
+                            <span data-key="t-dashboards">Hunting Concession</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="huntingConcessions">
+                            <ul class="nav nav-sm flex-column">
+
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.hunting-concessions.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.hunting-concessions.index*') ? 'active' : '' }}">
+                                        Hunting Concessions
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#quotaSetings"
                            data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="quotaSetings">
@@ -298,17 +318,31 @@
                                     </a>
                                 </li>
 
+
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#huntingClients"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="huntingClients">
+                            <span data-key="t-dashboards">Hunting Clients</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="huntingClients">
+                            <ul class="nav nav-sm flex-column">
+
                                 <li class="nav-item">
-                                    <a href="{{route('organisation.hunting-concessions.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.hunting-concessions.index*') ? 'active' : '' }}">
-                                        Hunting Concessions
+                                    <a href="{{route('organisation.hunters.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.hunters*') ? 'active' : '' }}">
+                                        Manage Hunting Clients
                                     </a>
                                 </li>
 
                             </ul>
                         </div>
                     </li>
-
 
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#hunting"
@@ -320,23 +354,9 @@
                             <ul class="nav nav-sm flex-column">
 
                                 <li class="nav-item">
-                                    <a href="{{route('organisation.hunters.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.hunters*') ? 'active' : '' }}">
-                                        Clients
-                                    </a>
-                                </li>
-
-                                {{--<li class="nav-item">
-                                    <a href="{{route('organisation.safari-licenses.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.safari-licenses*') ? 'active' : '' }}">
-                                        Safari Licenses
-                                    </a>
-                                </li>--}}
-
-                                <li class="nav-item">
                                     <a href="{{route('organisation.hunting-activities.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.hunting-activities*') ? 'active' : '' }}">
-                                        Hunting Activities
+                                        Manage Hunting Activities
                                     </a>
                                 </li>
                             </ul>

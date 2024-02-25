@@ -63,6 +63,7 @@
                             <table id="conflicts-datatable" class="table table-bordered dt-responsive nowrap">
                                 <thead>
                                 <tr>
+                                    <th>Incident #</th>
                                     <th>Title</th>
                                     <th>Year</th>
                                     <th>Date</th>
@@ -77,6 +78,7 @@
                                 {{-- Loop through conflicts here --}}
                                 @foreach($incidents as $incident)
                                     <tr>
+                                        <td> {{ sprintf('%04s', $incident->id) }} </td>
                                         <td> {{ $incident->title }} </td>
                                         <td> {{ $incident->year }} </td>
                                         <td> {{ $incident->date }} </td>

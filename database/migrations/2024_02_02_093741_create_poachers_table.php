@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('age')->nullable();
+            $table->string('identification')->nullable();
+            $table->string('docket_number')->nullable();
             $table->unsignedBigInteger('gender_id')->nullable();
             $table->unsignedBigInteger('country_id')->nullable();
             $table->unsignedBigInteger('province_id')->nullable();
