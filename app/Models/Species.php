@@ -23,6 +23,11 @@ class Species extends Model
         return $this->belongsToMany(Incident::class, 'incident_species', 'species_id', 'incident_id');
     }
 
+    // Add relationships if needed, for example to PACDetail
+    public function pacDetails()
+    {
+        return $this->hasMany(PACDetail::class);
+    }
 
     public function getEstimateCount($maturityId, $genderId, $year)
     {
@@ -50,6 +55,19 @@ class Species extends Model
         return $this->belongsToMany(PoachingIncident::class, 'poaching_incident_species');
     }
 
+
+    // Species-specific pricing for Payable Items within Organisations
+    public function payableItems()
+    {
+        return $this->belongsToMany(OrganisationPayableItem::class, 'organisation_payable_item_species', 'species_id', 'organisation_payable_item_id')
+            ->withPivot('price');
+    }
+
+    public function transactionPayables()
+    {
+        return $this->belongsToMany(TransactionPayable::class, 'transaction_payable_species', 'species_id', 'transaction_payable_id')
+            ->withPivot('price');
+    }
 
     public function getSlugOptions(): SlugOptions
     {

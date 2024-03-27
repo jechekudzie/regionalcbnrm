@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 class PoachingIncidentSpeciesController extends Controller
 {
     //
-
     public function index(Organisation $organisation, PoachingIncident $poachingIncident)
     {
         $poachingIncidentSpecies = $poachingIncident->species()->get();
@@ -49,14 +48,12 @@ class PoachingIncidentSpeciesController extends Controller
         // Sync species to the incident with additional fields (pivot table fields)
         $poachingIncident->species()->syncWithoutDetaching($speciesData); // Assuming 'species' is the relationship method name in your Incident model
 
-
         // Redirect back with a success message
         return redirect()->route('organisation.poaching-incident-species.index', [$organisation->slug, $poachingIncident->slug])->with('success', 'Species added to incident successfully.');
     }
 
     public function destroy(Organisation $organisation, Incident $poachingIncident, $poachingIncidentSpecies)
     {
-
         $poachingIncident->species()->detach($poachingIncidentSpecies);
         return redirect()->route('organisation.poaching-incident-species.index', [$organisation->slug, $poachingIncident->slug])->with('success', 'Species removed from incident successfully.');
     }

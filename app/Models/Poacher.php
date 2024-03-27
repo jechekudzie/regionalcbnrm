@@ -4,16 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class Poacher extends Model
 {
-    use HasFactory;
+    use HasFactory,HasSlug;
 
     protected $guarded = [];
 
     public function poachingIncidents()
     {
-        return $this->belongsToMany(PoachingIncident::class, 'incident_poachers');
+        return $this->belongsTo(PoachingIncident::class);
     }
 
     public function country()
@@ -44,6 +46,19 @@ class Poacher extends Model
     public function poachingReason()
     {
         return $this->belongsTo(PoachingReason::class);
+    }
+
+    public function getSlugOptions() : SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('full_name')
+            ->saveSlugsTo('slug');
+    }
+
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
     }
 
 }

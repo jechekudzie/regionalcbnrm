@@ -33,7 +33,7 @@
                                     </a>
                                     @can('view-generic')
                                         <a style="margin: 3px;" href="{{route('organisation.dashboard.rural-district-councils')}}"
-                                           class="btn btn-danger"
+                                           class="btn btn-danger" target="_blank"
                                         >View RDC Organisations
                                             <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
                                         </a>
@@ -66,7 +66,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="text-center fs-15 fw-semibold mb-8">{{$organisation->name}}</h5>
-                                        <p class="text-center fs-12 fw-semibold mb-8">({{$organisation->parentOrganisation->name}})</p>
+                                        <p class="text-center fs-12 fw-semibold mb-8">({{$organisation->organisationType->name}})</p>
                                         <div class="d-flex flex-wrap justify-content-evenly">
                                             <p class="text-muted text-start">
                                                 <i class="fa fa-user text-success fs-18 align-left me-2"></i>
@@ -100,7 +100,7 @@
                                         <div class="d-grid gap-2">
                                             <a style="margin: 3px;"
                                                href="{{route('organisation.dashboard.index', $organisation->slug)}}"
-                                               class="btn btn-success btn-sm  float-start">Enter Your Organisation <i
+                                               class="btn btn-success btn-sm  float-start" target="_blank">Enter Your Organisation <i
                                                     class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
                                             </a>
 

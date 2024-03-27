@@ -42,7 +42,7 @@
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i> Add Species To be Hunted
+                                            class="fa fa-plus"></i> Hunting Return Form
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -192,7 +192,7 @@
                                                         <thead>
                                                         <tr>
                                                             <th>Species Name</th>
-                                                            <th>Hunting Quota</th>
+                                                            <th>Quota Balance</th>
                                                             <th>Off-take</th>
                                                             <th>RBZ Trastool Number</th>
                                                         </tr>

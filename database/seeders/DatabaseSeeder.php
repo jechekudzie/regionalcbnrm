@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Province;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -30,7 +31,15 @@ class DatabaseSeeder extends Seeder
             PoachingMethodSeeder::class,
             PoachingReasonSeeder::class,
             HuntingOutComeSeeder::class,
+            IdentificationTypeSeeder::class,
+            GenderSeeder::class,
             ShotsTableSeeder::class,
+            ProvinceSeeder::class,
+            CitySeeder::class,
+            CategorySeeder::class,
+            PayableItemSeeder::class,
+            ProjectStatusesTableSeeder::class,
+            ProjectCategoriesTableSeeder::class,
             UsersTableSeeder::class,
             /*OrganisationAdminSeeder::class,*/
         ]);

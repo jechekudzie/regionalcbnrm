@@ -225,21 +225,20 @@ class ApiController extends Controller
         // Prepare the species data
         $speciesData = [];
         foreach ($quotaRequests as $quotaRequest) {
-                $speciesData[] = [
-                    'species_name' => $quotaRequest->species->name,
-                    'hunting_quota_balance' => $quotaRequest->hunting_quota_balance, // Ensure this field exists in your species table
-                    'species_id' => $quotaRequest->species->id,
-                    'is_special' => $quotaRequest->species->is_special, // Ensure this field exists and is properly cast to boolean in your species model
-                    'quota_request_id' => $quotaRequest->id,
-                ];
+            $speciesData[] = [
+                'species_name' => $quotaRequest->species->name,
+                'hunting_quota_balance' => $quotaRequest->hunting_quota_balance, // Ensure this field exists in your species table
+                'species_id' => $quotaRequest->species->id,
+                'is_special' => $quotaRequest->species->is_special, // Ensure this field exists and is properly cast to boolean in your species model
+                'quota_request_id' => $quotaRequest->id,
+            ];
 
         }
 
-// Return the species data as a JSON response
+        // Return the species data as a JSON response
         return response()->json($speciesData);
 
     }
-
 
 
     public function getPicturesBySlug(Request $request, HuntingDetailOutCome $huntingDetailOutCome)

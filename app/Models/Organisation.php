@@ -16,6 +16,11 @@ class Organisation extends Model
     protected $guarded = [];
 
 
+    //has many projects
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
     public function organisationType()
     {
         return $this->belongsTo(OrganisationType::class);
@@ -143,10 +148,33 @@ class Organisation extends Model
         return $this->hasMany(Incident::class);
     }
 
+    //has many problem animal controls
+    public function problemAnimalControls()
+    {
+        return $this->hasMany(ProblemAnimalControl::class);
+    }
+
     //has many poaching incidents
     public function poachingIncidents()
     {
         return $this->hasMany(PoachingIncident::class);
+    }
+
+    public function organisationPayableItems()
+    {
+        return $this->hasMany(OrganisationPayableItem::class);
+    }
+
+
+    // Add this method to define the relationship with Transactions
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
+    public function revenueSharings()
+    {
+        return $this->hasMany(RevenueSharing::class);
     }
 
     public function getSlugOptions(): SlugOptions

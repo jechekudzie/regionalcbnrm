@@ -41,6 +41,10 @@ Route::get('/', function () {
 
     return view('auth.login');
 });
+Route::get('/dash', function () {
+
+    return view('dash');
+});
 
 
 /*
@@ -91,7 +95,6 @@ Route::middleware(['role:super-admin'])->group(function () {
 //assign permission to organisation roles
     Route::get('/admin/permissions/{organisation}/{role}/assignPermission', [\App\Http\Controllers\PermissionController::class, 'assignPermission'])->name('admin.permissions.assign');
     Route::post('/admin/permissions/{organisation}/{role}/assignPermissionToRole', [\App\Http\Controllers\PermissionController::class, 'assignPermissionToRole'])->name('admin.permissions.assign-permission-to-role');
-
 
 //routes for species
     Route::get('/admin/species', [\App\Http\Controllers\SpeciesController::class, 'index'])->name('admin.species.index');
@@ -210,9 +213,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/{organisation}/hunters/{hunter}/update', [\App\Http\Controllers\HunterController::class, 'update'])->name('organisation.hunters.update');
     Route::delete('/{organisation}/hunters/{hunter}', [\App\Http\Controllers\HunterController::class, 'destroy'])->name('organisation.hunters.destroy');
 
-
-//need routes for organisation.safari-license
+//safari-license
     Route::get('/{organisation}/safari-licenses', [\App\Http\Controllers\HuntingLicenseController::class, 'index'])->name('organisation.safari-licenses.index');
+
 //give create, store, edit, update and delete routes
     Route::get('/{organisation}/safari-licenses/create', [\App\Http\Controllers\HuntingLicenseController::class, 'create'])->name('organisation.safari-licenses.create');
     Route::post('/{organisation}/safari-licenses/store', [\App\Http\Controllers\HuntingLicenseController::class, 'store'])->name('organisation.safari-licenses.store');
@@ -254,10 +257,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/{organisation}/hunting-activities/hunting-outcomes/{huntingDetailOutCome}', [\App\Http\Controllers\HuntingDetailOutComeController::class, 'destroy'])->name('organisation.hunting-detail-outcome.destroy');
 
 
-//HWC incident routes
+//Human Wildlife Conflict Incidents routes
     Route::get('/{organisation}/incidents', [\App\Http\Controllers\IncidentController::class, 'index'])->name('organisation.incidents.index');
     Route::get('/{organisation}/incidents/create', [\App\Http\Controllers\IncidentController::class, 'create'])->name('organisation.incidents.create');
     Route::post('/{organisation}/incidents/store', [\App\Http\Controllers\IncidentController::class, 'store'])->name('organisation.incidents.store');
+    Route::get('/{organisation}/incidents/{incident}', [\App\Http\Controllers\IncidentController::class, 'show'])->name('organisation.incidents.show');
     Route::get('/{organisation}/incidents/{incident}/edit', [\App\Http\Controllers\IncidentController::class, 'edit'])->name('organisation.incidents.edit');
     Route::patch('/{organisation}/incidents/{incident}/update', [\App\Http\Controllers\IncidentController::class, 'update'])->name('organisation.incidents.update');
     Route::delete('/{organisation}/incidents/{incident}', [\App\Http\Controllers\IncidentController::class, 'destroy'])->name('organisation.incidents.destroy');
@@ -292,7 +296,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}/update', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'update'])->name('organisation.incident-outcomes-dynamic-fields.update');
     Route::delete('/{organisation}/incidents/{incident}/outcomes/{incidentOutCome}/dynamic-fields/{incidentOutcomeDynamicField}', [\App\Http\Controllers\IncidentOutcomeDynamicFieldController::class, 'destroy'])->name('organisation.incident-outcomes-dynamic-fields.destroy');
 
-//routes for poaching incidents
+    //Problem Animal Control
+    Route::get('/{organisation}/problem-animal-control/index', [\App\Http\Controllers\ProblemAnimalControlController::class, 'index'])->name('organisation.problem-animal-control.index');
+    Route::get('/{organisation}/problem-animal-control/{incident}/create', [\App\Http\Controllers\ProblemAnimalControlController::class, 'create'])->name('organisation.problem-animal-control.create');
+    Route::post('/{organisation}/problem-animal-control/{incident}/store', [\App\Http\Controllers\ProblemAnimalControlController::class, 'store'])->name('organisation.problem-animal-control.store');
+    Route::get('/{organisation}/problem-animal-control/{problemAnimalControl}', [\App\Http\Controllers\ProblemAnimalControlController::class, 'show'])->name('organisation.problem-animal-control.edit');
+    Route::get('/{organisation}/problem-animal-control/{problemAnimalControl}/edit', [\App\Http\Controllers\ProblemAnimalControlController::class, 'edit'])->name('organisation.problem-animal-control.edit');
+    Route::patch('/{organisation}/problem-animal-control/{problemAnimalControl}/update', [\App\Http\Controllers\ProblemAnimalControlController::class, 'update'])->name('organisation.problem-animal-control.update-species-detail');
+    Route::delete('/{organisation}/problem-animal-control/{problemAnimalControl}', [\App\Http\Controllers\ProblemAnimalControlController::class, 'destroy'])->name('organisation.problem-animal-control.destroy');
+
+
+//Poaching incidents
     Route::get('/{organisation}/poaching-incidents', [\App\Http\Controllers\PoachingIncidentController::class, 'index'])->name('organisation.poaching-incidents.index');
     Route::get('/{organisation}/poaching-incidents/create', [\App\Http\Controllers\PoachingIncidentController::class, 'create'])->name('organisation.poaching-incidents.create');
     Route::post('/{organisation}/poaching-incidents/store', [\App\Http\Controllers\PoachingIncidentController::class, 'store'])->name('organisation.poaching-incidents.store');
@@ -307,12 +321,96 @@ Route::middleware('auth')->group(function () {
     Route::patch('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}/update', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'update'])->name('organisation.poaching-incident-species.update');
     Route::delete('/{organisation}/poaching-incidents/{poachingIncident}/species/{poachingIncidentSpecies}', [\App\Http\Controllers\PoachingIncidentSpeciesController::class, 'destroy'])->name('organisation.poaching-incident-species.destroy');
 
+    //manage poacher
+    Route::get('/{organisation}/poacher/{poachingIncident}/index', [\App\Http\Controllers\PoacherController::class, 'index'])->name('organisation.poaching-incident-poacher.index');
+    Route::post('/{organisation}/poacher/{poachingIncident}/store', [\App\Http\Controllers\PoacherController::class, 'store'])->name('organisation.poaching-incident-poacher.store');
+    Route::post('/{organisation}/poacher/{poacher}/edit', [\App\Http\Controllers\PoacherController::class, 'edit'])->name('organisation.poaching-incident-poacher.edit');
+    Route::patch('/{organisation}/poacher/{poacher}/update', [\App\Http\Controllers\PoacherController::class, 'update'])->name('organisation.poaching-incident-poacher.update');
+    Route::delete('/{organisation}/poacher/{poacher}/destroy', [\App\Http\Controllers\PoacherController::class, 'destroy'])->name('organisation.poaching-incident-poacher.destroy');
+
+
     //organisation create
     Route::get('/{organisation}/organisations/{organisationType}/{parentOrganisation}/index', [\App\Http\Controllers\OrganisationChildrenController::class, 'index'])->name('organisation.organisations.index');
     Route::post('/{organisation}/organisations/{organisationType}/{parentOrganisation}/store', [\App\Http\Controllers\OrganisationChildrenController::class, 'store'])->name('organisation.organisations.store');
     Route::get('/{organisation}/organisations/{organisationType}/edit', [\App\Http\Controllers\OrganisationChildrenController::class, 'edit'])->name('organisation.organisations.edit');
     Route::patch('/{organisation}/organisations/{organisationToUpdate}/update', [\App\Http\Controllers\OrganisationChildrenController::class, 'update'])->name('organisation.organisations.update');
     Route::delete('/{organisation}/organisations/{organisationToDelete}', [\App\Http\Controllers\OrganisationChildrenController::class, 'destroy'])->name('organisation.organisations.destroy');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Organisation Dashboard Payments
+    |--------------------------------------------------------------------------
+    */
+
+    //organisation categories
+    Route::get('/{organisation}/payable-categories', [\App\Http\Controllers\OrganisationPayableItemController::class, 'payableItemCategories'])->name('organisation.payable-categories.index');
+    //organisation payable items
+    Route::get('/{organisation}/{category}/payable-items', [\App\Http\Controllers\OrganisationPayableItemController::class, 'index'])->name('organisation.payable-items.index');
+    Route::get('/{organisation}/{category}/payable-items/create', [\App\Http\Controllers\OrganisationPayableItemController::class, 'create'])->name('organisation.payable-items.create');
+    Route::post('/{organisation}/{category}/payable-items/store', [\App\Http\Controllers\OrganisationPayableItemController::class, 'store'])->name('organisation.payable-items.store');
+    Route::get('/{organisation}/{category}/payable-items/{payableItem}/edit', [\App\Http\Controllers\OrganisationPayableItemController::class, 'edit'])->name('organisation.payable-items.edit');
+    Route::patch('/{organisation}/{category}/payable-items/{payableItem}/update', [\App\Http\Controllers\OrganisationPayableItemController::class, 'update'])->name('organisation.payable-items.update');
+    Route::delete('/{organisation}/{category}/payable-items/{payableItem}', [\App\Http\Controllers\OrganisationPayableItemController::class, 'destroy'])->name('organisation.payable-items.destroy');
+
+
+//organisation transactions
+    Route::get('/{organisation}/transactions', [\App\Http\Controllers\TransactionController::class, 'index'])->name('organisation.transactions.index');
+    Route::get('/{organisation}/transactions/create', [\App\Http\Controllers\TransactionController::class, 'create'])->name('organisation.transactions.create');
+    Route::post('/{organisation}/transactions/store', [\App\Http\Controllers\TransactionController::class, 'store'])->name('organisation.transactions.store');
+    Route::get('/{organisation}/transactions/{transaction}/edit', [\App\Http\Controllers\TransactionController::class, 'edit'])->name('organisation.transactions.edit');
+    Route::patch('/{organisation}/transactions/{transaction}/update', [\App\Http\Controllers\TransactionController::class, 'update'])->name('organisation.transactions.update');
+    Route::delete('/{organisation}/transactions/{transaction}', [\App\Http\Controllers\TransactionController::class, 'destroy'])->name('organisation.transactions.destroy');
+
+//transaction payables
+    Route::get('/{organisation}/transactions/{transaction}/payables', [\App\Http\Controllers\TransactionPayableController::class, 'index'])->name('organisation.transaction-payables.index');
+    Route::post('/{organisation}/transactions/{transaction}/payables/store', [\App\Http\Controllers\TransactionPayableController::class, 'store'])->name('organisation.transaction-payables.store');
+    Route::get('/{organisation}/transactions/{transaction}/payables/{transactionPayable}/edit', [\App\Http\Controllers\TransactionPayableController::class, 'edit'])->name('organisation.transaction-payables.edit');
+    Route::patch('/{organisation}/transactions/{transaction}/payables/{transactionPayable}/update', [\App\Http\Controllers\TransactionPayableController::class, 'update'])->name('organisation.transaction-payables.update');
+    Route::delete('/{organisation}/transactions/{transaction}/payables/{transactionPayable}', [\App\Http\Controllers\TransactionPayableController::class, 'destroy'])->name('organisation.transaction-payables.destroy');
+
+    //organisation projects
+    Route::get('/{organisation}/projects', [\App\Http\Controllers\ProjectController::class, 'index'])->name('organisation.projects.index');
+    Route::get('/{organisation}/projects/create', [\App\Http\Controllers\ProjectController::class, 'create'])->name('organisation.projects.create');
+    Route::post('/{organisation}/projects/store', [\App\Http\Controllers\ProjectController::class, 'store'])->name('organisation.projects.store');
+    Route::get('/{organisation}/projects/{project}', [\App\Http\Controllers\ProjectController::class, 'show'])->name('organisation.projects.show');
+    Route::get('/{organisation}/projects/{project}/edit', [\App\Http\Controllers\ProjectController::class, 'edit'])->name('organisation.projects.edit');
+    Route::patch('/{organisation}/projects/{project}/update', [\App\Http\Controllers\ProjectController::class, 'update'])->name('organisation.projects.update');
+    Route::delete('/{organisation}/projects/{project}', [\App\Http\Controllers\ProjectController::class, 'destroy'])->name('organisation.projects.destroy');
+
+    //project timelines
+    Route::get('/{organisation}/projects/{project}/timelines', [\App\Http\Controllers\ProjectTimelineController::class, 'index'])->name('organisation.project-timelines.index');
+    Route::get('/{organisation}/projects/{project}/timelines/create', [\App\Http\Controllers\ProjectTimelineController::class, 'create'])->name('organisation.project-timelines.create');
+    Route::post('/{organisation}/projects/{project}/timelines/store', [\App\Http\Controllers\ProjectTimelineController::class, 'store'])->name('organisation.project-timelines.store');
+    Route::get('/{organisation}/projects/{project}/timelines/{projectTimeline}/edit', [\App\Http\Controllers\ProjectTimelineController::class, 'edit'])->name('organisation.project-timelines.edit');
+    Route::patch('/{organisation}/projects/{project}/timelines/{projectTimeline}/update', [\App\Http\Controllers\ProjectTimelineController::class, 'update'])->name('organisation.project-timelines.update');
+    Route::delete('/{organisation}/projects/{project}/timelines/{projectTimeline}', [\App\Http\Controllers\ProjectTimelineController::class, 'destroy'])->name('organisation.project-timelines.destroy');
+
+    //project budgets
+    Route::get('/{organisation}/projects/{project}/budgets', [\App\Http\Controllers\ProjectBudgetController::class, 'index'])->name('organisation.project-budgets.index');
+    Route::get('/{organisation}/projects/{project}/budgets/create', [\App\Http\Controllers\ProjectBudgetController::class, 'create'])->name('organisation.project-budgets.create');
+    Route::post('/{organisation}/projects/{project}/budgets/store', [\App\Http\Controllers\ProjectBudgetController::class, 'store'])->name('organisation.project-budgets.store');
+    Route::get('/{organisation}/projects/{project}/budgets/{projectBudget}/edit', [\App\Http\Controllers\ProjectBudgetController::class, 'edit'])->name('organisation.project-budgets.edit');
+    Route::patch('/{organisation}/projects/{project}/budgets/{projectBudget}/update', [\App\Http\Controllers\ProjectBudgetController::class, 'update'])->name('organisation.project-budgets.update');
+    Route::delete('/{organisation}/projects/{project}/budgets/{projectBudget}', [\App\Http\Controllers\ProjectBudgetController::class, 'destroy'])->name('organisation.project-budgets.destroy');
+
+    //project stakeholders
+    Route::get('/{organisation}/projects/{project}/stakeholders', [\App\Http\Controllers\StakeholderController::class, 'index'])->name('organisation.project-stakeholders.index');
+    Route::get('/{organisation}/projects/{project}/stakeholders/create', [\App\Http\Controllers\StakeholderController::class, 'create'])->name('organisation.project-stakeholders.create');
+    Route::post('/{organisation}/projects/{project}/stakeholders/store', [\App\Http\Controllers\StakeholderController::class, 'store'])->name('organisation.project-stakeholders.store');
+    Route::get('/{organisation}/projects/{project}/stakeholders/{stakeholder}/edit', [\App\Http\Controllers\StakeholderController::class, 'edit'])->name('organisation.project-stakeholders.edit');
+    Route::patch('/{organisation}/projects/{project}/stakeholders/{stakeholder}/update', [\App\Http\Controllers\StakeholderController::class, 'update'])->name('organisation.project-stakeholders.update');
+    Route::delete('/{organisation}/projects/{project}/stakeholders/{stakeholder}', [\App\Http\Controllers\StakeholderController::class, 'destroy'])->name('organisation.project-stakeholders.destroy');
+
+    //project beneficiaries
+    Route::get('/{organisation}/projects/{project}/beneficiaries', [\App\Http\Controllers\BeneficiaryController::class, 'index'])->name('organisation.project-beneficiaries.index');
+    Route::get('/{organisation}/projects/{project}/beneficiaries/create', [\App\Http\Controllers\BeneficiaryController::class, 'create'])->name('organisation.project-beneficiaries.create');
+    Route::post('/{organisation}/projects/{project}/beneficiaries/store', [\App\Http\Controllers\BeneficiaryController::class, 'store'])->name('organisation.project-beneficiaries.store');
+    Route::get('/{organisation}/projects/{project}/beneficiaries/{beneficiary}/edit', [\App\Http\Controllers\BeneficiaryController::class, 'edit'])->name('organisation.project-beneficiaries.edit');
+    Route::patch('/{organisation}/projects/{project}/beneficiaries/{beneficiary}/update', [\App\Http\Controllers\BeneficiaryController::class, 'update'])->name('organisation.project-beneficiaries.update');
+    Route::delete('/{organisation}/projects/{project}/beneficiaries/{beneficiary}', [\App\Http\Controllers\BeneficiaryController::class, 'destroy'])->name('organisation.project-beneficiaries.destroy');
+
+
 });
 
 

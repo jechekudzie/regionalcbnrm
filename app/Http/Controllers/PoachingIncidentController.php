@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organisation;
+use App\Models\PoachingIncident;
 use Illuminate\Http\Request;
 
 class PoachingIncidentController extends Controller
@@ -29,6 +30,25 @@ class PoachingIncidentController extends Controller
         ]);
 
         $organisation->poachingIncidents()->create($validated);
+
+        return redirect()->route('organisation.poaching-incidents.index', $organisation->slug);
+    }
+
+
+    //create an update method
+    public function update(Request $request, Organisation $organisation, PoachingIncident $poachingIncident)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'year' => 'required|date_format:Y',
+            'date' => 'required|date',
+            'time' => 'nullable|date_format:H:i', // Assuming time is stored as a string, adjust format as necessary
+            'latitude' => 'required',
+            'longitude' => 'required',
+        ]);
+
+        $poachingIncident->update($validated);
 
         return redirect()->route('organisation.poaching-incidents.index', $organisation->slug);
     }

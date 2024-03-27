@@ -129,62 +129,47 @@
                         <!--end card-->
                     </div>
 
-                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
+                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content border-0">
                                 <div class="modal-header bg-soft-info p-3">
                                     <h5 class="modal-title" id="exampleModalLabel">{{$poachingIncident->title}} - Poached Species</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close" id="close-modal"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                                 </div>
                                 <div class="card border">
                                     <div class="card-body">
                                         <form action="{{ route('organisation.poaching-incident-species.store',[$organisation->slug, $poachingIncident->slug])}}" method="POST">
                                             @csrf
                                             <!-- Species Selection Field -->
-                                            <div class="mb-3">
-                                                <div class="mb-3">
-                                                    <div class="row">
-                                                        @foreach ($speciesList as $species)
-                                                            <div class="col-md-4 col-lg-4 mb-3">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                           value="{{ $species->id }}"
-                                                                           id="species{{ $species->id }}"
-                                                                           name="species[]">
-                                                                    <label style="font-size: 20px;"
-                                                                           class="form-check-label"
-                                                                           for="species{{ $species->id }}">
-                                                                        {{ $species->name }}
-                                                                    </label>
-                                                                </div>
-                                                                <div class="input-group mb-2">
-                                                                    <span class="input-group-text">Male Count</span>
-                                                                    <input type="number" class="form-control"
-                                                                           name="male_count[{{ $species->id }}]"
-                                                                           placeholder="0" min="0" value="0">
-                                                                </div>
-                                                                <div class="input-group">
-                                                                    <span class="input-group-text">Female Count</span>
-                                                                    <input type="number" class="form-control"
-                                                                           name="female_count[{{ $species->id }}]"
-                                                                           placeholder="0" min="0" value="0">
-                                                                </div>
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                @foreach ($speciesList as $species)
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" value="{{ $species->id }}" id="species{{ $species->id }}" name="species[]">
+                                                                <label style="font-size: 20px;" class="form-check-label" for="species{{ $species->id }}">{{ $species->name }}</label>
                                                             </div>
-                                                        @endforeach
-                                                    </div>
-                                                </div>
-
-
-                                            </div>
-
-
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group mb-2">
+                                                                <span class="input-group-text">Male Count</span>
+                                                                <input type="number" class="form-control" name="male_count[{{ $species->id }}]" placeholder="0" min="0" value="0">
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <span class="input-group-text">Female Count</span>
+                                                                <input type="number" class="form-control" name="female_count[{{ $species->id }}]" placeholder="0" min="0" value="0">
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                                </tbody>
+                                            </table>
                                             <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary">Add Species to Poaching Incident
-                                            </button>
+                                            <button type="submit" class="btn btn-primary">Add Species to Poaching Incident</button>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>

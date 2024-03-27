@@ -67,10 +67,10 @@
                                     <th>Title</th>
                                     <th>Year</th>
                                     <th>Date</th>
-                                    <th>Time</th>
                                     <th>Species Involved</th>
                                     <th>Incident Types</th>
                                     <th>Incident Outcomes</th>
+                                    <th>Problem Animal Control</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -82,21 +82,64 @@
                                         <td> {{ $incident->title }} </td>
                                         <td> {{ $incident->year }} </td>
                                         <td> {{ $incident->date }} </td>
-                                        <td> {{ $incident->time }} </td>
                                         <td>
                                             <a href="{{route('organisation.incident-species.index',[$organisation->slug,$incident->slug])}}">Species
                                                 ({{ $incident->species->count() }})
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{route('organisation.incident-conflict-types.index',[$organisation->slug,$incident->slug])}}">Conflicts ({{ $incident->conflictTypes->count() }})</a>
+                                            <a href="{{route('organisation.incident-conflict-types.index',[$organisation->slug,$incident->slug])}}">Conflicts
+                                                ({{ $incident->conflictTypes->count() }})</a>
 
                                         </td>
                                         <td>
-                                            <a href="{{route('organisation.incident-outcomes.index',[$organisation->slug,$incident->slug])}}">Outcomes ({{ $incident->ConflictOutComes->count() }})</a>
+                                            <a href="{{route('organisation.incident-outcomes.index',[$organisation->slug,$incident->slug])}}">Outcomes
+                                                ({{ $incident->ConflictOutComes->count() }})</a>
 
                                         </td>
-                                        <td> Action</td>
+
+                                        <td>
+                                            <a href="{{route('organisation.problem-animal-control.create',[$organisation->slug,$incident->slug])}}"
+                                               class="btn btn-primary btn-sm"
+                                            >
+                                                Problem Animal Control
+                                            </a>
+
+                                        </td>
+
+                                        <td>
+                                            <a href="#" data-slug="{{$incident->slug}}"
+                                               data-title="{{$incident->title}}"
+                                               data-latitude="{{$incident->latitude}}"
+                                               data-longitude="{{$incident->longitude}}"
+                                               data-year="{{$incident->year}}" data-date="{{$incident->date}}"
+                                               data-time="{{$incident->time}}"
+                                               data-description="{{$incident->description}}"
+                                               data-location="{{$incident->location}}"
+                                               data-organisation_slug="{{$organisation->slug}}"
+                                               class="btn btn-success btn-sm"
+                                               data-bs-toggle="modal"
+                                               data-bs-target="#updateModal"
+                                            >  <i class="fa fa-pencil"></i> Edit
+                                            </a>
+
+
+                                            <a href="{{ route('organisation.incidents.show', [$organisation->slug, $incident->slug]) }}"
+                                               class="btn btn-primary btn-sm">
+                                                <i class="fa fa-eye"></i> view incident
+                                            </a>
+                                            <!-- Consider adding Edit/Delete buttons here -->
+                                            <form
+                                                action="{{ route('organisation.incidents.destroy', [$organisation->slug,$incident->slug]) }}"
+                                                method="POST" style="display: inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure?')"> <i class="fa fa-trash"></i> Delete
+                                                </button>
+                                            </form>
+                                        </td>
+
 
                                     </tr>
                                 @endforeach
@@ -205,6 +248,103 @@
             </div>
 
 
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content border-0">
+                        <div class="modal-header bg-soft-info p-3">
+                            <h5 class="modal-title" id="exampleModalLabel"> Update an HWC incident</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close" id="close-modal"></button>
+                        </div>
+
+                        <div class="card border">
+                            <div class="card-header">
+
+                                <h4 class="card-title mb-0"> Update an HWC incident </h4>
+                            </div>
+                            <div class="card-body">
+
+                                <form id="mainForm" method="POST">
+                                    @csrf <!-- CSRF token for Laravel form submission -->
+                                    @method('PATCH')
+                                    {{--<input type="hidden" name="_method" value="POST">--}}
+                                    <div class="row">
+                                        <!-- Title Field -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="title" class="form-label">Title</label>
+                                            <input type="text" class="form-control" id="title" name="title" required>
+                                        </div>
+
+
+                                        <!-- Latitude Field -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="latitude" class="form-label">Latitude</label>
+                                            <input type="text" class="form-control" id="latitude" name="latitude">
+                                        </div>
+
+                                        <!-- Longitude Field -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="longitude" class="form-label">Longitude</label>
+                                            <input type="text" class="form-control" id="longitude" name="longitude">
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Year -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="year" class="form-label">Year</label>
+                                            <select class="form-select" id="year" name="year">
+                                                <option value="">Select Year</option>
+                                                @for ($year = now()->year; $year >= 2015; $year--)
+                                                    <option value="{{ $year }}">{{ $year }}</option>
+                                                @endfor
+                                            </select>
+                                        </div>
+
+                                        <!-- Date Field -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="date" name="date">
+                                        </div>
+
+                                        <!-- Time Field -->
+                                        <div class="col-md-4 mb-3">
+                                            <label for="time" class="form-label">Time</label>
+                                            <input type="time" class="form-control" id="time" name="time">
+                                        </div>
+
+                                        <!-- Location Field -->
+                                        <div class="col-md-12 mb-3">
+                                            <label for="time" class="form-label">Location</label>
+                                            <input type="text" class="form-control" id="location" name="location">
+                                        </div>
+
+                                        <!-- Description Field -->
+                                        <div class="col-md-12 mb-3">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="description" name="description"
+                                                      rows="3"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
     </div>
 @endsection
@@ -227,5 +367,40 @@
                 buttons: ['copy', 'csv', 'excel', 'print', 'pdf']
             });
         });
+
+        $(document).ready(function () {
+            $('#updateModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+
+                // Extract info from data-* attributes
+                var slug = button.data('slug');
+                var title = button.data('title');
+                var latitude = button.data('latitude');
+                var longitude = button.data('longitude');
+                var year = button.data('year');
+                var date = button.data('date');
+                var time = button.data('time');
+                var location = button.data('location');
+                var description = button.data('description');
+                var organisationSlug = button.data('organisation_slug');
+
+                // Assuming you have form fields with IDs corresponding to these data attributes
+                // Update the modal's content with the data attributes
+                var modal = $(this);
+                modal.find('#title').val(title);
+                modal.find('#latitude').val(latitude);
+                modal.find('#longitude').val(longitude);
+                modal.find('#year').val(year);
+                modal.find('#date').val(date);
+                modal.find('#time').val(time);
+                modal.find('#location').val(location);
+                modal.find('#description').val(description);
+
+                // Update form action URL
+                $('#mainForm').attr('action', '/' + organisationSlug + '/incidents/' + slug + '/update');
+
+            });
+        });
+
     </script>
 @endpush

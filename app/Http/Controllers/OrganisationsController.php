@@ -20,7 +20,7 @@ class OrganisationsController extends Controller
         try {
             $validatedData = $request->validate([
                 'name' => 'required|string|max:255',
-                'parent_id' => 'required',
+                'parent_id' => 'nullable',
                 'organisation_type_id' => 'required|exists:organisation_types,id',
             ]);
 

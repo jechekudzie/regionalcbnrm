@@ -57,7 +57,7 @@
                     </div>
                 </div>
                 <!--end col-->
-                <div class="col-xxl-9">
+                <div class="col-xxl-12">
                     <div class="card">
                         <div class="card-header">
                             @if(session()->has('errors'))
@@ -82,13 +82,14 @@
                                 </div>
                             @endif
                             <h2>{{$incident->title}} - {{$ConflictOutCome->name}} </h2>
-                                <br>
+                            <br>
 
-                                @php
-                                    $maxRows = !empty($dynamicFieldsWithValues) ? max(array_map('count', $dynamicFieldsWithValues)) : 0; // Check if array is not empty before finding max
-                                @endphp
+                            @php
+                                $maxRows = !empty($dynamicFieldsWithValues) ? max(array_map('count', $dynamicFieldsWithValues)) : 0; // Check if array is not empty before finding max
+                            @endphp
 
-                                @if($maxRows > 0) <!-- Only render the table if there are rows to display -->
+                            @if($maxRows > 0)
+                                <!-- Only render the table if there are rows to display -->
                                 <table id="buttons-datatables" class="table table-bordered dt-responsive nowrap">
                                     <thead>
                                     <tr>
@@ -103,13 +104,15 @@
                                             @foreach($dynamicFieldsWithValues as $values)
                                                 <td>
                                                     @if(isset($values[$i]))
-                                                        @if(is_array($values[$i])) <!-- Check if the value is an array, indicating multiple selections like checkboxes -->
-                                                        {{ implode(', ', $values[$i]) }} <!-- Join array values with a comma -->
+                                                        @if(is_array($values[$i]))
+                                                            <!-- Check if the value is an array, indicating multiple selections like checkboxes -->
+                                                            {{ implode(', ', $values[$i]) }} <!-- Join array values with a comma -->
                                                         @else
                                                             {{ $values[$i] }} <!-- Display the single value -->
                                                             @endif
                                                             @else
-                                                                &mdash; <!-- Display a dash (or any placeholder) for empty cells -->
+                                                                &mdash;
+                                                            <!-- Display a dash (or any placeholder) for empty cells -->
                                                         @endif
                                                 </td>
                                             @endforeach
@@ -117,68 +120,79 @@
                                     @endfor
                                     </tbody>
                                 </table>
-                                @else
-                                    <p>No dynamic field values available.</p> <!-- Display a message if there are no rows to display -->
-                                @endif
+                            @else
+                                <p>No dynamic field values available.</p>
+                                <!-- Display a message if there are no rows to display -->
+                            @endif
 
 
-                                <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                     aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-lg">
-                                        <div class="modal-content border-0">
-                                            <div class="modal-header bg-soft-info p-3">
-                                                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close" id="close-modal"></button>
+                            <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-lg">
+                                    <div class="modal-content border-0">
+                                        <div class="modal-header bg-soft-info p-3">
+                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close" id="close-modal"></button>
+                                        </div>
+
+                                        <div class="card border">
+                                            <div class="card-header">
+
+                                                <h4 class="card-title mb-0"> {{$incident->title}} Conflict</h4>
                                             </div>
+                                            <div class="card-body">
 
-                                            <div class="card border">
-                                                <div class="card-header">
-
-                                                    <h4 class="card-title mb-0"> {{$incident->title}} Conflict</h4>
-                                                </div>
-                                                <div class="card-body">
-
-                                                    <form action="{{route('organisation.incident-outcomes-dynamic-fields.store',[$organisation->slug,$incident->slug,$incidentOutCome])}}" method="POST">
-                                                        @csrf
+                                                <form
+                                                    action="{{route('organisation.incident-outcomes-dynamic-fields.store',[$organisation->slug,$incident->slug,$incidentOutCome])}}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <div class="row mb-3">
                                                         @foreach($ConflictOutCome->dynamicFields as $field)
-                                                            <div class="mb-3">
+                                                            <div class="col-md-4 mb-3">
                                                                 <label>{{ $field->label }}</label>
                                                                 @if(in_array($field->field_type, ['text', 'number', 'email', 'date', 'time']))
-                                                                    <input type="{{ $field->field_type }}" name="values[{{ $field->id }}]" class="form-control">
+                                                                    <input type="{{ $field->field_type }}"
+                                                                           name="values[{{ $field->id }}]"
+                                                                           class="form-control">
                                                                 @elseif($field->field_type == 'select')
                                                                     <!-- Assuming you have predefined options for select fields -->
-                                                                    <select name="values[{{ $field->id }}]" class="form-select">
-                                                                        @foreach($field->options as $option) <!-- You need to define how options are related to fields -->
-                                                                        <option value="{{ $option->option_value }}">{{ $option->option_label }}</option>
+                                                                    <select name="values[{{ $field->id }}]"
+                                                                            class="form-select">
+                                                                        @foreach($field->options as $option)
+                                                                            <!-- You need to define how options are related to fields -->
+                                                                            <option
+                                                                                value="{{ $option->option_value }}">{{ $option->option_label }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 @elseif($field->field_type == 'checkbox')
                                                                     <!-- Assuming checkboxes can have multiple options -->
                                                                     @foreach($field->options as $option)
                                                                         <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" name="values[{{ $field->id }}][]" value="{{ $option->option_value }}">
-                                                                            <label class="form-check-label">{{ $option->option_label }}</label>
+                                                                            <input class="form-check-input"
+                                                                                   type="checkbox"
+                                                                                   name="values[{{ $field->id }}][]"
+                                                                                   value="{{ $option->option_value }}">
+                                                                            <label
+                                                                                class="form-check-label">{{ $option->option_label }}</label>
                                                                         </div>
                                                                     @endforeach
                                                                 @endif
                                                             </div>
                                                         @endforeach
+                                                    </div>
 
-                                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                                    </form>
+                                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                                </form>
 
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
                         <!--end card-->
                     </div>
-
-
-
 
 
                 </div>

@@ -193,8 +193,7 @@
 
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <a class="dropdown-item" href="route('logout')"
-                                   onclick="event.preventDefault();
+                                <a class="dropdown-item" href="{{route('logout')}}" onclick="event.preventDefault();
                                                 this.closest('form').submit();"><i
                                         class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i> <span
                                         class="align-middle" data-key="t-logout">Logout</span></a>
@@ -382,6 +381,27 @@
                             </ul>
                         </div>
                     </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#pac"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="pac">
+                            <span data-key="t-dashboards">Problem Animal Control </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="pac">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.problem-animal-control.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.problem-animal-control*') ? 'active' : '' }}">
+                                        Manage Problem Animal Control
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#poaching"
                            data-bs-toggle="collapse"
@@ -395,6 +415,60 @@
                                     <a href="{{route('organisation.poaching-incidents.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.poaching-incident*') ? 'active' : '' }}">
                                         Poaching Incidents
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#payable"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="payable">
+                            <span data-key="t-dashboards">Payments </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="payable">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.transactions.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.transactions.index') ? 'active' : '' }}">
+                                       Transactions Payments
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
+                                        Payable
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#Projects"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="Projects">
+                            <span data-key="t-dashboards">Projects </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="Projects">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.projects.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.projects.index') ? 'active' : '' }}">
+                                        Community Projects
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
+                                        Stakeholder Projects
                                     </a>
                                 </li>
 

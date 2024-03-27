@@ -31,7 +31,7 @@ class PoachingIncident extends Model
 
     public function poachers()
     {
-        return $this->belongsToMany(Poacher::class, 'incident_poachers');
+        return $this->hasMany(Poacher::class);
     }
 
     public function getSlugOptions() : SlugOptions

@@ -20,9 +20,9 @@ class ControlMeasureSeeder extends Seeder
             ['id' => 2, 'name' => 'Wildlife - Human'],
         ];
 
-// Measures for Human - Wildlife conflicts with their corresponding conflict type ID
+    // Measures for Human - Wildlife conflicts with their corresponding conflict type ID
         $humanWildlifeMeasures = [
-            ['name' => 'Killed', 'type' => 'number', 'conflict_type_id' => 1],
+            ['name' => 'Retaliatory Killing', 'type' => 'number', 'conflict_type_id' => 1],
             ['name' => 'Relocated', 'type' => 'number', 'conflict_type_id' => 1],
             ['name' => 'Spraying', 'type' => 'drones', 'conflict_type_id' => 1],
             ['name' => 'Nets', 'type' => 'physical', 'conflict_type_id' => 1],

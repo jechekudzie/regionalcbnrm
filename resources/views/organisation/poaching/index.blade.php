@@ -87,12 +87,11 @@
                                         </td>
 
                                         <td>
-                                            <a href="{{route('organisation.poaching-incident-species.index',[$organisation->slug,$poachingIncident->slug])}}">Poachers
-                                                ({{ $poachingIncident->species->count() }})
+                                            <a href="{{route('organisation.poaching-incident-poacher.index',[$organisation->slug,$poachingIncident->slug])}}">Poachers
+                                                ({{ $poachingIncident->poachers->count() }})
                                             </a>
                                         </td>
                                         <td> Action</td>
-
                                     </tr>
                                 @endforeach
                                 </tbody>

@@ -191,11 +191,11 @@
                                                            name="hunting_quota" placeholder="Enter hunting quota"
                                                            min="0">
                                                 </div>
-                                                <div class="col-md-4">
+                                               {{-- <div class="col-md-4">
                                                     <label for="pac_quota" class="form-label">PAC Quota</label>
                                                     <input type="number" class="form-control" id="pac_quota"
                                                            name="pac_quota" placeholder="Enter pac quota" min="0">
-                                                </div>
+                                                </div>--}}
                                                 <div class="col-md-4">
                                                     <label for="rational_quota" class="form-label">Rational
                                                         Quota</label>
@@ -204,11 +204,11 @@
                                                            min="0">
                                                 </div>
                                             </div>
-                                            <div class="row mb-3">
+                                            <div style="display: none;" class="row mb-3">
                                                 <h4 class="text-center text-black text-decoration-underline">Zimpark Allocated Quotas</h4>
                                             </div>
 
-                                            <div class="row mb-3">
+                                            <div style="display: none;" class="row mb-3">
                                                 <div class="col-md-4">
                                                     <label for="zimpark_hunting_quota" class="form-label">Zimpark
                                                         PAC Quota</label>

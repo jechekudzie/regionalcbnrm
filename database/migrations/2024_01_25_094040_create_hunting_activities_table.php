@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('hunting_activities', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('transaction_id')->nullable();// Transaction ID if the activity is paid for
             $table->unsignedBigInteger('hunting_concession_id');// Hunting concession in which the activity takes place
             $table->unsignedBigInteger('organisation_id'); // RDC or other
             $table->unsignedBigInteger('safari_id')->nullable();

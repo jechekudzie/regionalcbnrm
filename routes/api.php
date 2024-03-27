@@ -30,9 +30,6 @@ Route::get('/hunters/search', [ApiController::class, 'search'])->name('admin.hun
 //get-concessions-by-rdc
 Route::get('/get-concessions-by-rdc/{ruralDistrictCouncilId}', [ApiController::class, 'fetchHuntingConcessionsByRuralDistrictCouncil'])->name('admin.rural-district-councils.hunting-concessions.index');
 
-//mobile registration
-Route::get('/mobile-registration', [ApiController::class, 'mobileRegistration'])->name('mobile-registration.store');
-
 //fetch-species
 Route::get('/fetch-quota-requests', [ApiController::class, 'fetchQuotaRequests'])->name('fetch-species.index');
 

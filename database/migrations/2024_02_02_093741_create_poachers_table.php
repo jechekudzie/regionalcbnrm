@@ -13,14 +13,23 @@ return new class extends Migration
     {
         Schema::create('poachers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->unsignedBigInteger('poaching_incident_id');
+            $table->unsignedBigInteger('poacher_type_id');
+            $table->unsignedBigInteger('offence_type_id');
+            $table->unsignedBigInteger('poaching_reason_id');
+
+            $table->string('full_name');
             $table->integer('age')->nullable();
-            $table->string('identification')->nullable();
-            $table->string('docket_number')->nullable();
             $table->unsignedBigInteger('gender_id')->nullable();
+            $table->unsignedBigInteger('identification_type_id')->nullable();
+            $table->string('identification')->nullable();
+
             $table->unsignedBigInteger('country_id')->nullable();
             $table->unsignedBigInteger('province_id')->nullable();
             $table->string('origin')->nullable();
+
+            $table->string('docket_number')->nullable();
+
             $table->string('slug')->nullable();
             $table->timestamps();
         });

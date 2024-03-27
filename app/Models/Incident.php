@@ -33,6 +33,11 @@ class Incident extends Model
             ->withPivot('male_count', 'female_count');
     }
 
+    public function problemAnimalControls()
+    {
+        return $this->hasMany(ProblemAnimalControl::class);
+    }
+
 
     public function controlMeasures()
     {
