@@ -33,7 +33,11 @@ class TransactionController extends Controller
         // Create a new transaction record
         $transaction = $organisation->transactions()->create($transaction);
 
-        return redirect()->route('organisation.transaction-payables.index', [$organisation->slug,$transaction->id])->with('success', 'Transaction created successfully');
+        //create reference number str pad 4
+        $transaction->reference_number = 'TRXN' . str_pad($transaction->id, 4, '0', STR_PAD_LEFT);
+        $transaction->save();
+
+        return redirect()->route('organisation.transaction-payables.index', [$organisation->slug, $transaction->id])->with('success', 'Transaction created successfully');
 
     }
 

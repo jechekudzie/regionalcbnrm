@@ -19,4 +19,9 @@ class Transaction extends Model
     {
         return $this->hasMany(TransactionPayable::class);
     }
+
+    public function huntingActivities()
+    {
+        return $this->hasMany(HuntingActivity::class);
+    }
 }

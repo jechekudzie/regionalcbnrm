@@ -94,6 +94,7 @@
                                     <th>Hunting Clients</th>
                                     <th>Hunting Vehicles</th>
                                     <th>Species Details</th>
+                                    <th>Payment Reference</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -120,6 +121,12 @@
                                         <td>
                                             <a href="{{ route('organisation.hunting-activities.species-details', [$organisation->slug, $activity->slug]) }}">
                                                 Species Details ({{ $activity->huntingDetails->count() ?? '0' }})
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{route('organisation.transaction-payables.index',[$organisation->slug,$activity->transaction->id])}}"
+                                               target="_blank">
+                                                {{ $activity->transaction_reference }}
                                             </a>
                                         </td>
                                         <td>
@@ -191,6 +198,12 @@
                                                         License</label>
                                                     <input type="text" class="form-control" id="hunting_license"
                                                            name="hunting_license" placeholder="Enter PH License">
+                                                </div>
+
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="transaction_reference" class="form-label">Payment Reference</label>
+                                                    <input type="text" class="form-control" id="transaction_reference"
+                                                           name="transaction_reference" placeholder="Enter Payment Reference Number">
                                                 </div>
 
                                                 <!-- Start Date -->

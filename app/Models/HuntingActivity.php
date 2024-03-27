@@ -14,6 +14,11 @@ class HuntingActivity extends Model
 
     protected $guarded = [];
 
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
     public function organisation() // The Safari Operator organizing this activity
     {
         return $this->belongsTo(Organisation::class);

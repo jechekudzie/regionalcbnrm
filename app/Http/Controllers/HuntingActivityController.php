@@ -7,6 +7,7 @@ use App\Models\Hunter;
 use App\Models\HuntingActivity;
 use App\Models\HuntingActivityVehicle;
 use App\Models\Organisation;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -17,7 +18,6 @@ class HuntingActivityController extends Controller
     //display hunting activities
     public function index(Organisation $organisation)
     {
-
         $huntingActivities = HuntingActivity::where('organisation_id', $organisation->id)->get();
 
         /*$ruralDistrictCouncils = Organisation::whereExists(function ($query) {
@@ -41,6 +41,7 @@ class HuntingActivityController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'hunting_concession_id' => 'required|exists:hunting_concessions,id',
+            'transaction_reference' => 'required|exists:transactions,reference_number',
         ]);
 
         if ($validator->fails()) {
@@ -49,9 +50,12 @@ class HuntingActivityController extends Controller
                 ->withInput();
         }
 
+        $transaction = Transaction::where('reference_number', $request->input('transaction_reference'))->first();
+
         // Create a new hunting activity
         $huntingActivity = new HuntingActivity($validator->validated());
         $huntingActivity->organisation_id = $organisation->id;
+        $huntingActivity->transaction_id = $transaction->id;
         $huntingActivity->save();
 
         // Redirect back with a success message

@@ -441,7 +441,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
-                                        Payable
+                                        Payable Items
                                     </a>
                                 </li>
 
@@ -462,13 +462,6 @@
                                     <a href="{{route('organisation.projects.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.projects.index') ? 'active' : '' }}">
                                         Community Projects
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
-                                        Stakeholder Projects
                                     </a>
                                 </li>
 
