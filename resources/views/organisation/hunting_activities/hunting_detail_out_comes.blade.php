@@ -260,12 +260,14 @@
                                                            class="form-control">
                                                 </div>
 
-                                                <!-- Longitude -->
+                                                <!-- Pictures -->
                                                 <div class="form-group col-md-6 mb-2">
-                                                    <label for="longitude">Longitude</label>
-                                                    <input type="text" name="longitude" id="longitude"
-                                                           class="form-control">
+                                                    <label for="pictures">Pictures</label>
+                                                    <input type="file" name="pictures[]" id="pictures"
+                                                           class="form-control" multiple>
                                                 </div>
+
+
                                             </div>
 
                                             <div class="row">
@@ -276,13 +278,18 @@
                                                            class="form-control">
                                                 </div>
 
-                                                <!-- Pictures -->
+                                                <!-- Longitude -->
                                                 <div class="form-group col-md-6 mb-2">
-                                                    <label for="pictures">Pictures</label>
-                                                    <input type="file" name="pictures[]" id="pictures"
-                                                           class="form-control" multiple>
+                                                    <label for="longitude">Longitude</label>
+                                                    <input type="text" name="longitude" id="longitude"
+                                                           class="form-control">
                                                 </div>
+
+
                                             </div>
+
+                                            <div id="address"></div>
+                                            <div id="map" style="height: 300px; width: 100%;"></div>
 
 
                                             <!-- Submit Button, kept full width for better visibility -->
@@ -395,6 +402,64 @@
             </script>
 
 
+            <!-- Your JavaScript code will be here -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const latitudeInput = document.getElementById('latitude');
+                    const longitudeInput = document.getElementById('longitude');
+                    const addressDiv = document.getElementById('address');
+                    let map = null;
+                    let updateTimeout = null;
 
+                    longitudeInput.disabled = latitudeInput.value.trim() === '';
+
+                    // Function to update map and address
+                    function updateMapAndAddress(latitude, longitude) {
+                        // JavaScript call to your API backend
+                        fetch(`/api/get-location?lat=${latitude}&lon=${longitude}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Display address
+                                addressDiv.textContent = data.address;
+
+                                // Initialize or update map
+                                if (!map) {
+                                    map = L.map('map').setView([data.lat, data.lon], 13);
+                                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                        attribution: '© OpenStreetMap contributors'
+                                    }).addTo(map);
+                                } else {
+                                    map.setView([data.lat, data.lon], 13);
+                                }
+
+                                L.marker([data.lat, data.lon]).addTo(map)
+                                    .bindPopup(data.address)
+                                    .openPopup();
+                            });
+                    }
+
+                    // Enable longitude field when latitude is filled
+                    latitudeInput.addEventListener('input', function () {
+                        longitudeInput.disabled = latitudeInput.value.trim() === '';
+                    });
+
+                    // Update map and address on longitude input
+                    longitudeInput.addEventListener('input', function () {
+                        const latitude = latitudeInput.value.trim();
+                        const longitude = longitudeInput.value.trim();
+
+                        // Clear previous timeout to ensure this function runs after user has stopped typing
+                        clearTimeout(updateTimeout);
+
+                        // Set a timeout to update the map after the user has stopped typing for 1 second
+                        updateTimeout = setTimeout(() => {
+                            if (latitude !== '' && longitude !== '') {
+                                updateMapAndAddress(latitude, longitude);
+                            }
+                        }, 1000); // Adjust timeout as needed
+                    });
+                });
+
+            </script>
 
     @endpush

@@ -138,8 +138,7 @@
                             </div>
                             <div class="card-body">
 
-                                <form
-                                    action="{{ route('organisation.problem-animal-control.store', [$organisation->slug, $incident->slug]) }}"
+                                <form action="{{ route('organisation.problem-animal-control.store', [$organisation->slug, $incident->slug]) }}"
                                     method="POST">
                                     @csrf
 

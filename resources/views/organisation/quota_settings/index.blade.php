@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{ $organisation->name }} - {{$selectedSpecies->name}} - Quota Requests</h4>
+                        <h4 class="mb-sm-0">{{ $organisation->name }} - {{$selectedSpecies->name}} - Quota Allocation</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -42,7 +42,7 @@
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i
-                                            class="fa fa-plus"></i> Record Quota Settings
+                                            class="fa fa-plus"></i> Record Quota Allocation
                                     </button>
                                 </div>
                                 <div class="flex-shrink-0">
@@ -81,7 +81,7 @@
                                             aria-label="Close"></button>
                                 </div>
                             @endif
-                            <h2>{{ $organisation->name }} - Quota Settings for {{ $selectedSpecies->name }}</h2>
+                            <h2>{{ $organisation->name }} - Quota Allocation for {{ $selectedSpecies->name }}</h2>
                             <br/>
                             <table style="width: 100%;" id="buttons-datatables"
                                    class="display table table-bordered dataTable no-footer"
@@ -153,7 +153,7 @@
                                 <div class="card border">
                                     <div class="card-header">
 
-                                        <h4 class="card-title mb-0">{{$selectedSpecies->name}} Quota Request</h4>
+                                        <h4 class="card-title mb-0">{{$selectedSpecies->name}} Quota Allocation</h4>
                                     </div>
                                     <div class="card-body">
 
@@ -239,7 +239,7 @@
                                             <!-- Submit Button -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit Quota Request
+                                                    <button type="submit" class="btn btn-primary">Submit Quota Allocation
                                                     </button>
                                                 </div>
                                             </div>

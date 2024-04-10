@@ -32,7 +32,6 @@ class OrganisationChildrenController extends Controller
             ]);
 
 
-            //dd($parentOrganisation);
 
             return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationType->slug,$parentOrganisation->slug])->with('success', 'Organisation created successfully');
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -53,7 +52,10 @@ class OrganisationChildrenController extends Controller
             'name' => $validatedData['name'],
         ]);
 
-       return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationToUpdate->organisationType->slug])->with('success', 'Organisation updated successfully');
+        $parentOrganisation =  $organisationToUpdate->parentOrganisation;
+
+
+       return redirect()->route('organisation.organisations.index', [$organisation->slug,$organisationToUpdate->organisationType->slug,$parentOrganisation->slug])->with('success', 'Organisation updated successfully');
     }
 
     //destroy organisation of organisation

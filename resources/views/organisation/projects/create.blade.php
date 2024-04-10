@@ -133,14 +133,18 @@
                                                     <div class="row">
                                                         <div class="col-md-4 mb-3">
                                                             <label class="form-label" for="latitude-input">Latitude</label>
-                                                            <input type="text" class="form-control" id="latitude-input" name="latitude" placeholder="Enter latitude">
+                                                            <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter latitude">
                                                         </div>
 
                                                         <div class="col-md-4 mb-3">
                                                             <label class="form-label" for="longitude-input">Longitude</label>
-                                                            <input type="text" class="form-control" id="longitude-input" name="longitude" placeholder="Enter longitude">
+                                                            <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Enter longitude">
                                                         </div>
                                                     </div>
+
+                                                    <div id="address"></div>
+                                                    <div id="map" style="height: 300px; width: 100%;"></div>
+                                                    <br/>
 
                                                     <div class="text-start mb-4">
                                                         <button type="submit" class="btn btn-success w-100">Create Project</button>
@@ -194,10 +198,67 @@
                 buttons: ['copy', 'csv', 'excel', 'print', 'pdf']
             });
         });
-
-        // Assuming you have jQuery available
-
-
     </script>
 
+    <!-- Your JavaScript code will be here -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const latitudeInput = document.getElementById('latitude');
+            const longitudeInput = document.getElementById('longitude');
+            const addressDiv = document.getElementById('address');
+            let map = null;
+            let updateTimeout = null;
+
+            longitudeInput.disabled = latitudeInput.value.trim() === '';
+
+            // Function to update map and address
+            function updateMapAndAddress(latitude, longitude) {
+                // JavaScript call to your API backend
+                fetch(`/api/get-location?lat=${latitude}&lon=${longitude}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Display address
+                        addressDiv.textContent = data.address;
+
+                        // Initialize or update map
+                        if (!map) {
+                            map = L.map('map').setView([data.lat, data.lon], 13);
+                            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                                attribution: '© OpenStreetMap contributors'
+                            }).addTo(map);
+                        } else {
+                            map.setView([data.lat, data.lon], 13);
+                        }
+
+                        L.marker([data.lat, data.lon]).addTo(map)
+                            .bindPopup(data.address)
+                            .openPopup();
+                    });
+            }
+
+            // Enable longitude field when latitude is filled
+            latitudeInput.addEventListener('input', function () {
+                longitudeInput.disabled = latitudeInput.value.trim() === '';
+            });
+
+            // Update map and address on longitude input
+            longitudeInput.addEventListener('input', function () {
+                const latitude = latitudeInput.value.trim();
+                const longitude = longitudeInput.value.trim();
+
+                // Clear previous timeout to ensure this function runs after user has stopped typing
+                clearTimeout(updateTimeout);
+
+                // Set a timeout to update the map after the user has stopped typing for 1 second
+                updateTimeout = setTimeout(() => {
+                    if (latitude !== '' && longitude !== '') {
+                        updateMapAndAddress(latitude, longitude);
+                    }
+                }, 1000); // Adjust timeout as needed
+            });
+        });
+
+    </script>
 @endpush
+
+

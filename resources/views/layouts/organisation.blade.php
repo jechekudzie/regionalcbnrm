@@ -51,6 +51,8 @@
 
     </style>
 
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
     @stack('head')
 
 
@@ -313,7 +315,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.quota-settings.species',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.quota-settings.species*') ? 'active' : '' }}">
-                                        Quota Requests
+                                        Quota Allocation
                                     </a>
                                 </li>
 
@@ -327,7 +329,7 @@
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#huntingClients"
                            data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="huntingClients">
-                            <span data-key="t-dashboards">Hunting Clients</span>
+                            <span data-key="t-dashboards">Clients</span>
                         </a>
                         <div class="collapse menu-dropdown" id="huntingClients">
                             <ul class="nav nav-sm flex-column">
@@ -335,7 +337,7 @@
                                 <li class="nav-item">
                                     <a href="{{route('organisation.hunters.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.hunters*') ? 'active' : '' }}">
-                                        Manage Hunting Clients
+                                        Manage Clients
                                     </a>
                                 </li>
 
@@ -422,32 +424,6 @@
                         </div>
                     </li>
 
-                    <li class="nav-item">
-                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#payable"
-                           data-bs-toggle="collapse"
-                           role="button" aria-expanded="false" aria-controls="payable">
-                            <span data-key="t-dashboards">Payments </span>
-                        </a>
-                        <div class="collapse menu-dropdown" id="payable">
-                            <ul class="nav nav-sm flex-column">
-
-                                <li class="nav-item">
-                                    <a href="{{route('organisation.transactions.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.transactions.index') ? 'active' : '' }}">
-                                       Transactions Payments
-                                    </a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
-                                       class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
-                                        Payable Items
-                                    </a>
-                                </li>
-
-                            </ul>
-                        </div>
-                    </li>
 
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#Projects"
@@ -462,6 +438,33 @@
                                     <a href="{{route('organisation.projects.index',$organisation->slug)}}"
                                        class="nav-link {{ Request::routeIs('organisation.projects.index') ? 'active' : '' }}">
                                         Community Projects
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#payable"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="payable">
+                            <span data-key="t-dashboards">Payments </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="payable">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.transactions.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.transactions.index') ? 'active' : '' }}">
+                                        Transactions Payments
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('organisation.payable-categories.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('organisation.payable-categories.index') ? 'active' : '' }}">
+                                        Payable Items
                                     </a>
                                 </li>
 
@@ -567,7 +570,7 @@
 
 <!-- App js -->
 <script src="{{asset('administration/assets/js/app.js')}}"></script>
-
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
     $(document).ready(function () {
         // Iterate over each active nav-link
@@ -614,6 +617,7 @@
 
 
 </script>
+
 @stack('scripts')
 
 </body>

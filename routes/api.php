@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\ApiController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,40 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/test-data', [\App\Http\Controllers\TestController::class, 'index'])->name('test.roles.index');
 
+// Define the route for getting location information based on latitude and longitude
+Route::get('/get-location', function (Request $request) {
+    $latitude = $request->query('lat');
+    $longitude = $request->query('lon');
+
+    // Ensure latitude and longitude are provided
+    if (!$latitude || !$longitude) {
+        return response()->json(['error' => 'Latitude and Longitude are required.'], 400);
+    }
+
+    // Call the Nominatim API for reverse geocoding
+    $response = Http::withHeaders([
+        'User-Agent' => 'YourAppName/1.0 (YourContactEmail@example.com)'
+    ])->get('https://nominatim.openstreetmap.org/reverse', [
+        'format' => 'json',
+        'lat' => $latitude,
+        'lon' => $longitude,
+        'zoom' => 18, // Adjust for desired detail level
+        'addressdetails' => 1,
+    ]);
+
+    // Check if the request was successful and return the data
+    if ($response->successful()) {
+        $data = $response->json();
+        return response()->json([
+            'address' => $data['display_name'] ?? 'Address not found',
+            'lat' => $latitude,
+            'lon' => $longitude,
+        ]);
+    }
+
+    // Handle errors or unsuccessful requests
+    return response()->json(['error' => 'Failed to retrieve location information'], 500);
+})->name('get-location');
 
 //organisation types
 Route::get('/admin/organisation-types', [ApiController::class, 'fetchTemplate'])->name('admin.organisation-types.index');

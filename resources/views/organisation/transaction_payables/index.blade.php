@@ -83,6 +83,7 @@
                                         <th>Balance</th>
                                         <th>Status</th>
                                         <th>Reference</th>
+                                        <th>Species</th>
 
                                         <th>Date</th>
                                         <th>Notes</th>
@@ -114,6 +115,18 @@
                                             <td>{{$transactionPayable->balance}}</td>
                                             <td>{{$transactionPayable->status}}</td>
                                             <td>{{$transactionPayable->reference_number}}</td>
+                                            <td>
+                                                @if($transactionPayable->organisationPayableItem->species->isNotEmpty())
+                                                    @foreach($transactionPayable->organisationPayableItem->species as $transactionPayableSpecies)
+                                                        {{ $transactionPayableSpecies->name }}
+                                                        @if(!$loop->last)
+                                                            ,
+                                                        @endif
+                                                    @endforeach
+                                                @else
+                                                    N/A
+                                                @endif
+                                            </td>
 
                                             <td>{{$transactionPayable->transaction_date}}</td>
                                             <td>{{$transactionPayable->notes}}</td>

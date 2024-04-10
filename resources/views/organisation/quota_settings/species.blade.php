@@ -7,7 +7,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h2 class="mb-sm-0">{{$organisation->name}} - Quota Requests</h2>
+                        <h2 class="mb-sm-0">{{$organisation->name}} - Quota Allocation</h2>
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
                                 <li class="breadcrumb-item"><a href="javascript: void(0);">CRM</a></li>
@@ -63,7 +63,7 @@
                                             </div>
                                             <div style="background-color: black;" class="card-footer  text-center">
                                                 <a  href="{{route('organisation.quota-settings.index',[$organisation->slug,$specie->slug])}}" class="link-light">
-                                                    Request Quota <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
+                                                    Allocate Quota <i class="ri-arrow-right-s-line align-middle ms-1 lh-1"></i>
                                                 </a>
                                             </div>
                                         </div>

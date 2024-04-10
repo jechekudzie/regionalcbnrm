@@ -21,8 +21,9 @@ return new class extends Migration
             $table->decimal('balance', 10, 2)->nullable()->default(0.0 );
             $table->string('currency')->default('USD');
             $table->string('payment_method')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status')->nullable();
             $table->string('reference_number')->unique()->nullable();
+            $table->string('pop')->nullable();
             $table->date('transaction_date');
             $table->text('notes')->nullable();
             $table->timestamps();
