@@ -64,12 +64,44 @@ class HuntingActivityController extends Controller
 
     }
 
+    //update method
+    public function update(Request $request, Organisation $organisation, HuntingActivity $huntingActivity)
+    {
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
+            'hunting_license' => 'nullable|string|max:255',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'hunting_concession_id' => 'required|exists:hunting_concessions,id',
+            'transaction_reference' => 'required|exists:transactions,reference_number',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $transaction = Transaction::where('reference_number', $request->input('transaction_reference'))->first();
+
+        // Update the hunting activity
+        $huntingActivity->update($validator->validated());
+        $huntingActivity->transaction_id = $transaction->id;
+        $huntingActivity->save();
+
+        // Redirect back with a success message
+        return redirect()->route('organisation.hunting-activities.index', $organisation->slug)
+            ->with('success', 'Hunting activity updated successfully.');
+    }
+
+
     //display hunting activity
     public function show(Organisation $organisation, HuntingActivity $huntingActivity)
     {
         $huntingActivity->load( 'huntingDetails', 'huntingVehicles', 'hunters');
 
-        return view('organisation.hunting_activities.show', compact('organisation', 'huntingActivity'));
+        $ruralDistrictCouncils = Organisation::where('id',$organisation->id)->get();
+        return view('organisation.hunting_activities.show', compact('organisation', 'huntingActivity', 'ruralDistrictCouncils'));
     }
 
     public function addHunterClient(Organisation $organisation, HuntingActivity $huntingActivity)

@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConflictOutCome;
+use App\Models\ConflictType;
 use App\Models\Incident;
 use App\Models\Organisation;
+use App\Models\Species;
 use Illuminate\Http\Request;
 
 class IncidentController extends Controller
@@ -53,8 +56,15 @@ class IncidentController extends Controller
     public function show(Organisation $organisation, Incident $incident)
     {
 
-        dd($incident, $organisation);
-        return view('organisation.incidents.index', compact('incident', 'organisation'));
+        $incidentConflictTypes = $incident->conflictTypes()->get();
+        $conflictTypes = ConflictType::all();
+        $incidentOutcomes = $incident->ConflictOutComes()->get();
+
+        $ConflictOutComes = ConflictOutCome::all();
+        $incidentSpecies = $incident->species()->get();
+        $speciesList = Species::all();
+        return view('organisation.incidents.show', compact('incident', 'organisation',
+            'incidentConflictTypes','conflictTypes','incidentOutcomes','ConflictOutComes','incidentSpecies','speciesList'));
     }
 
     //update method
@@ -77,7 +87,8 @@ class IncidentController extends Controller
         $incident->update($validated);
 
         // Redirect back or to another page with a success message
-        return redirect()->route('organisation.incidents.index',$organisation->slug)->with('success', 'Incident updated successfully.');
+        return back()->with('success', 'Incident updated successfully.');
+        //return redirect()->route('organisation.incidents.index',$organisation->slug)->with('success', 'Incident updated successfully.');
     }
 
 

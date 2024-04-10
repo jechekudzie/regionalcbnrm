@@ -104,12 +104,22 @@
                                             <td>{{ $hunter->country->name ?? 'N/A' }}</td>
                                             <td>
                                                 <!-- Edit Button -->
-                                                <a href="{{ route('organisation.hunters.edit', [$organisation->slug,$hunter->slug]) }}" class="btn btn-primary btn-sm">Edit</a>
+                                                <a href="#" class="btn btn-primary btn-sm edit-btn"
+                                                   data-bs-toggle="modal" data-bs-target="#showModal"
+                                                   data-name="{{ $hunter->name }}"
+                                                   data-address="{{ $hunter->address }}"
+                                                   data-email="{{ $hunter->email }}"
+                                                   data-mobile_number="{{ $hunter->mobile_number }}"
+                                                   data-country_id="{{ $hunter->country_id }}"
+                                                   data-slug="{{ $hunter->slug }}">
+                                                    Edit
+                                                </a>
+
                                                 <!-- Delete Button -->
                                                 <form action="{{ route('organisation.hunters.destroy', [$organisation->slug,$hunter->slug]) }}" method="POST" style="display: inline-block;">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                                                    <button type="submit" id="submitButton" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -139,6 +149,7 @@
                                     <div class="card-body">
 
                                         <form method="post" action="{{ route('organisation.hunters.store',$organisation->slug) }}">
+                                            <input type="hidden" name="_method" value="POST">
                                             @csrf
                                             <div class="row">
                                                 <!-- Name -->
@@ -186,35 +197,6 @@
                         </div>
                     </div>
 
-                    <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                         aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg">
-                            <div class="modal-content border-0">
-                                <div class="modal-header bg-soft-info p-3">
-                                    <h5 class="modal-title" id="exampleModalLabel"></h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close" id="close-modal"></button>
-                                </div>
-
-                                <div class="card border">
-                                    <div class="card-header">
-
-                                        <h4 class="card-title mb-0"> Delete Member</h4>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <form method="post" action="">
-                                            @csrf
-
-                                            <!-- Submit Button -->
-                                            <button type="submit" class="btn btn-primary">Delete Member</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
 
                 </div>
                 <!--end row-->
@@ -245,10 +227,41 @@
                     });
                 });
 
-                // Assuming you have jQuery available
+
+                $(document).ready(function() {
+                    $('.edit-btn').click(function() {
+                        var name = $(this).data('name');
+                        var address = $(this).data('address');
+                        var email = $(this).data('email');
+                        var mobileNumber = $(this).data('mobile_number');
+                        var countryId = $(this).data('country_id');
+                        var slug = $(this).data('slug');
+
+                        // Prefill the form
+                        $('#showModal').find('#name').val(name);
+                        $('#showModal').find('#address').val(address);
+                        $('#showModal').find('#email').val(email);
+                        $('#showModal').find('#mobile_number').val(mobileNumber);
+                        $('#showModal').find('#country_id').val(countryId);
+
+                        // Update the form's action URL
+                        var formAction = "{{ route('organisation.hunters.update', [$organisation->slug, ':slug']) }}";
+                        formAction = formAction.replace(':slug', slug);
+                        $('#showModal').find('form').attr('action', formAction);
+
+                        //change submitButton text to Update Client details
+                        $('#showModal').find('form').find('button').text('Update Client details');
+
+                        //update the method to patch
+                        $('#showModal').find('form').find('input[name="_method"]').val('PATCH');
+
+                    });
+                });
 
 
 
             </script>
+
+
 
     @endpush

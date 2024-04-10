@@ -130,9 +130,21 @@
                                             </a>
                                         </td>
                                         <td>
+                                            <button class="btn btn-primary btn-sm edit-hunting-activity"
+                                                    data-bs-toggle="modal" data-bs-target="#showModal"
+                                                    data-rdc_id="{{ $activity->huntingConcession->rdc_id }}"
+                                                    data-hunting_concession_id="{{ $activity->hunting_concession_id }}"
+                                                    data-hunting_license="{{ $activity->hunting_license }}"
+                                                    data-transaction_reference="{{ $activity->transaction_reference }}"
+                                                    data-start_date="{{ $activity->start_date }}"
+                                                    data-end_date="{{ $activity->end_date }}"
+                                                    data-action="{{ route('organisation.hunting-activities.update',[$organisation->slug, $activity->slug]) }}">
+                                                <i class="fa fa-pencil"></i>
+                                            </button>
+
                                             <a href="{{ route('organisation.hunting-activities.show', [$organisation->slug, $activity->slug]) }}"
                                                class="btn btn-primary btn-sm">
-                                                <i class="fa fa-eye"></i> View
+                                                <i class="fa fa-eye"></i>
                                             </a>
                                             <!-- Consider adding Edit/Delete buttons here -->
                                         </td>
@@ -162,8 +174,8 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post"
-                                              action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
+                                        <form method="post" id="huntingActivityForm" action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
+                                            <input type="hidden" name="_method" value="POST">
                                             @csrf
                                             <!-- Hidden Organisation ID (Safari Operator) -->
                                             <input type="hidden" name="organisation_id" value="{{ $organisation->id }}">
@@ -281,6 +293,33 @@
                         })
                         .catch(error => console.error('Error fetching concessions:', error));
                 }
+
+                $(document).ready(function() {
+                    $('.edit-hunting-activity').on('click', function() {
+                        // Extract data attributes from the button
+                        var rdcId = $(this).data('rdc_id');
+                        var concessionId = $(this).data('hunting_concession_id');
+                        var license = $(this).data('hunting_license');
+                        var transactionRef = $(this).data('transaction_reference');
+                        var startDate = $(this).data('start_date');
+                        var endDate = $(this).data('end_date');
+                        var actionUrl = $(this).data('action');
+
+                        // Prefill the form in the modal
+                        $('#showModal').find('#rdc_id').val(rdcId);
+                        $('#showModal').find('#hunting_concession_id').val(concessionId);
+                        $('#showModal').find('#hunting_license').val(license);
+                        $('#showModal').find('#transaction_reference').val(transactionRef);
+                        $('#showModal').find('#start_date').val(startDate);
+                        $('#showModal').find('#end_date').val(endDate);
+
+                        // Update form action
+                        $('#huntingActivityForm').attr('action', actionUrl);
+
+                        //update method to patch
+                        $('#huntingActivityForm').find('input[name="_method"]').val('PATCH');
+                    });
+                });
 
 
             </script>

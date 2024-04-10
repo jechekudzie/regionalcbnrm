@@ -24,8 +24,8 @@ class PoachingIncidentController extends Controller
             'year' => 'required|date_format:Y',
             'date' => 'required|date',
             'time' => 'nullable|date_format:H:i', // Assuming time is stored as a string, adjust format as necessary
-            'latitude' => 'required',
-            'longitude' => 'required',
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
 
         ]);
 
@@ -43,9 +43,10 @@ class PoachingIncidentController extends Controller
             'description' => 'nullable|string',
             'year' => 'required|date_format:Y',
             'date' => 'required|date',
-            'time' => 'nullable|date_format:H:i', // Assuming time is stored as a string, adjust format as necessary
-            'latitude' => 'required',
-            'longitude' => 'required',
+            'time' => 'nullable', // Assuming time is stored as a string, adjust format as necessary
+            'latitude' => 'nullable',
+            'longitude' => 'nullable',
+            'location' => 'nullable|string',
         ]);
 
         $poachingIncident->update($validated);

@@ -38,8 +38,8 @@
                                 <div class="flex-grow-1">
 
                                     <a class="btn btn-info add-btn"
-                                       href="{{route('organisation.hunting-activities.index',[$organisation->slug])}}"><i
-                                            class="fa fa-arrow-left"></i> Back to hunting activities
+                                       href="{{route('organisation.hunting-activities.show',[$organisation->slug,$huntingActivity->slug])}}"><i
+                                            class="fa fa-arrow-left"></i> Back to hunting activity
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i

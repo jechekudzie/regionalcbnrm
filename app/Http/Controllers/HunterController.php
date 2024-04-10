@@ -32,6 +32,22 @@ class HunterController extends Controller
         return redirect()->route('organisation.hunters.index',$organisation->slug)->with('success', 'New hunter added successfully.');
     }
 
+    //update method
+    public function update(Request $request, Organisation $organisation, Hunter $hunter)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'address' => 'nullable|string|max:255',
+            'email' => 'nullable|email|max:255',
+            'mobile_number' => 'nullable|string|max:255',
+            'country_id' => 'nullable|exists:countries,id',
+        ]);
+
+        $hunter->update($validatedData);
+
+        return redirect()->route('organisation.hunters.index',$organisation->slug)->with('success', 'Hunter updated successfully.');
+    }
+
     public function destroy(Organisation $organisation, Hunter $hunter)
     {
 

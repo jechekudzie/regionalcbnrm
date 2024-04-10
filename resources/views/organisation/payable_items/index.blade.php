@@ -139,8 +139,7 @@
                                 <h6 id="card-title" class="card-title mb-0">Add {{$category->name}} - Payable Items</h6>
                             </div>
                             <div class="card-body">
-                                <form id="edit-form"
-                                      action="{{route('organisation.payable-items.store',[$organisation->slug,$category->slug])}}"
+                                <form id="edit-form" action="{{route('organisation.payable-items.store',[$organisation->slug,$category->slug])}}"
                                       method="post" enctype="multipart/form-data">
                                     @csrf
 

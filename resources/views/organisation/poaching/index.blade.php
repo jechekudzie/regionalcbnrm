@@ -55,7 +55,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addConflictModal">
+                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#poachingModal">
                                 <i class="fa fa-plus"></i> Add New Poaching Incident
                             </button>
                         </div>
@@ -91,7 +91,30 @@
                                                 ({{ $poachingIncident->poachers->count() }})
                                             </a>
                                         </td>
-                                        <td> Action</td>
+                                        <td>
+                                            <button type="button" class="btn btn-primary edit-poaching" data-bs-toggle="modal" data-bs-target="#poachingModal"
+                                                    data-title="{{ $poachingIncident->title }}"
+                                                    data-latitude="{{ $poachingIncident->latitude }}"
+                                                    data-longitude="{{ $poachingIncident->longitude}}"
+                                                    data-year="{{ $poachingIncident->year }}"
+                                                    data-date="{{ $poachingIncident->date }}"
+                                                    data-time="{{ $poachingIncident->time }}"
+                                                    data-location="{{ $poachingIncident->location }}"
+                                                    data-description="{{ $poachingIncident->description }}"
+                                                    data-action="{{ route('organisation.poaching-incidents.update', [$organisation->slug,$poachingIncident->slug]) }}">
+                                                Edit Incident
+                                            </button>
+                                            <form action="{{ route('organisation.poaching-incidents.destroy', [$organisation->slug, $poachingIncident->slug]) }}"
+                                                  method="POST" style="display: inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger"
+                                                        onclick="return confirm('Are you sure you want to delete this poaching incident?')">
+                                                    Delete Incident
+                                                </button>
+                                            </form>
+
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -102,7 +125,7 @@
             </div>
 
             <!-- Add Conflict Modal -->
-            <div class="modal fade" id="addConflictModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="poachingModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered modal-lg">
                     <div class="modal-content border-0">
@@ -223,6 +246,34 @@
                 buttons: ['copy', 'csv', 'excel', 'print', 'pdf']
             });
         });
+
+        $(document).ready(function() {
+            $('.edit-poaching').click(function() {
+                var modal = $('#poachingModal');
+
+                modal.find('#title').val($(this).data('title'));
+                modal.find('#latitude').val($(this).data('latitude'));
+                modal.find('#longitude').val($(this).data('longitude'));
+                modal.find('#year').val($(this).data('year'));
+                modal.find('#date').val($(this).data('date'));
+                modal.find('#time').val($(this).data('time'));
+                modal.find('#location').val($(this).data('location'));
+                modal.find('#description').val($(this).data('description'));
+
+                // Update the form action
+                var formAction = $(this).data('action');
+                modal.find('form').attr('action', formAction);
+
+                //update method to patch
+                modal.find('form').append('<input type="hidden" name="_method" value="PATCH">');
+
+                //change submit button text to Update Poaching Incident
+                modal.find('button[type="submit"]').text('Update Poaching Incident');
+
+
+            });
+        });
+
     </script>
 
     <!-- Your JavaScript code will be here -->

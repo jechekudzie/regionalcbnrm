@@ -37,8 +37,8 @@
                                 <div class="flex-grow-1">
 
                                     <a class="btn btn-info add-btn"
-                                       href="{{route('organisation.incidents.index',[$organisation->slug])}}"><i
-                                            class="fa fa-arrow-left"></i> Back To Incidents
+                                       href="{{route('organisation.incidents.show',[$organisation->slug,$incident->slug])}}"><i
+                                            class="fa fa-arrow-left"></i> Back To Incident
                                     </a>
                                     <button class="btn btn-success add-btn" data-bs-toggle="modal"
                                             data-bs-target="#showModal"><i

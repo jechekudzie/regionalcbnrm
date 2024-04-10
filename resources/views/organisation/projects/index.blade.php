@@ -99,8 +99,23 @@
                                             <td>
                                                 <a href="{{ route('organisation.projects.show',[$organisation->slug,$project->slug]) }}"
                                                    class="btn btn-primary btn-sm">View</a>
-                                                <a href="{{ route('organisation.projects.edit',[$organisation->slug,$project->slug]) }}"
-                                                   class="btn btn-secondary btn-sm">Edit</a>
+
+                                                <button type="button" class="btn btn-success btn-sm edit-project" data-bs-toggle="modal" data-bs-target="#projectModal"
+                                                        data-name="{{ $project->name }}"
+                                                        data-category_id="{{ $project->project_category_id }}"
+                                                        data-status_id="{{ $project->project_status_id }}"
+                                                        data-funds="{{ $project->project_funds }}"
+                                                        data-description="{{ $project->project_description }}"
+                                                        data-goals="{{ $project->project_goals }}"
+                                                        data-start_date="{{ $project->project_start_date }}"
+                                                        data-end_date="{{ $project->project_end_date }}"
+                                                        data-latitude="{{ $project->latitude }}"
+                                                        data-longitude="{{ $project->longitude }}"
+                                                        data-action="{{ route('organisation.projects.update', [$organisation->slug, $project->slug]) }}">
+                                                    Edit Project
+                                                </button>
+
+
                                                 <form action="{{ route('organisation.projects.destroy',[$organisation->slug,$project->slug])}}"
                                                       method="POST" style="display:inline;">
                                                     @csrf
@@ -113,6 +128,110 @@
                                     </tbody>
                                 </table>
                                 <!--end table-->
+
+                                <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+                                    <!-- Modal dialog and content -->
+                                    <div class="modal-dialog modal-xl">
+                                        <div class="modal-content">
+                                            <!-- Modal header -->
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="projectModalLabel">Edit Project</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <!-- Modal body with form -->
+                                            <div class="modal-body">
+                                                <!-- Form here -->
+                                                <form action="{{ route('organisation.projects.store', $organisation->slug) }}" method="POST" enctype="multipart/form-data">
+                                                    @csrf
+
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="mb-3">
+                                                                <label class="form-label" for="project-name-input">Project Name</label>
+                                                                <input type="text" class="form-control" id="project-name-input" name="name" placeholder="Enter project name" required>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="project-category-id" class="form-label">Project Category</label>
+                                                                    <select class="form-select" id="project-category-id" name="project_category_id" required>
+                                                                        {{-- Loop through project categories --}}
+                                                                        @foreach ($projectCategories as $category)
+                                                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label for="project-status-id" class="form-label">Project Status</label>
+                                                                    <select class="form-select" id="project-status-id" name="project_status_id" required>
+                                                                        {{-- Loop through project statuses --}}
+                                                                        @foreach ($projectStatuses as $status)
+                                                                            <option value="{{ $status->id }}">{{ $status->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="project-funds-input">Project Funds (estimated total budget)</label>
+                                                                    <input type="number" step="any" class="form-control" id="project-funds-input" name="project_funds" placeholder="Enter project funds, this is budget">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label" for="project-description-input">Project Description</label>
+                                                                <textarea class="form-control" id="project-description-input" name="project_description" rows="4" placeholder="Enter project description"></textarea>
+                                                            </div>
+
+                                                            <div class="mb-3">
+                                                                <label class="form-label" for="project-goals-input">Project Goals</label>
+                                                                <textarea class="form-control" id="project-goals-input" name="project_goals" rows="2" placeholder="Enter project goals"></textarea>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="project-start-date-input">Project Start Date</label>
+                                                                    <input type="date" class="form-control" id="project-start-date-input" name="project_start_date">
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="project-end-date-input">Project End Date</label>
+                                                                    <input type="date" class="form-control" id="project-end-date-input" name="project_end_date">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="latitude-input">Latitude</label>
+                                                                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Enter latitude">
+                                                                </div>
+
+                                                                <div class="col-md-4 mb-3">
+                                                                    <label class="form-label" for="longitude-input">Longitude</label>
+                                                                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Enter longitude">
+                                                                </div>
+                                                            </div>
+
+                                                            <div id="address"></div>
+                                                            <div id="map" style="height: 300px; width: 100%;"></div>
+                                                            <br/>
+
+                                                            <div class="text-start mb-4">
+                                                                <button type="submit" class="btn btn-success w-100">Create Project</button>
+                                                            </div>
+                                                        </div>
+                                                        <!-- end card body -->
+                                                    </div>
+                                                    <!-- end card -->
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
 
                             </div>
                         </div>
@@ -149,7 +268,33 @@
             });
         });
 
-        // Assuming you have jQuery available
+        $(document).ready(function() {
+            $('.edit-project').click(function() {
+                var modal = $('#projectModal');
+
+                // Prefill the form fields
+                modal.find('#project-name-input').val($(this).data('name'));
+                modal.find('#project-category-id').val($(this).data('category_id'));
+                modal.find('#project-status-id').val($(this).data('status_id'));
+                modal.find('#project-funds-input').val($(this).data('funds'));
+                modal.find('#project-description-input').val($(this).data('description'));
+                modal.find('#project-goals-input').val($(this).data('goals'));
+                modal.find('#project-start-date-input').val($(this).data('start_date'));
+                modal.find('#project-end-date-input').val($(this).data('end_date'));
+                modal.find('#latitude').val($(this).data('latitude'));
+                modal.find('#longitude').val($(this).data('longitude'));
+
+                // Update the form's action URL
+                modal.find('form').attr('action', $(this).data('action'));
+
+                //update method to patch
+                modal.find('form').append('<input type="hidden" name="_method" value="PATCH">');
+
+                //change submit button text to Update Poaching Incident
+                modal.find('button[type="submit"]').text('Update Project Details');
+            });
+        });
+
 
 
     </script>
