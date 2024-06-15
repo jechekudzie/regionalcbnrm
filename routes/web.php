@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\ConflictRecordController;
+use App\Http\Controllers\ControlCaseController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HuntingRecordController;
 use App\Http\Controllers\OrganisationsController;
 use App\Http\Controllers\OrganisationRolesController;
 use App\Http\Controllers\OrganisationTypeController;
@@ -39,6 +43,7 @@ Route::get('/{organisation}/roles', [\App\Http\Controllers\OrganisationPermissio
 Route::get('/', function () {
 
     return view('auth.login');
+
 });
 Route::get('/dash', function () {
 
@@ -121,7 +126,6 @@ Route::middleware(['role:super-admin'])->group(function () {
     Route::patch('/admin/maturity/{maturity}/update', [\App\Http\Controllers\MaturityController::class, 'update'])->name('admin.maturity.update');
     Route::delete('/admin/maturity/{maturity}', [\App\Http\Controllers\MaturityController::class, 'destroy'])->name('admin.maturity.destroy');
 
-
     //routes for counting methods
     Route::get('/admin/counting-methods', [\App\Http\Controllers\CountingMethodController::class, 'index'])->name('admin.counting-methods.index');
     Route::post('/admin/counting-methods/store', [\App\Http\Controllers\CountingMethodController::class, 'store'])->name('admin.counting-methods.store');
@@ -167,6 +171,58 @@ Route::middleware(['role:super-admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
+
+
+
+    //index route for hunting records
+    Route::prefix('organisation/{organisation:slug}')->group(function () {
+        //main_dashboard
+        Route::get('/main-dashboard', [DashboardController::class, 'index'])->name('main-dashboard');
+        Route::get('/main-dashboard-2', [DashboardController::class, 'index2'])->name('main-dashboard-2');
+
+        Route::get('/report-dashboard', [DashboardController::class, 'huntingDashboard'])->name('report-dashboard');
+        Route::get('/hunting-dashboard/district', [DashboardController::class, 'huntingDashboardByDistrict'])->name('hunting-dashboard-district');
+        Route::get('/hunting_dashboard/species', [DashboardController::class, 'huntingDashboardBySpecies'])->name('hunting-dashboard-species');
+
+        //conflict dashboard
+        Route::get('/conflict-dashboard', [DashboardController::class, 'conflictDashboard'])->name('conflict-dashboard');
+        Route::get('/conflict-dashboard/district', [DashboardController::class, 'conflictDashboardByDistrict'])->name('conflict-dashboard-district');
+        Route::get('/conflict-dashboard/species', [DashboardController::class, 'conflictDashboardBySpecies'])->name('conflict-dashboard-species');
+
+        //control cases dashboard
+        Route::get('/control-case_dashboard', [DashboardController::class, 'controlDashboard'])->name('control-cases-dashboard');
+        Route::get('/control-cases/district', [DashboardController::class, 'controlDashboardByDistrict'])->name('control-dashboard-district');
+        Route::get('/control-cases/species', [DashboardController::class, 'controlDashboardBySpecies'])->name('control-dashboard-species');
+
+        //income records dashboard
+        Route::get('/income-records-dashboard', [DashboardController::class, 'incomeRecordsDashboard'])->name('income-records-dashboard');
+        Route::get('/income-records-dashboard/district', [DashboardController::class, 'incomeRecordsDashboardByDistrict'])->name('income-records-dashboard-district');
+        Route::get('/income-records-dashboard/species', [DashboardController::class, 'incomeRecordsDashboardBySpecies'])->name('income-records-dashboard-species');
+
+        //income dashboard bar chart
+        Route::get('/income-records-dashboard/bar-chart', [DashboardController::class, 'incomeRecordDashboardBarChart'])->name('income-records-dashboard-bar-chart');
+
+
+        //
+        Route::get('hunting-records/create', [HuntingRecordController::class, 'create'])->name('hunting_records.create');
+        Route::post('hunting-records', [HuntingRecordController::class, 'store'])->name('hunting_records.store');
+        Route::delete('hunting-records/{record}', [HuntingRecordController::class, 'destroy'])->name('hunting_records.destroy');
+
+        Route::get('/conflict-records', [ConflictRecordController::class, 'index'])->name('conflict_records.index');
+        Route::get('/conflict-records/create', [ConflictRecordController::class, 'create'])->name('conflict_records.create');
+        Route::post('/conflict-records', [ConflictRecordController::class, 'store'])->name('conflict_records.store');
+        Route::delete('/conflict-records/{conflictRecord}', [ConflictRecordController::class, 'destroy'])->name('conflict_records.destroy');
+
+        Route::get('control_cases', [ControlCaseController::class, 'index'])->name('control_cases.index');
+        Route::get('control_cases/create', [ControlCaseController::class, 'create'])->name('control_cases.create');
+        Route::post('control_cases', [ControlCaseController::class, 'store'])->name('control_cases.store');
+        Route::get('control_cases/{controlCase}', [ControlCaseController::class, 'show'])->name('control_cases.show');
+        Route::get('control_cases/{controlCase}/edit', [ControlCaseController::class, 'edit'])->name('control_cases.edit');
+        Route::put('control_cases/{controlCase}', [ControlCaseController::class, 'update'])->name('control_cases.update');
+        Route::delete('control_cases/{controlCase}', [ControlCaseController::class, 'destroy'])->name('control_cases.destroy');
+
+
+    });
 
     //organisation dashboard
     Route::get('/organisation/dashboard/check/{organisation}', [\App\Http\Controllers\OrganisationDashboardController::class, 'checkDashboardAccess'])->name('organisation.check-dashboard-access')->middleware('auth');

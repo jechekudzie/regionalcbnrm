@@ -69,6 +69,22 @@ class Species extends Model
             ->withPivot('price');
     }
 
+
+
+    public function huntingRecords()
+    {
+        return $this->hasMany(HuntingRecord::class);
+    }
+
+    public function conflictRecords()
+    {
+        return $this->hasMany(ConflictRecord::class);
+    }
+
+    public function controlCases()
+    {
+        return $this->hasMany(ControlCase::class);
+    }
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()

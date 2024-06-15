@@ -6,6 +6,7 @@
            aria-controls="orgType{{ $organisationType->id }}_{{ $parentOrganisation->id }}"
            style="font-weight: bolder;">
             {{ $organisationType->name }}
+
         </a>
         <div class="collapse menu-dropdown" id="orgType{{ $organisationType->id }}_{{ $parentOrganisation->id }}">
             <ul class="nav nav-sm flex-column no-bullet">
@@ -31,7 +32,8 @@
                     </li>
                 @endforeach
                 <li class="nav-item">
-                    <a href="{{ route('organisation.organisations.index', [$organisation->slug, $organisationType->slug,$parentOrganisation->slug]) }}" class="nav-link">Add New {{ $organisationType->name }}</a>
+                    <a href="{{ route('organisation.organisations.index', [$organisation->slug, $organisationType->slug,$parentOrganisation->slug]) }}"
+                       class="nav-link">Add New {{ $organisationType->name }}</a>
                 </li>
             </ul>
         </div>

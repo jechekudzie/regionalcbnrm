@@ -91,7 +91,7 @@
                                     <th>Safari License</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
-                                    <th>Hunting Clients</th>
+                                    {{--<th>Hunting Clients</th>--}}
                                     <th>Hunting Vehicles</th>
                                     <th>Species Details</th>
                                     <th>Payment Reference</th>
@@ -108,11 +108,11 @@
                                         <td>{{$activity->hunting_license}}</td>
                                         <td>{{ $activity->start_date }}</td>
                                         <td>{{ $activity->end_date }}</td>
-                                        <td>
+                                       {{-- <td>
                                             <a href="{{ route('organisation.hunting-activities.add-hunter-client', [$organisation->slug, $activity->slug]) }}">
-                                                 Clients ({{ $activity->hunters->count() ?? '0' }})
+                                                Clients ({{ $activity->hunters->count() ?? '0' }})
                                             </a>
-                                        </td>
+                                        </td>--}}
                                         <td>
                                             <a href="{{ route('organisation.hunting-activities.add-hunting-vehicles', [$organisation->slug, $activity->slug]) }}">
                                                 Vehicles ({{ $activity->huntingVehicles->count() ?? '0' }})
@@ -124,10 +124,12 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{route('organisation.transaction-payables.index',[$organisation->slug,$activity->transaction->id])}}"
-                                               target="_blank">
-                                                {{ $activity->transaction_reference }}
-                                            </a>
+                                            @if($activity->transaction_id != 0)
+                                                <a href="{{route('organisation.transaction-payables.index',[$organisation->slug,$activity->transaction_id])}}"
+                                                   target="_blank">
+                                                    {{ $activity->transaction_reference }}
+                                                </a>
+                                            @endif
                                         </td>
                                         <td>
                                             <button class="btn btn-primary btn-sm edit-hunting-activity"
@@ -174,7 +176,8 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post" id="huntingActivityForm" action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
+                                        <form method="post" id="huntingActivityForm"
+                                              action="{{ route('organisation.hunting-activities.store', $organisation->slug) }}">
                                             <input type="hidden" name="_method" value="POST">
                                             @csrf
                                             <!-- Hidden Organisation ID (Safari Operator) -->
@@ -213,9 +216,11 @@
                                                 </div>
 
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="transaction_reference" class="form-label">Payment Reference</label>
+                                                    <label for="transaction_reference" class="form-label">Payment
+                                                        Reference</label>
                                                     <input type="text" class="form-control" id="transaction_reference"
-                                                           name="transaction_reference" placeholder="Enter Payment Reference Number">
+                                                           name="transaction_reference"
+                                                           placeholder="Enter Payment Reference Number">
                                                 </div>
 
                                                 <!-- Start Date -->
@@ -294,8 +299,8 @@
                         .catch(error => console.error('Error fetching concessions:', error));
                 }
 
-                $(document).ready(function() {
-                    $('.edit-hunting-activity').on('click', function() {
+                $(document).ready(function () {
+                    $('.edit-hunting-activity').on('click', function () {
                         // Extract data attributes from the button
                         var rdcId = $(this).data('rdc_id');
                         var concessionId = $(this).data('hunting_concession_id');

@@ -47,6 +47,7 @@ class QuotaSettingController extends Controller
                     }
                 },
             ],
+            'proposed_hunting_quota' => 'required|integer',
             'hunting_quota' => 'required|integer',
             'rational_quota' => 'nullable|integer',
             'zimpark_hunting_quota' => 'nullable|integer',
@@ -93,6 +94,7 @@ class QuotaSettingController extends Controller
             'species_id' => 'required|exists:species,id',
             'organisation_id' => 'required|exists:organisations,id',
             'year' => 'required|integer|min:2015|max:' . (now()->year + 1),
+            'proposed_hunting_quota' => 'required|integer',
             'hunting_quota' => 'required|integer',
             'rational_quota' => 'nullable|integer',
             'zimpark_hunting_quota' => 'nullable|integer',

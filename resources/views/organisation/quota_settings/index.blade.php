@@ -15,7 +15,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">{{ $organisation->name }} - {{$selectedSpecies->name}} - Quota Allocation</h4>
+                        <h4 class="mb-sm-0">{{ $organisation->name }} - {{$selectedSpecies->name}} - Quota
+                            Allocation</h4>
 
                         <div class="page-title-right">
                             <ol class="breadcrumb m-0">
@@ -91,12 +92,12 @@
                                     <th>Image</th>
                                     <th>Species</th>
                                     <th>Year</th>
+                                    <th>ProposedHunting Quota</th>
                                     <th>Hunting Quota</th>
                                     <th>Hunting Quota Balance</th>
                                     <th>Rational Quota</th>
                                     <th>Rational Quota Balance</th>
-                                    <th>Status</th>
-                                   {{-- <th>Distribution</th>--}}
+                                    {{-- <th>Distribution</th>--}}
                                     <th>Action</th>
                                 </tr>
                                 </thead>
@@ -104,15 +105,17 @@
                                 @foreach ($quotaRequests as $quota)
                                     <tr>
                                         <td>
-                                            <div class="avatar-md bg-light rounded p-1"><img src="{{asset($quota->species->avatar)}}" alt="" class="img-fluid d-block"></div>
+                                            <div class="avatar-md bg-light rounded p-1"><img
+                                                    src="{{asset($quota->species->avatar)}}" alt=""
+                                                    class="img-fluid d-block"></div>
                                         </td>
                                         <td>{{ $quota->species->name }}</td>
                                         <td>{{ $quota->year }}</td>
+                                        <td>{{ $quota->proposed_hunting_quota }}</td>
                                         <td>{{ $quota->hunting_quota }}</td>
                                         <td>{{ $quota->hunting_quota_balance }}</td>
                                         <td>{{ $quota->rational_quota }}</td>
                                         <td>{{ $quota->rational_quota_balance }}</td>
-                                        <td>{{ $quota->status }}</td>
                                         {{--<td>
                                             <a href="{{ route('organisation.ward-quota-distribution.index', [$organisation->slug, $quota->slug]) }}"
                                                class="btn btn-sm btn-primary" title="View Distribution">
@@ -121,13 +124,16 @@
                                         </td>--}}
                                         <td>
                                             <!-- Edit Button -->
-                                            <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"
-                                               class="btn btn-sm btn-primary" title="Edit">
-                                                <i class="fa fa-pencil"></i> Edit
-                                            </a> || <a href="{{ route('organisation.quota-settings.edit', [$organisation->slug, $quota->id]) }}"
-                                                      class="btn btn-sm btn-primary" title="Edit">
-                                                <i class="fa fa-check"></i> Approve
+                                            <a href="#" class="btn btn-primary btn-sm edit-btn"
+                                               data-bs-toggle="modal" data-bs-target="#showModal"
+                                               data-year="{{$quota->year}}" data-proposed_hunting_quota="{{$quota->proposed_hunting_quota}}"
+                                               data-hunting_quota="{{$quota->hunting_quota}}"
+                                               data-rational_quota="{{$quota->rational_quota}}" data-slug="{{$organisation->slug}}"
+                                               data-action="{{ route('organisation.quota-settings.update', [$organisation->slug,$quota->slug]) }}"
+                                            >
+                                                Edit
                                             </a>
+
                                             <!-- You can add a Delete button here if needed, similar to the Edit button with a form to submit the delete request -->
                                         </td>
                                     </tr>
@@ -157,8 +163,8 @@
                                     </div>
                                     <div class="card-body">
 
-                                        <form method="post"
-                                              action="{{ route('organisation.quota-settings.store', $organisation->slug) }}">
+                                        <form method="post" action="{{ route('organisation.quota-settings.store', $organisation->slug) }}">
+                                            <input type="hidden" name="_method" value="POST">
                                             @csrf
 
                                             <!-- Hidden Fields -->
@@ -186,16 +192,21 @@
                                             <!-- Quota Fields -->
                                             <div class="row mb-3">
                                                 <div class="col-md-4">
-                                                    <label for="hunting_quota" class="form-label">Hunting Quota</label>
+                                                    <label for="proposed_hunting_quota" class="form-label">Proposed Hunting
+                                                        Quota</label>
+                                                    <input type="number" class="form-control"
+                                                           id="proposed_hunting_quota"
+                                                           name="proposed_hunting_quota"
+                                                           placeholder="Enter Council Proposed hunting quota"
+                                                           min="0">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="hunting_quota" class="form-label">Allocated Hunting
+                                                        Quota</label>
                                                     <input type="number" class="form-control" id="hunting_quota"
                                                            name="hunting_quota" placeholder="Enter hunting quota"
                                                            min="0">
                                                 </div>
-                                               {{-- <div class="col-md-4">
-                                                    <label for="pac_quota" class="form-label">PAC Quota</label>
-                                                    <input type="number" class="form-control" id="pac_quota"
-                                                           name="pac_quota" placeholder="Enter pac quota" min="0">
-                                                </div>--}}
                                                 <div class="col-md-4">
                                                     <label for="rational_quota" class="form-label">Rational
                                                         Quota</label>
@@ -205,7 +216,8 @@
                                                 </div>
                                             </div>
                                             <div style="display: none;" class="row mb-3">
-                                                <h4 class="text-center text-black text-decoration-underline">Zimpark Allocated Quotas</h4>
+                                                <h4 class="text-center text-black text-decoration-underline">Zimpark
+                                                    Allocated Quotas</h4>
                                             </div>
 
                                             <div style="display: none;" class="row mb-3">
@@ -223,23 +235,27 @@
                                                     <input type="hidden" name="zimpark_pac_quota" value="">
                                                     <input type="number" class="form-control" id="zimpark_pac_quota"
                                                            name="zimpark_pac_quota"
-                                                           placeholder="Zimparks problem animal control quota" min="0" disabled>
+                                                           placeholder="Zimparks problem animal control quota" min="0"
+                                                           disabled>
                                                 </div>
 
                                                 <div class="col-md-4">
                                                     <label for="zimpark_rational_quota" class="form-label">Zimpark PAC
                                                         Rational Quota</label>
                                                     <input type="hidden" name="zimpark_rational_quota" value="">
-                                                    <input type="number" class="form-control" id="zimpark_rational_quota"
+                                                    <input type="number" class="form-control"
+                                                           id="zimpark_rational_quota"
                                                            name="zimpark_rational_quota"
-                                                           placeholder="Zimparks rational killing quota" min="0" disabled>
+                                                           placeholder="Zimparks rational killing quota" min="0"
+                                                           disabled>
                                                 </div>
                                             </div>
 
                                             <!-- Submit Button -->
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <button type="submit" class="btn btn-primary">Submit Quota Allocation
+                                                    <button type="submit" class="btn btn-primary">Submit Quota
+                                                        Allocation
                                                     </button>
                                                 </div>
                                             </div>
@@ -283,6 +299,36 @@
                 });
 
                 // Assuming you have jQuery available
+                $(document).ready(function() {
+                    $('.edit-btn').click(function() {
+                        var year = $(this).data('year');
+                        var proposedHuntingQuota = $(this).data('proposed_hunting_quota');
+                        var huntingQuota = $(this).data('hunting_quota');
+                        var rationalQuota = $(this).data('rational_quota');
+                        var slug = $(this).data('slug');
+                        var action = $(this).data('action');
+
+                        // Prefill the form fields in the modal
+                        $('#showModal').find('#year').val(year);
+                        $('#showModal').find('#proposed_hunting_quota').val(proposedHuntingQuota);
+                        $('#showModal').find('#hunting_quota').val(huntingQuota);
+                        $('#showModal').find('#rational_quota').val(rationalQuota);
+
+                        // Update the form's action URL
+                        var formAction = action;
+
+                        $('#showModal').find('form').attr('action', formAction);
+
+                        // Change the form method to PATCH or PUT as necessary
+                        $('#showModal').find('input[name="_method"]').val('PATCH');
+
+                        // Update the submit button text to reflect the action
+                        $('#showModal').find('button[type="submit"]').text('Update Quota Allocation');
+
+                        // Finally, show the modal
+                        $('#showModal').show(); // Or use any modal display method depending on your setup
+                    });
+                });
 
 
             </script>

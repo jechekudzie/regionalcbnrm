@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('species_id');
             $table->integer('year');
             $table->integer('hunting_quota')->nullable(); // For Trophy hunting concession
+            $table->integer('proposed_hunting_quota')->nullable(); // For proposed_hunting_quota
             $table->integer('hunting_quota_balance')->nullable(); // For Trophy hunting concession
             $table->integer('rational_quota')->nullable(); // Rational Killing hunting concession
             $table->integer('rational_quota_balance')->nullable(); // Rational Killing hunting concession

@@ -19,6 +19,11 @@ class HuntingConcession extends Model
         return $this->belongsTo(Organisation::class);
     }
 
+    public function safariOperator()
+    {
+        return $this->belongsTo(Organisation::class,'safari_id');
+    }
+
     public function wards() // Wards covered by the concession
     {
         return $this->belongsToMany(Organisation::class, 'hunting_concession_ward', 'hunting_concession_id', 'ward_id');

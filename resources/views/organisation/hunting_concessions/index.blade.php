@@ -89,6 +89,8 @@
                                 <tr>
                                     <th>Name</th>
                                     <th>Hectarage</th>
+                                    <th>Safari Operator</th>
+                                    <th>Description</th>
                                     <th>Wards covered</th>
                                     <th>Actions</th>
                                 </tr>
@@ -98,6 +100,14 @@
                                     <tr>
                                         <td>{{ $huntingConcession->name }}</td>
                                         <td>{{ $huntingConcession->hectarage }}</td>
+                                        <td>
+
+                                            {{$huntingConcession->safariOperator->name}}
+                                            {{--@if($huntingConcession->safari_id != null)
+                                                {{ \App\Models\Organisation::where('id',$huntingConcession->safari_id)->first()->name }}
+                                            @endif--}}
+                                        </td>
+                                        <td>{{ $huntingConcession->description }}</td>
                                         <td>
                                             @if($huntingConcession->wards->count() > 0)
                                                 @foreach($huntingConcession->wards as $ward)
@@ -162,7 +172,29 @@
                                             <!-- Hectarage -->
                                             <div class="mb-3">
                                                 <label for="hectarage" class="form-label">Hectarage</label>
-                                                <input type="text" class="form-control" id="hectarage" name="hectarage">
+                                                <input type="number" step="any" class="form-control" id="hectarage"
+                                                       name="hectarage">
+                                            </div>
+
+                                            <div class="col-md-6 mb-3">
+                                                <label for="safari_id" class="form-label">Safari Operators</label>
+                                                <select class="form-control" id="safari_id" name="safari_id">
+                                                    <option value="">Select Safari Operator</option>
+                                                    @if($organisation->getSafariOperators()->count() > 0)
+                                                        @foreach($organisation->getSafariOperators() as $safariOperator)
+                                                            <option
+                                                                value="{{ $safariOperator->id }}">{{ $safariOperator->name }}</option>
+
+                                                        @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+
+                                            <!-- Description -->
+                                            <div class="mb-3">
+                                                <label for="description" class="form-label">Company Description</label>
+                                                <textarea class="form-control" id="description"
+                                                          name="description"></textarea>
                                             </div>
 
 

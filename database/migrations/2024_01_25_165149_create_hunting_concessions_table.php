@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('organisation_id'); // Foreign key for organisation
+            $table->unsignedBigInteger('safari_id')->nullable(); // for safari operator
             $table->string('hectarage')->nullable(); //size of hunting concession
             $table->longText('description')->nullable(); //description of hunting concession
             $table->string('latitude')->nullable();

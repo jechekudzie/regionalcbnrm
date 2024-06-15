@@ -71,6 +71,17 @@ class Organisation extends Model
         return $anyGroup;
     }
 
+    public function getSafariOperators()
+    {
+        return $this->childOrganisations()
+            ->whereHas('organisationType', function ($query) {
+                $query->whereRaw('lower(name) = ?', ['safari operators']);
+            })->get();
+    }
+
+
+    //relationship with hunting concession where safari_operator_id is an organisation
+
 
     public function getAllChildren()
     {
@@ -83,7 +94,6 @@ class Organisation extends Model
 
         return $children;
     }
-
 
     //belongs to many users
     public function users()
@@ -120,7 +130,6 @@ class Organisation extends Model
         return $this->hasMany(WardQuotaDistribution::class, 'ward_id');
     }
 
-
     //hunting clients
     public function hunters()
     {
@@ -136,6 +145,7 @@ class Organisation extends Model
     {
         return $this->hasMany(HuntingConcession::class);
     }
+
 
     public function huntingLicenses() // Licenses held or issued by the organisation
     {
@@ -176,6 +186,31 @@ class Organisation extends Model
     {
         return $this->hasMany(RevenueSharing::class);
     }
+
+
+    //hunting records
+    public function huntingRecords()
+    {
+        return $this->hasMany(HuntingRecord::class);
+    }
+
+    public function conflictRecords()
+    {
+        return $this->hasMany(ConflictRecord::class);
+    }
+
+
+    public function controlCases()
+    {
+        return $this->hasMany(ControlCase::class);
+    }
+
+    //has many income records
+    public function incomeRecords()
+    {
+        return $this->hasMany(IncomeRecord::class);
+    }
+
 
     public function getSlugOptions(): SlugOptions
     {

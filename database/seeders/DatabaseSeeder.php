@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             ProjectStatusesTableSeeder::class,
             ProjectCategoriesTableSeeder::class,
             UsersTableSeeder::class,
+            QuotaAllocationSeeder::class,
             /*OrganisationAdminSeeder::class,*/
         ]);
     }

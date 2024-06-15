@@ -245,6 +245,106 @@
                 <ul class="navbar-nav" id="navbar-nav">
                     <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Organisation</span>
                     </li>
+
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#dash"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="dash">
+                            <span data-key="t-dashboards">Dashboard</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="dash">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('main-dashboard',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('main-dashboard') ? 'active' : '' }}">
+                                        Main Dashboard Trend
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('main-dashboard-2',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('main-dashboard-2') ? 'active' : '' }}">
+                                        Main Dashboard Overview
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('income-records-dashboard',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('income-records-dashboard') ? 'active' : '' }}">
+                                        Income Received Trend
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('income-records-dashboard-bar-chart',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('income-records-dashboard-bar-chart') ? 'active' : '' }}">
+                                        Income Received Overview
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('report-dashboard',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('report-dashboard') ? 'active' : '' }}">
+                                        Allocation & Utilisation Dashboard
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('hunting-dashboard-district',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('hunting-dashboard-district') ? 'active' : '' }}">
+                                        Allocation & Utilisation Dashboard By District
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('hunting-dashboard-species',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('hunting-dashboard-species') ? 'active' : '' }}">
+                                        Allocation & Utilisation Dashboard By Species
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('conflict-dashboard',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('conflict-dashboard') ? 'active' : '' }}">
+                                        HWC Dashboard
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('conflict-dashboard-district',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('conflict-dashboard-district') ? 'active' : '' }}">
+                                        HWC Dashboard By District
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('conflict-dashboard-species',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('conflict-dashboard-species') ? 'active' : '' }}">
+                                        HWC Dashboard By Species
+                                    </a>
+                                </li>
+
+                                <!-- Control cases -->
+                                <li class="nav-item">
+                                    <a href="{{route('control-cases-dashboard',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('control-cases-dashboard') ? 'active' : '' }}">
+                                        PAC Dashboard
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('control-dashboard-district',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('control-dashboard-district') ? 'active' : '' }}">
+                                        PAC Dashboard By District
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('control-dashboard-species',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('control-dashboard-species') ? 'active' : '' }}">
+                                        PAC Dashboard By Species
+                                    </a>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </li>
+
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#species"
                            data-bs-toggle="collapse"
@@ -403,7 +503,6 @@
                         </div>
                     </li>
 
-
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#poaching"
                            data-bs-toggle="collapse"
@@ -423,7 +522,6 @@
                             </ul>
                         </div>
                     </li>
-
 
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#Projects"
@@ -472,12 +570,48 @@
                         </div>
                     </li>
 
+                    <li class="nav-item">
+                        <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#reports"
+                           data-bs-toggle="collapse"
+                           role="button" aria-expanded="false" aria-controls="reports">
+                            <span data-key="t-dashboards">Reports </span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="reports">
+                            <ul class="nav nav-sm flex-column">
+
+                                <li class="nav-item">
+                                    <a href="{{route('hunting_records.create',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('hunting_records.create') ? 'active' : '' }}">
+                                        Quota Allocation & Utilisation
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('conflict_records.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('conflict_records.index') ? 'active' : '' }}">
+                                     HWC Conflict Records
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="{{route('control_cases.index',$organisation->slug)}}"
+                                       class="nav-link {{ Request::routeIs('control_cases.index') ? 'active' : '' }}">
+                                    PAC Records
+                                    </a>
+                                </li>
+
+
+
+                            </ul>
+                        </div>
+                    </li>
+
                     <!-- Main navigation structure -->
                     <li class="nav-item">
                         <a style="font-weight: bolder;" class="nav-link menu-link collapsed" href="#ChildOrganisations"
                            data-bs-toggle="collapse"
                            role="button" aria-expanded="false" aria-controls="ChildOrganisations">
-                            <span data-key="t-dashboards">Child Organisations </span>
+                            <span data-key="t-dashboards">Sub District Organisations </span>
                         </a>
                         <div class="collapse menu-dropdown" id="ChildOrganisations">
                             <ul class="nav nav-sm flex-column no-bullet">
@@ -494,8 +628,6 @@
                             </ul>
                         </div>
                     </li>
-
-
 
 
 

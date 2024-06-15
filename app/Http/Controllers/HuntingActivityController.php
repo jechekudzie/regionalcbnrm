@@ -41,7 +41,7 @@ class HuntingActivityController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'hunting_concession_id' => 'required|exists:hunting_concessions,id',
-            'transaction_reference' => 'required|exists:transactions,reference_number',
+            'transaction_reference' => 'nullable|exists:transactions,reference_number',
         ]);
 
         if ($validator->fails()) {
@@ -52,10 +52,17 @@ class HuntingActivityController extends Controller
 
         $transaction = Transaction::where('reference_number', $request->input('transaction_reference'))->first();
 
+        if($transaction){
+            $transaction_id = $transaction->id;
+        }else{
+            $transaction_id = 0;
+        }
+
+
         // Create a new hunting activity
         $huntingActivity = new HuntingActivity($validator->validated());
         $huntingActivity->organisation_id = $organisation->id;
-        $huntingActivity->transaction_id = $transaction->id;
+        $huntingActivity->transaction_id = $transaction_id;
         $huntingActivity->save();
 
         // Redirect back with a success message
@@ -73,7 +80,7 @@ class HuntingActivityController extends Controller
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'hunting_concession_id' => 'required|exists:hunting_concessions,id',
-            'transaction_reference' => 'required|exists:transactions,reference_number',
+            'transaction_reference' => 'nullable|exists:transactions,reference_number',
         ]);
 
         if ($validator->fails()) {

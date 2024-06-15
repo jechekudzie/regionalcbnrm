@@ -11,8 +11,7 @@ class HuntingConcessionController extends Controller
     //index pass hunting concessions to view
     public function index(Organisation $organisation)
     {
-
-
+        //dd($organisation->getSafariOperators());
         $huntingConcessions = HuntingConcession::all();
         return view('organisation.hunting_concessions.index', compact('huntingConcessions', 'organisation'));
     }
@@ -23,6 +22,8 @@ class HuntingConcessionController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'hectarage' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:1000',
+            'safari_id' => 'required',
             'wards' => 'required|array',
             'wards.*' => 'exists:organisations,id'
         ]);
@@ -31,6 +32,8 @@ class HuntingConcessionController extends Controller
         $huntingConcession = $organisation->huntingConcessions()->create([
             'name' => $validated['name'],
             'hectarage' => $validated['hectarage'],
+            'description' => $validated['description'],
+            'safari_id' => $validated['safari_id'],
         ]);
 
         if($huntingConcession && $validated['wards']){
