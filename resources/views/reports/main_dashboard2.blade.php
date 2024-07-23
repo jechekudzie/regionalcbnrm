@@ -113,19 +113,41 @@
                 var conflictRecordsData = @json($conflictRecords);
                 var conflictLabels = Object.keys(conflictRecordsData);
                 var conflictDatasets = [];
+                var maxDataValue = 0;
+
                 Object.keys(conflictRecordsData[conflictLabels[0]]).forEach(function (species, index) {
-                    var cropDamageData = conflictLabels.map(period => conflictRecordsData[period][species].crop_damage_cases);
-                    var humanInjuredData = conflictLabels.map(period => conflictRecordsData[period][species].human_injured);
-                    var humanDeathData = conflictLabels.map(period => conflictRecordsData[period][species].human_death);
-                    var livestockKilledInjuredData = conflictLabels.map(period => conflictRecordsData[period][species].livestock_killed_injured);
-                    var infrastructureDestroyedData = conflictLabels.map(period => conflictRecordsData[period][species].infrastructure_destroyed);
-                    var threatToHumanLifeData = conflictLabels.map(period => conflictRecordsData[period][species].threat_to_human_life);
+                    var cropDamageData = conflictLabels.map(period => conflictRecordsData[period][species].crop_damage_cases || 0);
+                    var hectarageDestroyedData = conflictLabels.map(period => conflictRecordsData[period][species].hectarage_destroyed || 0);
+                    var humanInjuredData = conflictLabels.map(period => conflictRecordsData[period][species].human_injured || 0);
+                    var humanDeathData = conflictLabels.map(period => conflictRecordsData[period][species].human_death || 0);
+                    var livestockKilledInjuredData = conflictLabels.map(period => conflictRecordsData[period][species].livestock_killed_injured || 0);
+                    var infrastructureDestroyedData = conflictLabels.map(period => conflictRecordsData[period][species].infrastructure_destroyed || 0);
+                    var threatToHumanLifeData = conflictLabels.map(period => conflictRecordsData[period][species].threat_to_human_life || 0);
+
+                    var allValues = [
+                        ...cropDamageData,
+                        ...hectarageDestroyedData,
+                        ...humanInjuredData,
+                        ...humanDeathData,
+                        ...livestockKilledInjuredData,
+                        ...infrastructureDestroyedData,
+                        ...threatToHumanLifeData
+                    ];
+                    maxDataValue = Math.max(maxDataValue, ...allValues);
 
                     conflictDatasets.push({
                         label: species + ' - Crop Damage Cases',
                         data: cropDamageData,
                         backgroundColor: 'rgba(255, 99, 132, 0.6)',
                         borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    });
+
+                    conflictDatasets.push({
+                        label: species + ' - Hectarage Destroyed',
+                        data: hectarageDestroyedData,
+                        backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                        borderColor: 'rgba(255, 159, 64, 1)',
                         borderWidth: 1
                     });
 
@@ -179,7 +201,9 @@
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                stepSize: 10,
+                                max: Math.ceil(maxDataValue / 100000) * 100
                             }
                         }
                     }
@@ -244,6 +268,7 @@
                     }
                 });
             });
+
         </script>
     @endpush
 @endsection

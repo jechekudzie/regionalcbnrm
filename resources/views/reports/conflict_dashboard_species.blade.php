@@ -61,12 +61,28 @@
                 var dataForPeriod = @json($chartData[$period] ?? []);
                 var labels = Object.keys(dataForPeriod);
                 var datasets = [];
-                var metrics = ['crop_damage_cases', 'human_injured', 'human_death', 'livestock_killed_injured', 'infrastructure_destroyed', 'threat_to_human_life'];
-                var colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+                var metrics = [
+                    'crop_damage_cases',
+                    'hectarage_destroyed', // Added new metric here
+                    'human_injured',
+                    'human_death',
+                    'livestock_killed_injured',
+                    'infrastructure_destroyed',
+                    'threat_to_human_life'
+                ];
+                var colors = [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 159, 64, 0.6)', // New color for the added metric
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(201, 203, 207, 0.6)' // Additional color if needed
+                ];
 
                 metrics.forEach(function (metric, index) {
                     var metricData = labels.map(function (label) {
-                        return dataForPeriod[label][metric] || 0; // Ensure there's a fallback to 0 if undefined
+                        return dataForPeriod[label][metric] || 0;
                     });
                     datasets.push({
                         label: metric.replace(/_/g, ' ').toUpperCase(),
@@ -96,8 +112,8 @@
                             y: {
                                 beginAtZero: true,
                                 ticks: {
-                                    stepSize: 100, // Set the step size to 100
-                                    max: 500 // Set the maximum value to 500
+                                    stepSize: 10,
+                                    max: 500
                                 }
                             }
                         },
@@ -114,6 +130,7 @@
                 });
                 @endforeach
             });
+
         </script>
     @endpush
 @endsection

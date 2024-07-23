@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('species_id');
             $table->integer('period');
             $table->integer('crop_damage_cases')->default(0);
+            $table->integer('hectarage_destroyed')->default(0);
             $table->integer('human_injured')->default(0);
             $table->integer('human_death')->default(0);
             $table->integer('livestock_killed_injured')->default(0);

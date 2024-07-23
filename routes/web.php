@@ -9,6 +9,7 @@ use App\Http\Controllers\OrganisationRolesController;
 use App\Http\Controllers\OrganisationTypeController;
 use App\Http\Controllers\OrganisationUsersController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Organisation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -47,7 +48,27 @@ Route::get('/', function () {
 });
 Route::get('/dash', function () {
 
-    return view('dash');
+    $districts = Organisation::whereHas('organisationType', function ($query) {
+        $query->where('name', 'like', '%Rural District Council%');
+    })->get();
+
+    echo "<pre>";
+
+    foreach ($districts as $district) {
+        echo $district->id. ' ' .$district->name . "<br>";
+    }
+
+    echo "<pre>";
+    echo "<pre>";
+    echo "<pre>";
+
+    $species = \App\Models\Species::all();
+
+    foreach ($species as $specie) {
+        echo $specie->id.' '. $specie->name . "<br>";
+    }
+
+    //return view('dash');
 });
 
 
@@ -171,8 +192,6 @@ Route::middleware(['role:super-admin'])->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
-
-
 
     //index route for hunting records
     Route::prefix('organisation/{organisation:slug}')->group(function () {

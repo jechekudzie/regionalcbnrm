@@ -57,8 +57,24 @@
                 var dataForPeriod = @json($chartData[$period] ?? []);
                 var labels = Object.keys(dataForPeriod);
                 var datasets = [];
-                var metrics = ['crop_damage_cases', 'human_injured', 'human_death', 'livestock_killed_injured', 'infrastructure_destroyed', 'threat_to_human_life'];
-                var colors = ['rgba(255, 99, 132, 0.6)', 'rgba(54, 162, 235, 0.6)', 'rgba(255, 206, 86, 0.6)', 'rgba(75, 192, 192, 0.6)', 'rgba(153, 102, 255, 0.6)', 'rgba(255, 159, 64, 0.6)'];
+                var metrics = [
+                    'crop_damage_cases',
+                    'hectarage_destroyed', // Added new metric here
+                    'human_injured',
+                    'human_death',
+                    'livestock_killed_injured',
+                    'infrastructure_destroyed',
+                    'threat_to_human_life'
+                ];
+                var colors = [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(255, 159, 64, 0.6)', // Adjusted color for new metric
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(201, 203, 207, 0.6)'
+                ];
 
                 metrics.forEach(function (metric, index) {
                     var metricData = labels.map(function (label) {
@@ -110,6 +126,7 @@
                 });
                 @endforeach
             });
+
         </script>
     @endpush
 @endsection

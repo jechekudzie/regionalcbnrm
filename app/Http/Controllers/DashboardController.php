@@ -25,7 +25,7 @@ class DashboardController extends Controller
         // Fetch and prepare conflict data
         $conflictRecords = ConflictRecord::with('species')->get();
         $formattedConflictRecords = $this->formatData($conflictRecords, [
-            'crop_damage_cases', 'human_injured', 'human_death',
+            'crop_damage_cases','hectarage_destroyed', 'human_injured', 'human_death',
             'livestock_killed_injured', 'infrastructure_destroyed', 'threat_to_human_life'
         ]);
 
@@ -56,13 +56,14 @@ class DashboardController extends Controller
 
         // Fetch and prepare conflict data
         $conflictRecords = ConflictRecord::with('species')
-            ->select('period', 'species_id', 'crop_damage_cases', 'human_injured', 'human_death', 'livestock_killed_injured', 'infrastructure_destroyed', 'threat_to_human_life')
+            ->select('period', 'species_id', 'crop_damage_cases', 'hectarage_destroyed','human_injured', 'human_death', 'livestock_killed_injured', 'infrastructure_destroyed', 'threat_to_human_life')
             ->get()
             ->groupBy('period')
             ->map(function ($period) {
                 return $period->groupBy('species.name')->map(function ($species) {
                     return [
                         'crop_damage_cases' => $species->sum('crop_damage_cases'),
+                        'hectarage_destroyed' => $species->sum('hectarage_destroyed'),
                         'human_injured' => $species->sum('human_injured'),
                         'human_death' => $species->sum('human_death'),
                         'livestock_killed_injured' => $species->sum('livestock_killed_injured'),
@@ -250,6 +251,7 @@ class DashboardController extends Controller
 
                 $dataByDistrict = [
                     'crop_damage_cases' => $records->sum('crop_damage_cases'),
+                    'hectarage_destroyed' => $records->sum('hectarage_destroyed'),
                     'human_injured' => $records->sum('human_injured'),
                     'human_death' => $records->sum('human_death'),
                     'livestock_killed_injured' => $records->sum('livestock_killed_injured'),
@@ -287,6 +289,7 @@ class DashboardController extends Controller
 
                 $dataByDistrict = [
                     'crop_damage_cases' => $records->sum('crop_damage_cases'),
+                    'hectarage_destroyed' => $records->sum('hectarage_destroyed'),
                     'human_injured' => $records->sum('human_injured'),
                     'human_death' => $records->sum('human_death'),
                     'livestock_killed_injured' => $records->sum('livestock_killed_injured'),
@@ -321,6 +324,7 @@ class DashboardController extends Controller
             })->map(function ($speciesRecords) {
                 return [
                     'crop_damage_cases' => $speciesRecords->sum('crop_damage_cases'),
+                    'hectarage_destroyed' => $speciesRecords->sum('hectarage_destroyed'),
                     'human_injured' => $speciesRecords->sum('human_injured'),
                     'human_death' => $speciesRecords->sum('human_death'),
                     'livestock_killed_injured' => $speciesRecords->sum('livestock_killed_injured'),
